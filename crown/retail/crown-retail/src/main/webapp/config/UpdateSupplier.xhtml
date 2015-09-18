@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<div class="visual-block">
+			<h2>Supplier Management</h2>
+		</div>
+		<p:panel id="panel" style="margin-bottom:10px;"
+			header="#{supplierController.currentSupplier.isNew() ? 'Create Supplier' : 'Update Supplier'}">
+			<p:growl showSummary="true" showDetail="true" />
+			<h:panelGrid columns="3">
+				<p:outputLabel for="supplierCode" value="Supplier Code: "
+					rendered="${!supplierController.currentSupplier.isNew()}" />
+				<p:inputText id="supplierCode"
+					value="#{supplierController.currentSupplier.supplierCode}"
+					required="true" label="Supplier Code" readonly="true"
+					rendered="${!supplierController.currentSupplier.isNew()}">
+				</p:inputText>
+				<p:message for="supplierCode"
+					rendered="${!supplierController.currentSupplier.isNew()}" />
+
+				<p:outputLabel for="supplierName" value="Supplier Name: " />
+				<p:inputText id="supplierName"
+					value="#{supplierController.currentSupplier.supplierName}"
+					required="true" label="Supplier Name"
+					readonly="${!supplierController.currentSupplier.isNew()}">
+					<p:ajax event="blur" update="validateSupplierName"
+						listener="#{supplierController.checkUniqueSupplierName}" />
+				</p:inputText>
+				<p:message for="supplierName" />
+
+				<p:spacer />
+				<h:outputText id="validateSupplierName"
+					value="#{supplierController.fieldAvailability}"
+					style="font-weight:bold; color:#{supplierController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+
+				<p:outputLabel for="address" value="Address: " />
+				<p:inputTextarea id="address"
+					value="#{supplierController.currentSupplier.address}"
+					label="Address" />
+				<p:message for="address" />
+
+				<p:outputLabel for="phone" value="Phone: " />
+				<p:inputText id="phone"
+					value="#{supplierController.currentSupplier.phone}" label="Phone"
+					mask="999999999999" />
+				<p:message for="phone" />
+
+				<p:outputLabel for="fax" value="FAX: " />
+				<p:inputText id="fax"
+					value="#{supplierController.currentSupplier.fax}" label="Mobile"
+					mask="999999999999" />
+				<p:message for="fax" />
+
+				<p:outputLabel for="poc" value="Point of Contact: " />
+				<p:inputText id="poc"
+					value="#{supplierController.currentSupplier.poc}"
+					label="PointofContact" />
+				<p:message for="poc" />
+
+				<p:outputLabel for="sbn" value="SBN: " />
+				<p:inputText id="sbn"
+					value="#{supplierController.currentSupplier.sbn}" label="SBN">
+					<p:ajax event="blur" update="validateSBN"
+						listener="#{supplierController.checkUniqueSbn}" />
+				</p:inputText>
+				<p:message for="sbn" />
+
+				<p:spacer />
+				<h:outputText id="validateSBN"
+					value="#{supplierController.fieldAvailability}"
+					style="font-weight:bold; color:#{supplierController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="remarks" value="Remarks: " />
+				<p:inputText id="remarks"
+					value="#{supplierController.currentSupplier.remarks}"
+					label="Remarks" />
+				<p:message for="remarks" />
+
+			</h:panelGrid>
+		</p:panel>
+
+		<p:commandButton value="Submit"
+			update="#{navigationBean.UPDATE_FORM_ID}"
+			action="#{supplierController.save}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/Supplier.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+</ui:composition>

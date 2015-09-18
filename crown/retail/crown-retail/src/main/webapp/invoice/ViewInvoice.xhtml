@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="visual-block">
+		<h2>
+			View Invoice "<u>#{invoiceCommonController.currentInvoice.invoiceNumber}</u>"
+		</h2>
+	</div>
+	<p:panel id="invoicePanel" style="margin-bottom:10px;">
+		<p:panel>
+			<center>
+				<h:panelGrid>
+					<p:graphicImage id="heder" value="/images/kannus-printLogo.PNG"
+						style="align:center;" />
+					<p:graphicImage id="watermark"
+						value="#{invoiceCommonController.currentInvoice.invoiceState == 1 ? '/images/original.PNG' : '/images/duplicate.PNG'}"
+						style="display: inline; position: absolute; z-index: -1;"
+						height="10%" width="30%" />
+				</h:panelGrid>
+			</center>
+		</p:panel>
+		<p:separator />
+		<h:panelGrid id="display" columns="2" cellpadding="4" width="100%">
+
+			<p:panel>
+				<h:panelGrid id="display2" columns="2" cellpadding="4">
+
+					<h:outputText value="Invoice #: " />
+					<h:outputText
+						value="#{invoiceCommonController.currentInvoice.invoiceNumber} (#{invoiceCommonController.currentInvoice.invoiceStateBO.stateName})"
+						style="font-weight:bold" />
+
+					<h:outputText value="Invoice Date: " />
+					<h:outputText
+						value="#{invoiceCommonController.currentInvoice.invoiceDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+
+					<h:outputText value="Return Date: " />
+					<h:outputText
+						value="#{invoiceCommonController.currentInvoice.returnDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel>
+				<h:panelGrid id="display1" columns="2" cellpadding="4">
+
+					<h:outputText value="Customer: " />
+					<h:outputText
+						value="#{invoiceCommonController.currentInvoice.customerBO.customerName}"
+						style="font-weight:bold" />
+
+					<h:outputText value="Delivery Date: " />
+					<h:outputText
+						value="#{invoiceCommonController.currentInvoice.deliveryDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+
+					<h:outputText value="Return Amount: " />
+					<h:outputText
+						value="#{invoiceCommonController.currentInvoice.returnAmount}"
+						style="font-weight:bold">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+		</h:panelGrid>
+
+		<p:separator />
+
+		<p:panel header="Invoice Items">
+			<p:dataTable id="invoiceItems" var="invItem" binding="#{table}"
+				emptyMessage="No Invoice Items found..."
+				value="#{invoiceCommonController.currentInvoice.invoiceItems}"
+				widgetVar="invItemTable">
+				<p:column headerText="Sl. No">
+					<h:outputText value="#{table.rowIndex+1}" />
+				</p:column>
+				<p:column headerText="Item">
+					<h:outputText value="#{invItem.itemBO.itemName}" />
+				</p:column>
+				<p:column headerText="UOM">
+					<h:outputText value="#{invItem.allocationTypeBO.type}" />
+				</p:column>
+				<p:column headerText="Pkg">
+					<h:outputText id="pkk" value="#{invItem.itemBO.uomBO.uom}" />
+				</p:column>
+				<p:column headerText="Units/Pkg">
+					<h:outputText value="#{invItem.itemBO.piecesPerUOM}" />
+				</p:column>
+				<p:column headerText="Item/UOM Price">
+					<h:outputText id="itemPrice" label="Item Price"
+						value="#{invItem.itemBO.itemPrice}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+					<h:outputText value=" / " />
+					<h:outputText id="uomPP" value="#{invItem.itemBO.uomPrice}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="VAT %">
+					<h:outputText id="vat" label="VAT"
+						value="#{invItem.itemBO.vat/100}">
+						<f:convertNumber type="percent" pattern="#0.00%" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Item / UOM VAT">
+					<h:outputText 
+						value="#{(invItem.itemBO.itemPrice * invItem.itemBO.vat/100)}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+					<h:outputText value=" / "/>
+					<h:outputText 
+						value="#{invItem.itemBO.uomPrice * invItem.itemBO.vat/100}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				
+				<p:column headerText="Item (Pieces) Qty">
+					<h:outputText value="#{invItem.itemQty}" />
+				</p:column>
+				<p:column headerText="Deliver Qty">
+					<h:outputText value="#{invItem.alreadyDeliveredQty}" />
+				</p:column>
+				<p:column headerText="Item Amount">
+					<h:outputText
+						value="#{invItem.isAllocationTypeItem() ?
+											 (invItem.itemQty * invItem.itemBO.itemPrice) : (invItem.itemQty * invItem.itemBO.uomPrice) }">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="VAT Amount">
+					<h:outputText
+						value="#{invItem.isAllocationTypeItem() ?
+											 (invItem.itemQty * (invItem.itemBO.itemPrice * invItem.itemBO.vat/100)) : (invItem.itemQty * (invItem.itemBO.uomPrice * invItem.itemBO.vat/100)) }">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Total Amount">
+					<h:outputText value="#{invItem.amount}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+			<h:panelGrid columns="2">
+				<h:outputText value="Total Quantity: " />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.getTotalQuantity()}"
+					style="font-weight:bold;font-size: 1.2em;" />
+			</h:panelGrid>
+		</p:panel>
+		<p:separator />
+
+		<p:panel header="Invoice Returns" rendered="#{not empty invoiceCommonController.currentInvoice.invoiceReturns}">
+			<p:dataTable id="invoiceReturns" var="invRet"
+				emptyMessage="No Invoice Returns found..."
+				value="#{invoiceCommonController.currentInvoice.invoiceReturns}"
+				widgetVar="invRetTable" binding="#{retTable}">
+				<p:column headerText="Sl. No">
+					<h:outputText value="#{retTable.rowIndex+1}" />
+				</p:column>
+				<p:column headerText="Item">
+					<h:outputText value="#{invRet.itemBO.itemName}" />
+				</p:column>
+				<p:column headerText="Return Type">
+					<h:outputText value="#{invRet.returnTypeBO.type}" />
+				</p:column>
+				<p:column headerText="Return Qty">
+					<h:outputText value="#{invRet.returnQty}" />
+				</p:column>
+				<p:column headerText="Return Amt">
+					<h:outputText value="#{invRet.returnAmount}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Return Date">
+					<h:outputText value="#{invRet.returnDate}">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Remarks">
+					<h:outputText value="#{invRet.remarks}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+		<p:separator rendered="#{not empty invoiceCommonController.currentInvoice.invoiceReturns}" />
+
+		<p:panel header="Invoice Payments">
+			<p:dataTable id="invoicePayments" var="invPmt"
+				emptyMessage="No Invoice Payments found..."
+				value="#{invoiceCommonController.currentInvoice.invoicePayments}"
+				widgetVar="invPmtTable" binding="#{pmtTable}">
+				<p:column headerText="Sl. No">
+					<h:outputText value="#{pmtTable.rowIndex+1}" />
+				</p:column>
+				<p:column headerText="Mode">
+					<h:outputText value="#{invPmt.paymentModeBO.modeName}" />
+				</p:column>
+				<p:column headerText="Bank">
+					<h:outputText value="#{invPmt.bankBO.bankName}" />
+				</p:column>
+				<p:column headerText="Draft #">
+					<h:outputText value="#{invPmt.draftNumber}" />
+				</p:column>
+				<p:column headerText="Payer">
+					<h:outputText value="#{invPmt.payer}" />
+				</p:column>
+				<p:column headerText="Amount">
+					<h:outputText value="#{invPmt.amount}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Remarks">
+					<h:outputText value="#{invPmt.remarks}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:separator />
+		<p:panel>
+			<h:panelGrid columns="2">
+				<h:outputText value="Payment Status: " />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.paymentStatusBO.status.toUpperCase()}"
+					style="font-weight:bold;font-size: 1.2em;" />
+				<h:outputText value="Discount Type: " />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.discountTypeBO.discountType}"
+					style="font-weight:bold;" />
+				<h:outputText value="Discount Amount: " />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.discountAmount}"
+					style="font-weight:bold;" />
+			</h:panelGrid>
+		</p:panel>
+
+		<p:separator />
+		<p:panel>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Miscellaneous Charges:" />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.otherPriceTag}" />
+
+				<h:outputLabel value="Miscellaneous Amount:" />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.otherPriceAmount}" />
+
+				<h:outputLabel value="Invoice Amount:" />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.getAmountWithoutTax()}"
+					style="font-weight:bold;font-size: 1.2em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+
+				<h:outputLabel value="Total VAT:" />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.getTotalTax()}"
+					style="font-weight:bold;font-size: 1.2em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+
+				<h:outputText value="Total Invoice Amount: " />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.invoiceAmount}"
+					style="font-weight:bold;font-size: 1.2em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+				<h:outputText value="Final Invoice Amount: " />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.finalInvoiceAmount}"
+					style="font-weight:bold;font-size: 1.2em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+				<h:outputLabel value="(Total Invoice Amount - Discount)"
+					style="font-size: 0.8em;" />
+				<p:spacer />
+
+				<h:outputText value="Total Paid Amount: " />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.totalPaidAmount}"
+					style="font-weight:bold;font-size: 1.2em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+
+				<h:outputLabel value="Terms and Conditions:" />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.termsConditions}" />
+
+				<h:outputLabel value="Invoice Generated by:" />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.createdBy.firstName} #{invoiceCommonController.currentInvoice.createdBy.lastName}" />
+			</h:panelGrid>
+		</p:panel>
+		<p:panel>
+			<center>
+				<p:separator />
+
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.companyBO.companyName}"
+					style="font-weight:bold" />
+				<br />
+				<h:outputText
+					value="#{invoiceCommonController.currentInvoice.companyBO.address}, #{invoiceCommonController.currentInvoice.companyBO.locationBO.location}, Phone: #{invoiceCommonController.currentInvoice.companyBO.phone}, FAX: #{invoiceCommonController.currentInvoice.companyBO.fax}"
+					style="font-weight:bold" />
+				<br />
+				<h:outputText
+					value="TIN: #{invoiceCommonController.currentInvoice.companyBO.tin}"
+					style="font-weight:bold" />
+				<br />
+			</center>
+		</p:panel>
+		<p:outputPanel style="border:1;">
+			<h:outputText value="1. All Prices are in 'SCR'. "
+				style="font-style:italic; font-size: .8em;" />
+			<h:outputText
+				value="2. Allocation type UOM -> Package (Carton, Box, etc.). "
+				style="font-style:italic; font-size: .8em;" />
+			<h:outputText
+				value="3. Allocation type ITEM -> Pieces/Single Units. "
+				style="font-style:italic; font-size: .8em;" />
+		</p:outputPanel>
+	</p:panel>
+
+	<p:panel id="actionPanel">
+		<p:commandButton value="Print" type="button" icon="ui-icon-print">
+			<p:printer target="invoicePanel" />
+		</p:commandButton>
+		<p:commandButton
+			actionListener="#{invoiceCommonController.printInvoice()}"
+			value="Done" update="#{navigationBean.UPDATE_FORM_ID}"
+			process="@this" onstart="return printConfirm()" />
+		<p:commandButton id="cancelInv"
+			actionListener="#{invoiceControllerFactory.showView('PRINT', invoiceControllerFactory.invoiceType)}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+
+	</p:panel>
+	<script language="JavaScript">
+		function printConfirm() {
+			var answer = confirm("Is Print Done?");
+			if (answer) {
+				return true;
+			}
+			alert("Try Printing Again.");
+			return false;
+		}
+	</script>
+</ui:composition>
+<!-- <p:graphicImage id="futer" value="/images/kannus-footer.PNG" /> -->

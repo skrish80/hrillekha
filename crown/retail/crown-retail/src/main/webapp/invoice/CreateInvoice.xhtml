@@ -1,0 +1,581 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<p:growl id="messages" showDetail="true" escape="false"
+			autoUpdate="true" />
+		<div class="visual-block">
+			<h2>Create Invoice</h2>
+		</div>
+		<p:panel id="invPanel" header="Create Invoice"
+			style="margin-bottom:10px;">
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="entity" value="Entity:"
+					rendered="#{invoiceCreateController.invoiceType == 'WS'}" />
+				<p:outputLabel for="entity" value="Shop:"
+					rendered="#{invoiceCreateController.invoiceType == 'RT'}" />
+				<p:selectOneMenu id="entity"
+					value="#{invoiceCreateController.currentInvoice.entity}"
+					required="true" label="Entity"
+					disabled="#{invoiceCreateController.invoiceType == 'RT'}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="ent"
+						value="#{invoiceCreateController.entityBOs}" itemValue="#{ent.id}"
+						itemLabel="#{ent.entity}" />
+					<p:ajax update=":includeForm:avlItems"
+						listener="#{invoiceCreateController.checkEntityItemsAvailability}"
+						process="entity" />
+				</p:selectOneMenu>
+				<p:message for="entity" />
+
+				<p:outputLabel for="company" value="Company:" />
+				<p:selectOneMenu id="company"
+					value="#{invoiceCreateController.currentInvoice.company}"
+					required="true" label="Company">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="comp"
+						value="#{invoiceCreateController.companyBOs}"
+						itemValue="#{comp.id}" itemLabel="#{comp.companyName}" />
+					<p:ajax listener="#{invoiceCreateController.setAssociations}"
+						process="@this" />
+				</p:selectOneMenu>
+				<p:message for="company" />
+
+				<p:outputLabel for="customer" value="Customer:" />
+				<p:autoComplete id="customer"
+					value="#{invoiceCreateController.currentInvoice.customerBO}"
+					completeMethod="#{invoiceCreateController.completeCustomers}"
+					var="cust" itemLabel="#{cust.customerName}" itemValue="#{cust}"
+					forceSelection="true" required="true"
+					converter="#{crownModelConverter.getCrownModelConverter(invoiceCreateController.customerBOs)}">
+					<p:ajax event="itemSelect"
+						listener="#{invoiceCreateController.doNothing}" process="customer"
+						update="creditLim, currCredit" async="true" />
+				</p:autoComplete>
+				<p:message for="customer" />
+
+				<h:outputText value="Credit Limit:" />
+				<h:outputText id="creditLim"
+					value="#{invoiceCreateController.currentInvoice.customerBO.creditLimit}"
+					style="color:#9900FF; font-weight:bolder;" />
+				<h:outputText id="currCredit"
+					value="Current Credit: #{invoiceCreateController.currentInvoice.customerBO.currentCredit}"
+					style="color:#CC0000; font-weight:bolder;" />
+
+				<p:outputLabel for="remarks" value="Remarks:" />
+				<p:inputTextarea id="remarks"
+					value="#{invoiceCreateController.currentInvoice.remarks}"
+					required="#{not empty discTypeSel.submittedValue}" />
+				<p:message for="remarks" />
+			</h:panelGrid>
+		</p:panel>
+		<p:panel style="margin-bottom:10px;">
+			<div class="visual-block">
+				<h3 class="title ui-widget-header ui-corner-all">Invoice Items</h3>
+			</div>
+			<h:panelGrid columns="2">
+
+				<p:commandButton id="addBulkItems" title="Add Bulk" value="Add Bulk"
+					actionListener="#{invoiceCreateController.clearBulkItemsForm}"
+					process="@this" update=":includeForm:bulkAdd"
+					oncomplete="bulkDlg.show()"
+					rendered="#{invoiceCreateController.invoiceType == 'WS'}" />
+				<p:commandButton id="addInvItems" title="Add Items"
+					value="Add Items"
+					update="invoiceItemsPanel :includeForm:discType :includeForm:discAmt"
+					action="#{invoiceCreateController.addInvoiceItem}"
+					process="addInvItems" />
+
+			</h:panelGrid>
+			<p:separator />
+
+			<p:outputPanel id="invoiceItemsPanel">
+				<p:dataTable id="invoiceItems" var="invItem"
+					emptyMessage="No Invoice Items found..."
+					value="#{invoiceCreateController.currentInvoice.invoiceItems}"
+					widgetVar="invItemTable">
+
+					<p:column headerText="Item">
+						<p:autoComplete id="itemBO" value="#{invItem.itemBO}"
+							completeMethod="#{invoiceCreateController.completeItems}"
+							var="it" itemLabel="#{it.itemName}(#{it.modelNumber})"
+							itemValue="#{it}" forceSelection="true" required="true"
+							scrollHeight="150"
+							converter="#{crownModelConverter.getCrownModelConverter(invoiceCreateController.itemBOs)}">
+							<p:ajax event="itemSelect"
+								listener="#{invoiceCreateController.updateInvoiceAmount()}"
+								update=":includeForm:invoiceItemsPanel :includeForm:invAmt, :includeForm:finalAmt :includeForm:finalAmtLB :includeForm:discType :includeForm:discAmt :includeForm:avlItems"
+								process="@this" async="true" />
+						</p:autoComplete>
+					</p:column>
+
+					<p:column headerText="Allocation Type">
+						<p:selectOneMenu id="allocType" required="true"
+							label="Allocation Type" value="#{invItem.allocationType}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="allType"
+								value="#{invoiceCreateController.typeBOs}"
+								itemValue="#{allType.allocationTypeID}" />
+							<p:ajax
+								listener="#{invoiceCreateController.updateInvoiceAmount()}"
+								update=":includeForm:invoiceItemsPanel :includeForm:balanceAmt :includeForm:invAmt :includeForm:finalAmt :includeForm:finalAmtLB itmAmmt vatAmt totAmmt"
+								process="@this" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Item (Pieces) Qty">
+						<p:inputText id="itemQty" required="true"
+							label="Item (Pieces) Qty" onkeypress="validateInteger(event)"
+							maxlength="5" value="#{invItem.itemQty}">
+							<p:ajax event="blur"
+								update=":includeForm:invAmt, :includeForm:finalAmt :includeForm:finalAmtLB :includeForm:balanceAmt itmAmmt vatAmt totAmmt"
+								listener="#{invoiceCreateController.updateInvoiceAmount}" />
+						</p:inputText>
+					</p:column>
+
+					<p:column headerText="Pkg">
+						<h:outputText id="pkk" value="#{invItem.itemBO.uomBO.uom}" />
+					</p:column>
+
+					<p:column headerText="Units/Pkg">
+						<h:outputText id="upp" value="#{invItem.itemBO.piecesPerUOM}" />
+					</p:column>
+					<p:column headerText="Item/UOM Price">
+						<h:outputText id="itemPrice" label="Item Price"
+							value="#{invItem.itemBO.itemPrice} / #{invItem.itemBO.uomPrice}" />
+					</p:column>
+
+					<p:column headerText="VAT">
+						<h:outputText id="vat" label="VAT"
+							value="#{invItem.itemBO.vat/100}">
+							<f:convertNumber type="percent" pattern="#0.00%" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Item / UOM VAT">
+						<h:outputText
+							value="#{(invItem.itemBO.itemPrice * invItem.itemBO.vat/100)}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+						<h:outputText value=" / " />
+						<h:outputText
+							value="#{invItem.itemBO.uomPrice * invItem.itemBO.vat/100}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Item Amount">
+						<h:outputText id="itmAmmt"
+							value="#{invItem.isAllocationTypeItem() ?
+											 (invItem.itemQty * invItem.itemBO.itemPrice) : (invItem.itemQty * invItem.itemBO.uomPrice) }">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="VAT Amount">
+						<h:outputText id="vatAmt"
+							value="#{invItem.isAllocationTypeItem() ?
+											 (invItem.itemQty * (invItem.itemBO.itemPrice * invItem.itemBO.vat/100)) : (invItem.itemQty * (invItem.itemBO.uomPrice * invItem.itemBO.vat/100)) }">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Total Amount">
+						<h:outputText id="totAmmt" value="#{invItem.amount}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Action">
+						<center>
+							<p:commandButton id="remInvItem" icon="ui-icon-closethick"
+								update=":includeForm:invoiceItemsPanel :includeForm:invAmt :includeForm:finalAmt :includeForm:finalAmtLB :includeForm:balanceAmt :includeForm:discType :includeForm:discAmt :includeForm:avlItems @parent"
+								process="remInvItem"
+								action="#{invoiceCreateController.removeInvoiceItem(invItem)}" />
+						</center>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+
+		</p:panel>
+
+		<p:panel style="margin-bottom:10px;">
+			<h:panelGrid columns="3" width="30%">
+				<p:outputLabel for="discType" value="Discount Type:" />
+				<p:selectOneMenu id="discType" binding="#{discTypeSel}"
+					value="#{invoiceCreateController.currentInvoice.discountType}"
+					label="Discount Type"
+					disabled="#{empty invoiceCreateController.currentInvoice.invoiceItems}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="discType"
+						value="#{invoiceCreateController.discountTypeBOs}"
+						itemValue="#{discType.typeID}" />
+					<p:ajax
+						update=":includeForm:finalAmt :includeForm:finalAmtLB :includeForm:discType :includeForm:discAmt :includeForm:remarks :includeForm:balanceAmt"
+						listener="#{invoiceCreateController.updateInvoiceAmount}" />
+				</p:selectOneMenu>
+				<p:message for="discType" />
+
+				<p:outputLabel for="discAmt" value="Discount Amount:"
+					style="width:100%;" />
+				<p:inputText id="discAmt" label="Discount Amount"
+					onkeypress="validateDecimal(this, event)" maxlength="15"
+					value="#{invoiceCreateController.currentInvoice.discountAmount}"
+					disabled="#{empty invoiceCreateController.currentInvoice.invoiceItems}">
+					<p:ajax event="blur"
+						update=":includeForm:finalAmt :includeForm:finalAmtLB :includeForm:discType :includeForm:discAmt :includeForm:balanceAmt"
+						listener="#{invoiceCreateController.updateInvoiceAmount}" />
+				</p:inputText>
+				<p:message for="discAmt" />
+
+				<h:outputLabel value="Total Amount:" />
+				<h:outputText id="invAmt"
+					value="#{invoiceCreateController.currentInvoice.invoiceAmount}"
+					style="font-weight: bold; font-size: 1.5em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+				<p:spacer />
+			</h:panelGrid>
+			<p:spacer />
+
+			<p:separator />
+
+			<div class="visual-block">
+				<h3 class="title ui-widget-header ui-corner-all">Invoice
+					Payment</h3>
+			</div>
+			<p:spacer />
+			<h:panelGrid columns="3" width="40%">
+				<p:outputLabel for="pmtStatus" value="Payment Status:" />
+				<p:selectOneMenu id="pmtStatus"
+					value="#{invoiceCreateController.currentInvoice.paymentStatus}"
+					required="true" label="Payment Status">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="pmtStt"
+						value="#{invoiceCreateController.paymentStatusBOs}"
+						itemValue="#{pmtStt.statusID}" itemLabel="#{pmtStt.status}" />
+					<p:ajax listener="#{invoiceCreateController.setAssociations}"
+						process="pmtStatus @parent" />
+				</p:selectOneMenu>
+				<p:message for="pmtStatus" />
+			</h:panelGrid>
+			<p:separator />
+
+
+			<p:commandButton id="addPmt" title="Add Payment" value="Add Payment"
+				update="invoicePmtPanel @parent"
+				action="#{invoiceCreateController.addInvoicePayment}"
+				process="addPmt" />
+			<p:commandButton title="Verify Payment" value="Verify Payment"
+				update="invoicePmtPanel @parent"
+				action="#{invoiceCreateController.reinitMoveItem}" />
+
+			<p:spacer />
+			<p:separator />
+			<h:panelGrid columns="3">
+				<p:outputLabel for="payer" value="Payer" />
+				<p:inputText id="payer"
+					required="#{not empty invoiceCreateController.currentInvoice.invoicePayments}"
+					value="#{invoiceCreateController.payer}" />
+				<p:message for="payer" />
+			</h:panelGrid>
+			<p:outputPanel id="invoicePmtPanel">
+				<p:dataTable id="invoicePayments" var="invPmt"
+					emptyMessage="No Payments found..."
+					value="#{invoiceCreateController.currentInvoice.invoicePayments}"
+					widgetVar="invPmtTable">
+
+					<p:column headerText="Mode">
+						<p:selectOneMenu id="pmtMode" required="true" label="Mode"
+							value="#{invPmt.paymentMode}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="mode"
+								value="#{invoiceCreateController.paymentModeBOs}"
+								itemValue="#{mode.modeID}" itemLabel="#{mode.modeName}" />
+							<p:ajax listener="#{invoiceCreateController.doNothing}"
+								update="amt :includeForm:invoicePmtPanel @parent" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Bank">
+						<p:selectOneMenu id="bank" required="#{invPmt.paymentMode == 2}"
+							label="Bank" value="#{invPmt.bank}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="bk"
+								value="#{invoiceCreateController.bankBOs}" itemValue="#{bk.id}"
+								itemLabel="#{bk.bankName}" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Draft Number" id="draftNo">
+						<p:inputText id="draft" label="Draft No."
+							title="#{invPmt.isCreditNoteAvl() ? 'Available' : 'Not Available'}"
+							required="#{invPmt.isDraftNumberRequired()}"
+							value="#{invPmt.draftNumber}"
+							style="border-color:#{invPmt.isCreditNoteAvl() ? 'green' : 'red'};"
+							rendered="#{invPmt.isDraftNumberRequired()}">
+							<p:ajax event="blur"
+								update=":includeForm:totPaidAmt :includeForm:totPaidAmtLB :includeForm:balanceAmt draft amt @parent"
+								listener="#{invoiceCommonController.isCreditNoteUtilized(invPmt)}" />
+						</p:inputText>
+						
+						<p:selectOneMenu id="receipt" required="true"
+							rendered="#{invPmt.isReceiptMode()}" label="Receipt"
+							value="#{invPmt.draftNumber}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="rec"
+								value="#{invoiceCreateController.receiptBOs}"
+								itemValue="#{rec.receiptNumber}"
+								itemLabel="#{rec.receiptNumber}" />
+								<p:ajax listener="#{invoiceCreateController.selectReceipt(invPmt)}"
+								update=":includeForm:totPaidAmt :includeForm:totPaidAmtLB :includeForm:balanceAmt draft amt chqDate :includeForm:invoicePmtPanel @parent" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Date">
+						<p:calendar id="chqDate"
+							value="#{invPmt.chequeDate}"
+							label="chequeDate" showOn="button" pattern="dd-MMM-yyyy"
+							navigator="true" readonlyInput="true" />
+					</p:column>
+
+					<p:column headerText="Amount">
+						<p:inputText id="amt" required="true" label="Amount"
+							onkeypress="validateDecimal(this, event)" maxlength="15"
+							value="#{invPmt.amount}" readonly="#{invPmt.paymentMode == 3}">
+							<f:convertNumber pattern="#0.00" />
+							<p:ajax event="keyup"
+								update=":includeForm:totPaidAmt :includeForm:totPaidAmtLB :includeForm:balanceAmt"
+								listener="#{invoiceCreateController.doNothing}" />
+						</p:inputText>
+					</p:column>
+					<p:column headerText="Remarks">
+						<p:inputText id="pmtRemarks" label="Remarks"
+							value="#{invPmt.remarks}" />
+					</p:column>
+
+					<p:column headerText="Action">
+						<center>
+							<p:commandButton id="remPmt" icon="ui-icon-closethick"
+								update=":includeForm:invoicePmtPanel :includeForm:totPaidAmt :includeForm:totPaidAmtLB :includeForm:balanceAmt @parent"
+								process="remPmt"
+								action="#{invoiceCreateController.removeInvoicePayment(invPmt)}" />
+						</center>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+			<p:spacer />
+			<p:separator />
+
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="otherPriceTag" value="Miscellaneous Charges:" />
+				<p:inputText id="otherPriceTag"
+					value="#{invoiceCreateController.currentInvoice.otherPriceTag}">
+					<p:ajax event="blur"
+						listener="#{invoiceCreateController.doNothing}" />
+				</p:inputText>
+				<p:spacer />
+
+				<p:outputLabel for="otherPriceAmt" value="Miscellaneous Amount:" />
+				<p:inputText id="otherPriceAmt"
+					value="#{invoiceCreateController.currentInvoice.otherPriceAmount}"
+					onkeypress="validateDecimal(this, event)" maxlength="15">
+					<p:ajax event="blur"
+						update=":includeForm:invAmt, :includeForm:finalAmt :includeForm:finalAmtLB :includeForm:balanceAmt"
+						listener="#{invoiceCreateController.updateInvoiceAmount}" />
+				</p:inputText>
+				<p:spacer />
+
+				<h:outputLabel value="Final Invoice Amount:" />
+				<h:outputText id="finalAmt"
+					value="#{invoiceCreateController.currentInvoice.finalInvoiceAmount}"
+					style="font-weight: bold; font-size: 2.5em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+				<h:outputText value="(Total Amt - Discount)"
+					style="font-size: .75em;" />
+
+				<h:outputLabel value="Total Paid Amount:" />
+				<h:outputText id="totPaidAmt"
+					value="#{invoiceCreateController.currentInvoice.totalPaidAmount}"
+					style="font-weight: bold; font-size: 2.5em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+				<p:spacer />
+
+				<p:outputLabel for="termsNCondns" value="Terms and Conditions:" />
+				<p:inputTextarea id="termsNCondns" autoResize="true" cols="30"
+					style="width:100%"
+					value="#{invoiceCreateController.currentInvoice.termsConditions}">
+					<p:ajax event="blur"
+						listener="#{invoiceCreateController.doNothing}" />
+				</p:inputTextarea>
+			</h:panelGrid>
+
+			<p:outputPanel style="border:1;">
+				<h:outputText value="1. All Prices are in 'SCR'. "
+					style="font-style:italic; font-size: .8em;" />
+				<h:outputText
+					value="2. Allocation type UOM -> Package (Carton, Box, etc.). "
+					style="font-style:italic; font-size: .8em;" />
+				<h:outputText
+					value="3. Allocation type ITEM -> Pieces/Single Units. "
+					style="font-style:italic; font-size: .8em;" />
+			</p:outputPanel>
+			<p:separator />
+		</p:panel>
+
+		<p:commandButton value="Save"
+			action="#{invoiceCreateController.saveLocalInvoice}" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton value="Submit"
+			action="#{invoiceCreateController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton id="cancelInv"
+			actionListener="#{invoiceControllerFactory.showView('PRINT', invoiceControllerFactory.invoiceType)}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+
+		<!-- DIALOGS -->
+		<p:dialog id="amtLightBox" widgetVar="amtDlg" position="bottom"
+			visible="true" header="Invoice Amount" closable="false">
+			<p:panel>
+				<h:panelGrid columns="2">
+					<h:outputLabel value="Final Invoice Amount:"
+						title="Total Amount - Discount" />
+					<h:outputText id="finalAmtLB"
+						value="#{invoiceCreateController.currentInvoice.finalInvoiceAmount}"
+						style="font-weight: bold; font-size: 2.5em;">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+
+					<h:outputLabel value="Total Paid Amount:" />
+					<h:outputText id="totPaidAmtLB"
+						value="#{invoiceCreateController.currentInvoice.totalPaidAmount}"
+						style="font-weight: bold; font-size: 2.5em;">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+
+					<h:outputLabel value="BALANCE AMOUNT:" />
+					<h:outputText id="balanceAmt"
+						value="#{invoiceCreateController.currentInvoice.totalPaidAmount - invoiceCreateController.currentInvoice.finalInvoiceAmount }"
+						style="font-weight: bold; font-size: 2.5em; color: green">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+		</p:dialog>
+
+		<p:dialog id="avlItems" widgetVar="avlDlg" position="right"
+			visible="true"
+			header="Items Availability for '#{invoiceCreateController.currentInvoice.entityBO.entity}'"
+			closable="false" width="400px">
+
+			<p:panel>
+				<p:dataTable id="avlStock" var="stock"
+					value="#{invoiceCreateController.totalStockBOs}"
+					widgetVar="avlStockTable"
+					emptyMessage="No Items available for the entity">
+					<p:column id="itemName" headerText="Item Name">
+						<h:outputText value="#{stock.itemBO.itemName}" />
+					</p:column>
+					<p:column id="itemQty" headerText="Item (Pieces) Qty">
+						<h:outputText value="#{stock.itemQty}" />
+					</p:column>
+					<p:column id="uomQty" headerText="UOM Qty">
+						<h:outputText value="#{stock.uomQty}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:dialog>
+		<!-- DIALOGS -->
+	</p:panel>
+
+	<!-- BULK ADDITION -->
+	<p:dialog id="bulkAdd" widgetVar="bulkDlg" position="center"
+		header="Add Bulk Items" modal="true">
+
+		<p:panel>
+			<h:panelGrid columns="3">
+				<p:outputLabel for="category" value="Category:" />
+				<p:autoComplete id="category"
+					value="#{invoiceCreateController.selCategory}"
+					completeMethod="#{invoiceCreateController.completeCategories}"
+					var="cat" itemLabel="#{cat.itemCategory}" itemValue="#{cat}"
+					converter="#{crownModelConverter.getCrownModelConverter(invoiceCreateController.categoryBOs)}">
+					<p:ajax event="itemSelect"
+						listener="#{invoiceCreateController.handleBulkSelect}"
+						update="bulkItemsPanel" process="@this" async="true" />
+				</p:autoComplete>
+				<p:message for="category" />
+
+				<p:outputLabel for="brand" value="Brand:" />
+				<p:autoComplete id="brand"
+					value="#{invoiceCreateController.selBrand}"
+					completeMethod="#{invoiceCreateController.completeBrands}"
+					var="brd" itemLabel="#{brd.itemBrand}" itemValue="#{brd}"
+					forceSelection="true"
+					converter="#{crownModelConverter.getCrownModelConverter(invoiceCreateController.brandBOs)}">
+					<p:ajax event="itemSelect"
+						listener="#{invoiceCreateController.handleBulkSelect}"
+						update="bulkItemsPanel" process="@this" async="true" />
+				</p:autoComplete>
+				<p:message for="brand" />
+			</h:panelGrid>
+			<p:outputPanel id="bulkItemsPanel">
+				<p:dataTable id="bulkStock" var="blkItem"
+					value="#{invoiceCreateController.bulkItems}"
+					widgetVar="bulkItemsTable" emptyMessage="No Items available..."
+					paginator="true" rows="10">
+					<p:column id="cat" headerText="Category">
+						<h:outputText value="#{blkItem.itemBO.categoryBO.itemCategory}" />
+					</p:column>
+					<p:column id="brd" headerText="Brand">
+						<h:outputText value="#{blkItem.itemBO.brandBO.itemBrand}" />
+					</p:column>
+					<p:column id="item" headerText="Item">
+						<h:outputText value="#{blkItem.itemBO.itemName}" />
+					</p:column>
+					<p:column headerText="Pkg">
+						<h:outputText id="itmPKK" value="#{blkItem.itemBO.uomBO.uom}" />
+					</p:column>
+					<p:column id="itemUPP" headerText="Units/Pkg">
+						<h:outputText value="#{blkItem.itemBO.piecesPerUOM}" />
+					</p:column>
+					<p:column id="itemPrc" headerText="Item Price">
+						<h:outputText value="#{blkItem.itemBO.itemPrice}" />
+					</p:column>
+					<p:column id="uomPrc" headerText="UOM Price">
+						<h:outputText value="#{blkItem.itemBO.uomPrice}" />
+					</p:column>
+					<p:column id="allocc" headerText="Allocation">
+						<p:selectOneMenu id="alloc" label="Allocation"
+							value="#{blkItem.allocationType}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="allbType"
+								value="#{invoiceCreateController.typeBOs}"
+								itemValue="#{allbType.allocationTypeID}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column headerText="Add Qty">
+						<p:inputText id="addQty" label="Add Qty"
+							onkeypress="validateInteger(event)" maxlength="5"
+							value="#{blkItem.itemQty}">
+						</p:inputText>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+			<p:separator />
+			<p:commandButton value="Add to Invoice"
+				actionListener="#{invoiceCreateController.addBulkItems}"
+				update=":includeForm:invoiceItemsPanel :includeForm:invAmt, :includeForm:finalAmt :includeForm:finalAmtLB :includeForm:avlItems :includeForm:discType :includeForm:discAmt"
+				process="bulkItemsPanel, @this" oncomplete="bulkDlg.hide()" />
+		</p:panel>
+	</p:dialog>
+	<!-- BULK ADDITION -->
+</ui:composition>

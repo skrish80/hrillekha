@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Items</h2>
+		</div>
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Add Item" icon="ui-icon-circle-plus"
+				action="#{itemController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" />
+		</p:panel>
+
+		<p:dataTable id="items" var="itemBO"
+			value="#{itemController.itemModel}" widgetVar="itemBOTable"
+			emptyMessage="No Items found with given criteria"
+			rowKey="#{itemBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15" lazy="true">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="itemBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="itemCode" filterBy="#{itemBO.itemCode}"
+				headerText="Item Code" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;" value="#{itemBO.itemCode}" />
+			</p:column>
+
+			<p:column id="itemName" filterBy="#{itemBO.itemName}"
+				headerText="Item Name" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;" value="#{itemBO.itemName}" />
+			</p:column>
+
+			<p:column id="modelNum" filterBy="#{itemBO.modelNumber}"
+				headerText="Model Number" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{itemBO.modelNumber}" />
+			</p:column>
+
+			<p:column id="uom" headerText="UOM" style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{itemBO.uomBO.uom}" />
+			</p:column>
+			
+			<p:column id="upp" headerText="Units/Pkg" style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{itemBO.piecesPerUOM}" />
+			</p:column>
+
+			<p:column id="itemPrice" headerText="Item Price"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{itemBO.itemPrice}" />
+			</p:column>
+
+			<p:column id="uomPrice" headerText="UOM Price"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;" value="#{itemBO.uomPrice}" />
+			</p:column>
+
+			<p:column id="vat" headerText="VAT"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;" value="#{itemBO.vat}%" />
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:splitButton value="Edit"
+						action="#{itemController.setupForm(itemBO)}"
+						icon="ui-icon-arrowrefresh-1-w"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this">
+						<p:menuitem value="View" icon="ui-icon-search"
+							action="#{itemController.view(itemBO)}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+						<p:separator />
+						<p:menuitem value="Delete" icon="ui-icon-close"
+							action="#{itemController.delete(itemBO)}"
+							onstart="return confirm('Are you sure you want to delete #{itemBO.itemName}?')"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+					</p:splitButton>
+				</center>
+			</p:column>
+		</p:dataTable>
+
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Add Item" icon="ui-icon-circle-plus"
+				action="#{itemController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>All Item Categories</h2>
+		</div>
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Add Item Category" icon="ui-icon-circle-plus"
+				action="#{itemCategoryController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="categories" var="categoryBO"
+			value="#{itemCategoryController.categoryBOs}"
+			widgetVar="categoryBOTable"
+			emptyMessage="No Item Brands found with given criteria"
+			rowKey="#{categoryBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="categoryBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="categoryName" filterBy="#{categoryBO.itemCategory}"
+				headerText="Category Name" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{categoryBO.itemCategory}" />
+			</p:column>
+
+			<p:column id="desc" filterBy="#{categoryBO.description}"
+				headerText="Description" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{categoryBO.description}" />
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:splitButton value="Edit"
+						action="#{itemCategoryController.setupForm(categoryBO)}"
+						icon="ui-icon-arrowrefresh-1-w"
+						update="#{navigationBean.UPDATE_FORM_ID}">
+						<p:menuitem value="View" icon="ui-icon-search"
+							action="#{itemCategoryController.view(categoryBO)}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+						<p:separator />
+						<p:menuitem value="Delete" icon="ui-icon-close"
+							action="#{itemCategoryController.delete(categoryBO)}"
+							onstart="return confirm('Are you sure you want to delete #{categoryBO.itemCategory}?')"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+					</p:splitButton>
+				</center>
+			</p:column>
+		</p:dataTable>
+
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Add Item Category" icon="ui-icon-circle-plus"
+				action="#{itemCategoryController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

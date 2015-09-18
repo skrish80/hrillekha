@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<div class="visual-block">
+			<h2>User Management</h2>
+		</div>
+
+		<p:panel id="panel" style="margin-bottom:10px;"
+			header="#{crownUserController.currentUser.isNew() ? 'Create User' : 'Update User'}">
+			<p:growl showSummary="true" showDetail="true" />
+			<h:panelGrid columns="3">
+				<p:outputLabel for="username" value="Username: " />
+				<p:inputText id="username"
+					value="#{crownUserController.currentUser.username}" required="true"
+					label="Username"
+					readonly="${!crownUserController.currentUser.isNew()}">
+					<p:ajax event="blur" update="validateUsername"
+						listener="#{crownUserController.checkUniqueUsername}" />
+				</p:inputText>
+				<p:message for="username" />
+
+				<p:spacer />
+				<h:outputText id="validateUsername"
+					value="#{crownUserController.fieldAvailability}"
+					style="font-weight:bold; color:#{crownUserController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="password" value="Password: "
+					rendered="#{crownUserController.currentUser.isNew()}" />
+				<p:password id="password"
+					value="#{crownUserController.currentUser.password}" required="true"
+					label="Password" feedback="true" match="pwd2"
+					rendered="#{crownUserController.currentUser.isNew()}" />
+				<p:message for="password"
+					rendered="#{crownUserController.currentUser.isNew()}" />
+
+				<p:outputLabel for="pwd2" value="Repeat Password: "
+					rendered="#{crownUserController.currentUser.isNew()}" />
+				<p:password id="pwd2"
+					value="#{crownUserController.currentUser.changedPassword}"
+					label="Repeat Password" required="true"
+					rendered="#{crownUserController.currentUser.isNew()}" />
+				<p:message for="pwd2"
+					rendered="#{crownUserController.currentUser.isNew()}" />
+
+				<p:outputLabel for="empNo" value="Employee Number: "
+					rendered="${!crownUserController.currentUser.isNew()}" />
+				<p:inputText id="empNo"
+					value="#{crownUserController.currentUser.employeeNo}"
+					required="true" label="Employee Number"
+					rendered="${!crownUserController.currentUser.isNew()}" />
+				<p:message for="empNo"
+					rendered="${!crownUserController.currentUser.isNew()}" />
+
+				<p:outputLabel for="firstName" value="First Name: " />
+				<p:inputText id="firstName"
+					value="#{crownUserController.currentUser.firstName}"
+					required="true" label="First Name" />
+				<p:message for="firstName" />
+
+				<p:outputLabel for="lastName" value="Last Name: " />
+				<p:inputText id="lastName"
+					value="#{crownUserController.currentUser.lastName}" required="true"
+					label="Last Name" />
+				<p:message for="lastName" />
+
+				<p:outputLabel for="email" value="Email: " />
+				<p:inputText id="email"
+					value="#{crownUserController.currentUser.email}" required="true"
+					label="Email">
+					<p:ajax event="blur" update="validateEmail"
+						listener="#{crownUserController.checkUniqueEmail}" />
+				</p:inputText>
+				<p:message for="email" />
+
+				<p:spacer />
+				<h:outputText id="validateEmail"
+					value="#{crownUserController.fieldAvailability}"
+					style="font-weight:bold; color:#{crownUserController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="address" value="Address: " />
+				<p:inputTextarea id="address"
+					value="#{crownUserController.currentUser.address}" label="Address" />
+				<p:message for="address" />
+
+				<p:outputLabel for="phone" value="Phone: " />
+				<p:inputText id="phone"
+					value="#{crownUserController.currentUser.phone}" label="Phone"
+					mask="999999999999" />
+				<p:message for="phone" />
+
+				<p:outputLabel for="mobile" value="Mobile: " />
+				<p:inputText id="mobile"
+					value="#{crownUserController.currentUser.mobileNumber}"
+					required="true" label="Mobile" maxlength="25" />
+				<p:message for="mobile" />
+
+				<p:outputLabel for="joinDate" value="Join Date: " />
+				<p:calendar id="joinDate"
+					value="#{crownUserController.currentUser.joinDate}"
+					label="joinDate" showOn="button" pattern="dd-MMM-yyyy"
+					navigator="true" readonlyInput="true" />
+				<p:message for="joinDate" />
+
+				<p:outputLabel for="dateOfBirth" value="Date of Birth: " />
+				<p:calendar id="dateOfBirth"
+					value="#{crownUserController.currentUser.dateOfBirth}"
+					label="dateOfBirth" showOn="button" pattern="dd-MMM-yyyy"
+					navigator="true" yearRange="c-100:c+100" readonlyInput="true" />
+				<p:message for="dateOfBirth" />
+
+				<p:outputLabel for="role" value="Role: " />
+				<p:selectOneMenu id="role"
+					value="#{crownUserController.currentUser.role}" required="true"
+					label="Role">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="role" value="#{crownUserController.roleBOs}"
+						itemValue="#{role.id}" itemLabel="#{role.role}" />
+				</p:selectOneMenu>
+				<p:message for="role" />
+
+				<p:outputLabel for="desg" value="Designation: " />
+				<p:selectOneMenu id="desg"
+					value="#{crownUserController.currentUser.designation}"
+					required="true" label="Designation">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="designation"
+						value="#{crownUserController.designationBOs}"
+						itemValue="#{designation.id}"
+						itemLabel="#{designation.designation}" />
+
+				</p:selectOneMenu>
+				<p:message for="desg" />
+
+				<p:outputLabel for="dept" value="Department: " />
+				<p:selectOneMenu id="dept"
+					value="#{crownUserController.currentUser.department}"
+					required="true" label="Department">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="department"
+						value="#{crownUserController.departmentBOs}"
+						itemValue="#{department.id}" itemLabel="#{department.department}" />
+
+				</p:selectOneMenu>
+				<p:message for="dept" />
+
+				<p:outputLabel for="loc" value="Location: " />
+				<p:selectOneMenu id="loc"
+					value="#{crownUserController.currentUser.location}" required="true"
+					label="Location">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="location"
+						value="#{crownUserController.locationBOs}"
+						itemValue="#{location.id}" itemLabel="#{location.location}" />
+
+				</p:selectOneMenu>
+				<p:message for="loc" />
+
+			</h:panelGrid>
+		</p:panel>
+
+		<p:commandButton value="Submit"
+			update="#{navigationBean.UPDATE_FORM_ID}"
+			action="#{crownUserController.save}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/CrownUser.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+</ui:composition>

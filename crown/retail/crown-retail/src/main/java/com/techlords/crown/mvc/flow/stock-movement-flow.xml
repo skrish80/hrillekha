@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:crown-flow xmlns:tns="http://www.techlords.com/crown-flow"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.techlords.com/crown-flow crown-flow.xsd ">
+	<tns:flow-id>StockFlow</tns:flow-id>
+	<tns:flow-class>StockMovementBO</tns:flow-class>
+	<tns:flow-steps>
+		<tns:step>
+			<tns:step-id>1</tns:step-id>
+			<tns:step-name>MOVED</tns:step-name>
+			<tns:step-description>Stock Movement Initiated</tns:step-description>
+			<tns:first-step>true</tns:first-step>
+			<tns:next-step-id>3</tns:next-step-id>
+			<tns:next-step-id>4</tns:next-step-id>
+			<tns:next-step-id>5</tns:next-step-id>
+		</tns:step>
+		<tns:step>
+			<tns:step-id>2</tns:step-id>
+			<tns:step-name>RETURNED</tns:step-name>
+			<tns:step-description>Stock is Returned; It may be closed after verification qty.</tns:step-description>
+			<tns:next-step-id>6</tns:next-step-id>
+		</tns:step>
+		<tns:step>
+			<tns:step-id>3</tns:step-id>
+			<tns:step-name>ACCEPTED</tns:step-name>
+			<tns:step-description>Stock Accepted; It may be closed</tns:step-description>
+			<tns:next-step-id>6</tns:next-step-id>
+		</tns:step>
+		<tns:step>
+			<tns:step-id>4</tns:step-id>
+			<tns:step-name>PARTIAL_ACCEPT</tns:step-name>
+			<tns:step-description>Stock Partially Accepted</tns:step-description>
+			<tns:next-step-id>2</tns:next-step-id>
+		</tns:step>
+		<tns:step>
+			<tns:step-id>5</tns:step-id>
+			<tns:step-name>CANCELLED</tns:step-name>
+			<tns:step-description>Stock Movement cancelled; This may be returned and closed.</tns:step-description>
+			<tns:next-step-id>2</tns:next-step-id>
+		</tns:step>
+		<tns:step>
+			<tns:step-id>6</tns:step-id>
+			<tns:step-name>CLOSED</tns:step-name>
+			<tns:step-description>Moved Step; Initial</tns:step-description>
+		</tns:step>
+	</tns:flow-steps>
+</tns:crown-flow>

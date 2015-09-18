@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:remoteCommand name="lazyload" 
+	actionListener="#{hotKeyController.showView('stock/AllPurchaseInvoices.xhtml')}"
+		update="#{navigationBean.UPDATE_FORM_ID}" />
+		
+	<p:panel>
+		<div class="visual-block">
+			<h2>
+				<h:outputLabel value="Purchase Invoices" />
+			</h2>
+		</div>
+		<p:separator />
+		<p:selectBooleanCheckbox
+			value="#{purchaseInvoiceController.receiveOnly}"
+			itemLabel="Show Goods Receipt Only"
+			style="font-weight:bold; color:#9900FF;">
+			<p:ajax update="invoices"
+				listener="#{purchaseInvoiceController.reloadInvoices()}" />
+		</p:selectBooleanCheckbox>
+
+
+		<p:panel id="cmdPanel1">
+			<p:commandButton value="Create Invoice" id="createInv1"
+				icon="ui-icon-circle-plus"
+				actionListener="#{purchaseInvoiceController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="invoices" var="invoiceBO"
+			value="#{purchaseInvoiceController.invoiceModel}"
+			widgetVar="invoiceBOTable" rowKey="#{invoiceBO.id}"
+			emptyMessage="No Invoices found with given criteria" paginator="true"
+			rows="10" rowsPerPageTemplate="5,10,15" lazy="true">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="invoiceBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="invoiceNum" filterBy="#{invoiceBO.invoiceNumber}"
+				headerText="Invoice Number" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.invoiceNumber}" />
+			</p:column>
+
+			<p:column id="supp" filterBy="#{invoiceBO.supplierBO.supplierName}"
+				headerText="Supplier" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.supplierBO.supplierName}" />
+			</p:column>
+
+			<p:column id="comp" filterBy="#{invoiceBO.companyBO.companyName}"
+				headerText="Company" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.companyBO.companyName}" />
+			</p:column>
+
+			<p:column id="invoiceDate" headerText="Invoice Date"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.invoiceDate}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="invoiceAmt" headerText="Invoice Amount"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.invoiceAmount}" />
+			</p:column>
+
+			<p:column id="invoiceStatus"
+				filterBy="#{invoiceBO.invoiceState.stateName}"
+				headerText="Invoice Status" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.invoiceState.stateName}" />
+			</p:column>
+
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<p:splitButton value="Execute" icon="ui-icon-wrench">
+					<p:menuitem value="View" id="viewInv"
+						actionListener="#{purchaseInvoiceController.viewInvoice(invoiceBO)}"
+						icon="ui-icon-extlink" update="#{navigationBean.UPDATE_FORM_ID}"
+						/>
+
+					<p:menuitem value="Cancel" id="cancelInv"
+						actionListener="#{purchaseInvoiceController.cancelInvoice(invoiceBO)}"
+						icon="ui-icon-trash"
+						onstart="return confirm('Are you sure you want to cancel #{invoiceBO.invoiceNumber}?')"
+						rendered="#{invoiceBO.invoiceState.stateCode == 'PRT'}"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+
+					<p:menuitem value="Receive" id="receiveInv"
+						actionListener="#{purchaseInvoiceController.setupReceiveForm(invoiceBO)}"
+						icon="ui-icon-gear"
+						rendered="#{invoiceBO.invoiceState.stateCode == 'PRT'}"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+
+				</p:splitButton>
+			</p:column>
+		</p:dataTable>
+		<p:spacer />
+		<p:panel id="cmdPanel">
+			<p:commandButton value="Create Invoice" id="createInv"
+				icon="ui-icon-circle-plus"
+				actionListener="#{purchaseInvoiceController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

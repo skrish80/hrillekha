@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Agents</h2>
+		</div>
+		<p:separator />
+		<p:panel>
+			<p:commandButton value="Add Agent"
+				action="#{agentController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="agents" var="agentBO"
+			value="#{agentController.agentBOs}" widgetVar="agentBOTable"
+			emptyMessage="No Agents found with given criteria"
+			rowKey="#{agentBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="agentBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="agentName" headerText="Agent Name"
+				filterBy="#{agentBO.agentName}" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{agentBO.agentName}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+			<p:column id="address" headerText="Address"
+				filterBy="#{agentBO.address}" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{agentBO.address}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="phone" headerText="Phone" filterBy="#{agentBO.phone}"
+				filterMatchMode="contains" style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{agentBO.phone}" style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="location" headerText="Location"
+				filterBy="#{agentBO.locationBO.location}" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{agentBO.locationBO.location}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:splitButton value="Edit"
+						action="#{agentController.setupForm(agentBO)}"
+						icon="ui-icon-arrowrefresh-1-w"
+						update="#{navigationBean.UPDATE_FORM_ID}">
+						<p:menuitem value="View" icon="ui-icon-search"
+							action="#{agentController.view(agentBO)}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this"
+							immediate="true" />
+						<p:separator />
+						<p:menuitem value="Delete" icon="ui-icon-close"
+							action="#{agentController.delete(agentBO)}"
+							onstart="return confirm('Are you sure you want to delete #{agentBO.agentName}?')"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+					</p:splitButton>
+				</center>
+			</p:column>
+		</p:dataTable>
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Add Agent"
+				action="#{agentController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

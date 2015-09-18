@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:panel style="width:100%; height: 60%; vertical-align: middle; ">
+		<!-- HOT KEY FOR USER (SAMPLE) -->
+		<center>
+			<h:panelGrid columns="1" width="100%">
+				<p:panel header="Wholesale" rendered="#{not empty invoiceCarouselMenu.wholesaleMenus}">
+					<p:ring id="ws" value="#{invoiceCarouselMenu.wholesaleMenus}"
+						var="invMenu"
+						rendered="#{not empty invoiceCarouselMenu.wholesaleMenus}"
+						styleClass="image-ring" easing="easeInOutBack">
+						<p:column>
+							<p:panel>
+								<center>
+									<p:commandLink id="invNav"
+										actionListener="#{invoiceControllerFactory.showView(invMenu.nextAction, invMenu.invoiceType)}"
+										update="#{navigationBean.UPDATE_FORM_ID}" process="invNav">
+										<p:graphicImage value="#{invMenu.imageURL}" />
+									</p:commandLink>
+
+									<br />
+									<h:outputText value="#{invMenu.description}"
+										style="font-weight:bold;" />
+									<br />
+								</center>
+							</p:panel>
+						</p:column>
+					</p:ring>
+				</p:panel>
+
+				<p:panel header="Retail" rendered="#{not empty invoiceCarouselMenu.retailMenus}">
+
+					<p:ring id="rt" value="#{invoiceCarouselMenu.retailMenus}"
+						var="rtMenu"
+						rendered="#{not empty invoiceCarouselMenu.retailMenus}"
+						styleClass="image-ring" easing="easeInOutBack">
+						<p:column>
+							<p:panel>
+								<center>
+									<p:commandLink id="rtNav"
+										actionListener="#{invoiceControllerFactory.showView(rtMenu.nextAction, rtMenu.invoiceType)}"
+										update="#{navigationBean.UPDATE_FORM_ID}" process="rtNav">
+										<p:graphicImage value="#{rtMenu.imageURL}" />
+									</p:commandLink>
+
+									<br />
+									<h:outputText value="#{rtMenu.description}"
+										style="font-weight:bold;" />
+									<br />
+								</center>
+							</p:panel>
+						</p:column>
+					</p:ring>
+				</p:panel>
+
+				<p:panel header="Settings" rendered="#{not empty configMenu.configMenus}">
+					<p:ring id="basic" value="#{configMenu.configMenus}" var="confMenu"
+						rendered="#{not empty configMenu.configMenus}"
+						styleClass="image-ring" easing="easeInOutBack">
+
+						<center>
+							<p:column>
+								<p:panel>
+									<center>
+										<p:commandLink
+											actionListener="#{hotKeyController.showView(confMenu.linkURL)}"
+											update="#{navigationBean.UPDATE_FORM_ID}" process="@this">
+											<p:graphicImage value="#{confMenu.imageURL}" />
+										</p:commandLink>
+										<br />
+										<h:outputText value="#{confMenu.description}"
+											style="font-weight:bold;" />
+										<br />
+									</center>
+								</p:panel>
+							</p:column>
+						</center>
+					</p:ring>
+				</p:panel>
+
+				<p:panel header="Stock" rendered="#{not empty stockMenu.stockMenus}">
+					<p:ring id="stok" value="#{stockMenu.stockMenus}" var="stkMenu"
+						rendered="#{not empty stockMenu.stockMenus}"
+						styleClass="image-ring" easing="easeInOutBack">
+						<p:column>
+							<p:panel>
+								<center>
+									<p:commandLink id="stkNav"
+										actionListener="#{hotKeyController.showView(stkMenu.linkURL)}"
+										update="#{navigationBean.UPDATE_FORM_ID}">
+										<p:graphicImage value="#{stkMenu.imageURL}" />
+									</p:commandLink>
+									<br />
+									<h:outputText value="#{stkMenu.description}"
+										style="font-weight:bold;" />
+									<br />
+								</center>
+							</p:panel>
+						</p:column>
+					</p:ring>
+				</p:panel>
+
+			</h:panelGrid>
+
+			<h:outputText
+				value="Sorry,	You don't have rights to access the application"
+				style="font: Verdana; font-style: italic; color: #FF0000; font-weight: bolder;"
+				rendered="#{empty stockMenu.stockMenus and empty configMenu.configMenus and empty wholesaleInvoiceMenu.invoiceMenus and empty retailInvoiceMenu.invoiceMenus}" />
+		</center>
+	</p:panel>
+
+</ui:composition>
+

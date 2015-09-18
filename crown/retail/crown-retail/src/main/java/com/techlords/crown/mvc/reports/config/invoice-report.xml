@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crown-report xmlns="http://www.techlords.com/crown-report"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.techlords.com/crown-report crown-report.xsd ">
+	<bean-name>InvoiceBO</bean-name>
+	<title>Invoice Report</title>
+	<sub-title>Invoice Report for all Invoice States</sub-title>
+	<margin>20</margin>
+	<detail-height>15</detail-height>
+	<column-params>
+		<column-name>invoiceStateName</column-name>
+		<column-title>Invoice State</column-title>
+		<class-name>java.lang.String</class-name>
+		<column-width>60</column-width>
+		<criteria-column>true</criteria-column>
+	</column-params>
+	<column-params>
+		<column-name>invoiceNumber</column-name>
+		<column-title>Invoice Number</column-title>
+		<class-name>java.lang.String</class-name>
+		<column-width>60</column-width>
+	</column-params>
+	<column-params>
+		<column-name>invoiceDate</column-name>
+		<column-title>Invoice Date</column-title>
+		<class-name>java.util.Date</class-name>
+		<column-width>60</column-width>
+	</column-params>
+	<column-params>
+		<column-name>finalInvoiceAmount</column-name>
+		<column-title>Invoice Amount</column-title>
+		<class-name>java.lang.Double</class-name>
+		<column-width>60</column-width>
+	</column-params>
+	<column-params>
+		<column-name>paymentStatusName</column-name>
+		<column-title>Payment Status</column-title>
+		<class-name>java.lang.String</class-name>
+		<column-width>60</column-width>
+	</column-params>
+	<column-params>
+		<column-name>totalPaidAmount</column-name>
+		<column-title>Paid Amount</column-title>
+		<class-name>java.lang.Double</class-name>
+		<column-width>60</column-width>
+	</column-params>
+</crown-report>

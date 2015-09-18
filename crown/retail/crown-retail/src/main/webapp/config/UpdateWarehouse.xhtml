@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<div class="visual-block">
+			<h2>#{warehouseController.getCaptionText()} Management</h2>
+		</div>
+
+		<p:panel id="panel" style="margin-bottom:10px;"
+			header="#{warehouseController.currentWarehouse.isNew() ? 'Create ' : 'Update '} #{warehouseController.getCaptionText()}">
+			<p:growl showSummary="true" showDetail="true" />
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="warehouseName"
+					value="#{warehouseController.getCaptionText()} Name: " />
+				<p:inputText id="warehouseName"
+					value="#{warehouseController.currentWarehouse.warehouseName}"
+					required="true" label="Warehouse Name"
+					readonly="${!warehouseController.currentWarehouse.isNew()}">
+					<p:ajax event="blur" update="validateWarehouseName"
+						listener="#{warehouseController.checkUniqueWarehouseName}" />
+				</p:inputText>
+				<p:message for="warehouseName" />
+
+				<p:spacer />
+				<h:outputText id="validateWarehouseName"
+					value="#{warehouseController.fieldAvailability}"
+					style="font-weight:bold; color:#{warehouseController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="entity" value="Entity: "
+					rendered="${!warehouseController.isRetailShop()}" />
+				<p:selectOneMenu id="entity"
+					value="#{warehouseController.currentWarehouse.entity}"
+					required="true" label="Entity"
+					rendered="${!warehouseController.isRetailShop()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="entity"
+						value="#{warehouseController.entityBOs}" itemValue="#{entity.id}"
+						itemLabel="#{entity.entity}" />
+
+				</p:selectOneMenu>
+				<p:message for="entity"
+					rendered="${!warehouseController.isRetailShop()}" />
+
+				<p:outputLabel for="desc" value="Description: " />
+				<p:inputTextarea id="desc"
+					value="#{warehouseController.currentWarehouse.description}"
+					label="Description" maxlength="50" />
+				<p:message for="desc" />
+
+				<p:outputLabel for="address" value="Address: " />
+				<p:inputTextarea id="address"
+					value="#{warehouseController.currentWarehouse.address}"
+					label="Address" />
+				<p:message for="address" />
+
+				<p:outputLabel for="loc" value="Location: " />
+				<p:selectOneMenu id="loc"
+					value="#{warehouseController.currentWarehouse.location}"
+					required="true" label="Location">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="location"
+						value="#{warehouseController.locationBOs}"
+						itemValue="#{location.id}" itemLabel="#{location.location}" />
+
+				</p:selectOneMenu>
+				<p:message for="loc" />
+
+				<p:outputLabel for="incharge" value="Incharge: " />
+				<p:selectOneMenu id="incharge"
+					value="#{warehouseController.currentWarehouse.incharge}"
+					required="true" label="Incharge">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="inc" value="#{warehouseController.userBOs}"
+						itemValue="#{inc.id}" itemLabel="#{inc.firstName} #{inc.lastName}" />
+
+				</p:selectOneMenu>
+				<p:message for="incharge" />
+
+			</h:panelGrid>
+		</p:panel>
+
+		<p:commandButton value="Submit"
+			update="#{navigationBean.UPDATE_FORM_ID}"
+			action="#{warehouseController.save}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView(warehouseController.isRetailShop()?'config/RetailShop.xhtml':'config/Warehouse.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+</ui:composition>

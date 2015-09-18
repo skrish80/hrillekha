@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<div class="visual-block">
+			<h2>Item Management</h2>
+		</div>
+		<p:panel id="panel"
+			header="#{itemController.currentItem.isNew() ? 'Create Item' : 'Update Item'}"
+			style="margin-bottom:10px;">
+			<p:growl id="messages" />
+			<h:panelGrid columns="3">
+				<p:outputLabel for="itemCode" value="Item Code: "
+					rendered="${!itemController.currentItem.isNew()}" />
+				<p:inputText id="itemCode"
+					value="#{itemController.currentItem.itemCode}" required="true"
+					label="Item Code" readonly="true"
+					rendered="${!itemController.currentItem.isNew()}">
+				</p:inputText>
+				<p:message for="itemCode"
+					rendered="${!itemController.currentItem.isNew()}" />
+
+				<p:outputLabel for="itemName" value="Item Name: " />
+				<p:inputText id="itemName"
+					value="#{itemController.currentItem.itemName}" required="true"
+					label="Item Name" readonly="${!itemController.currentItem.isNew()}">
+					<p:ajax event="blur" update="validateItemName"
+						listener="#{itemController.checkUniqueItemName}" />
+				</p:inputText>
+				<p:message for="itemName" />
+
+				<p:spacer />
+				<h:outputText id="validateItemName"
+					value="#{itemController.fieldAvailability}"
+					style="font-weight:bold; color:#{itemController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="modelNum" value="Model Number: " />
+				<p:inputText id="modelNum"
+					value="#{itemController.currentItem.modelNumber}" required="true"
+					label="Item Name" readonly="${!itemController.currentItem.isNew()}">
+				</p:inputText>
+				<p:message for="modelNum" />
+
+				<p:outputLabel for="category" value="Category: " />
+				<p:selectOneMenu id="category"
+					value="#{itemController.currentItem.category}" required="true"
+					label="Category">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="cat" value="#{itemController.categoryBOs}"
+						itemValue="#{cat.id}" itemLabel="#{cat.itemCategory}" />
+
+				</p:selectOneMenu>
+				<p:message for="category" />
+
+				<p:outputLabel for="brand" value="Brand: " />
+				<p:selectOneMenu id="brand"
+					value="#{itemController.currentItem.brand}" required="true"
+					label="Brand">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="brd" value="#{itemController.brandBOs}"
+						itemValue="#{brd.id}" itemLabel="#{brd.itemBrand}" />
+
+				</p:selectOneMenu>
+				<p:message for="brand" />
+
+				<p:outputLabel for="currency" value="Currency: " />
+				<p:selectOneMenu id="currency"
+					value="#{itemController.currentItem.currency}" required="true"
+					label="Currency" disabled="true">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="cur" value="#{itemController.currencyBOs}"
+						itemValue="#{cur.currencyCode}" itemLabel="#{cur.currencyCode}" />
+
+				</p:selectOneMenu>
+				<p:message for="currency" />
+
+				<p:outputLabel for="uom" value="Unit of Measure: " />
+				<p:selectOneMenu id="uom" value="#{itemController.currentItem.uom}"
+					required="true" label="UOM">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="uom" value="#{itemController.uomBOs}"
+						itemValue="#{uom.id}" itemLabel="#{uom.uom}" />
+				</p:selectOneMenu>
+				<p:message for="uom" />
+
+				<p:outputLabel for="pcsPerUOM" value="Pieces Per UOM: " />
+				<p:inputText id="pcsPerUOM"
+					value="#{itemController.currentItem.piecesPerUOM}" required="true"
+					label="Pieces Per UOM" onkeypress="validateInteger(event)"
+					maxlength="13">
+					<p:ajax event="blur" update="itemPrice"
+						listener="#{itemController.updateItemPrice}"
+						process="pcsPerUOM uomPrice" />
+				</p:inputText>
+				<p:message for="pcsPerUOM" />
+
+				<p:outputLabel for="costPrice" value="Cost Price: " />
+				<p:inputText id="costPrice"
+					value="#{itemController.currentItem.costPrice}" required="true"
+					label="Cost Price" onkeypress="validateDecimal(this, event)"
+					maxlength="13">
+					<f:convertNumber pattern="#0.00" />
+				</p:inputText>
+				<p:message for="costPrice" />
+
+				<p:outputLabel for="reorder" value="Reorder Level: " />
+				<p:inputText id="reorder"
+					value="#{itemController.currentItem.reorderLevel}"
+					label="Reorder Level" onkeypress="validateInteger(event)"
+					maxlength="13" />
+				<p:message for="reorder" />
+
+				<p:outputLabel for="uomPrice" value="UOM Price: " />
+				<p:inputText id="uomPrice"
+					value="#{itemController.currentItem.uomPrice}" required="true"
+					label="UOM Price" onkeypress="validateDecimal(this, event)"
+					maxlength="13">
+					<f:convertNumber pattern="#0.00" />
+					<p:ajax event="blur" update="itemPrice"
+						listener="#{itemController.updateItemPrice}"
+						process="pcsPerUOM uomPrice" />
+				</p:inputText>
+				<p:message for="uomPrice" />
+
+				<h:outputLabel value="Item (Pcs) Price: " />
+				<h:outputText id="itemPrice"
+					value="#{itemController.currentItem.itemPrice}">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+				<!-- <p:inputText id="itemPrice"
+					value="#{itemController.currentItem.itemPrice}" required="true"
+					label="Item Price" 
+					maxlength="13" disabled="true" style="font-weight:bold; color:red;" />
+				<p:message for="itemPrice" /> -->
+
+				<p:outputLabel for="vat" value="VAT: " />
+				<p:inputText id="vat" value="#{itemController.currentItem.vat}"
+					label="VAT" onkeypress="validateDecimal(this, event)"
+					maxlength="13" />
+				<p:message for="vat" />
+			</h:panelGrid>
+		</p:panel>
+
+		<p:commandButton value="Submit" action="#{itemController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('stock/Item.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+</ui:composition>

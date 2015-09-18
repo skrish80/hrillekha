@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="visual-block">
+		<h2>
+			Credit Note "<u>#{creditNoteController.currentCreditNote.creditNoteNumber}</u>"
+		</h2>
+	</div>
+	<p:panel id="creditNotePanel" style="margin-bottom:10px;">
+		<p:panel>
+			<center>
+				<h:panelGrid>
+					<p:graphicImage id="heder" value="/images/kannus-printLogo.PNG"
+						style="align:center;" />
+					<p:graphicImage id="watermark"
+						value="#{creditNoteController.currentCreditNote.isIssued() ? '/images/duplicate.PNG' : '/images/original.PNG' }"
+						style="display: inline; position: absolute; z-index: -1;"
+						height="10%" width="30%" />
+				</h:panelGrid>
+			</center>
+		</p:panel>
+		<p:separator />
+		<h:panelGrid id="display" columns="2" cellpadding="4" width="100%">
+
+			<p:panel>
+				<h:panelGrid id="display2" columns="2" cellpadding="4">
+
+					<h:outputText value="Credit Note #: " />
+					<h:outputText
+						value="#{creditNoteController.currentCreditNote.creditNoteNumber}"
+						style="font-weight:bold" />
+
+
+					<h:outputText value="Invoice #: " />
+					<h:outputText
+						value="#{creditNoteController.currentCreditNote.invoiceBO.invoiceNumber}"
+						style="font-weight:bold" />
+
+				</h:panelGrid>
+			</p:panel>
+			<p:panel>
+				<h:panelGrid columns="2">
+					<h:outputText value="Status: " />
+					<h:outputText
+						value="#{creditNoteController.currentCreditNote.isIssued() ? 'ISSUED' : 'NEW'}"
+						style="font-weight:bold" />
+
+					<h:outputText value="Customer: " />
+					<h:outputText
+						value="#{creditNoteController.currentCreditNote.customerBO.customerName}"
+						style="font-weight:bold" />
+				</h:panelGrid>
+			</p:panel>
+		</h:panelGrid>
+		<p:separator />
+		<p:panel>
+			<h:panelGrid columns="2">
+				<h:outputText value="Issue Date: " />
+				<h:outputText
+					value="#{creditNoteController.currentCreditNote.issueDate}"
+					style="font-weight:bold">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+
+				<h:outputText value="Amount: " />
+				<h:outputText
+					value="#{creditNoteController.currentCreditNote.amount}"
+					style="font-weight:bold">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+
+				<p:spacer />
+				<p:spacer />
+				<h:outputText value="Remarks: " />
+				<h:outputText escape="false"
+					value="#{creditNoteController.currentCreditNote.remarks}"
+					style="font-weight:bold" />
+			</h:panelGrid>
+		</p:panel>
+		<p:panel>
+			<center>
+				<p:separator />
+
+				<h:outputText
+					value="#{creditNoteController.currentInvoice.companyBO.companyName}"
+					style="font-weight:bold" />
+				<br />
+				<h:outputText
+					value="#{creditNoteController.currentInvoice.companyBO.address}, #{creditNoteController.currentInvoice.companyBO.locationBO.location}, Phone: #{creditNoteController.currentInvoice.companyBO.phone}, FAX: #{creditNoteController.currentInvoice.companyBO.fax}"
+					style="font-weight:bold" />
+				<br />
+				<h:outputText
+					value="TIN: #{creditNoteController.currentInvoice.companyBO.tin}"
+					style="font-weight:bold" />
+				<br />
+			</center>
+		</p:panel>
+	</p:panel>
+
+	<p:panel id="actionPanel">
+		<p:commandButton value="Print" type="button" icon="ui-icon-print">
+			<p:printer target="creditNotePanel" />
+		</p:commandButton>
+		<p:commandButton
+			actionListener="#{creditNoteController.printCreditNote()}"
+			value="Done" update="#{navigationBean.UPDATE_FORM_ID}"
+			process="@this" onstart="return printConfirm()" />
+		<p:commandButton id="cancelInv"
+			actionListener="#{invoiceControllerFactory.showView('CREDIT_NOTE', invoiceControllerFactory.invoiceType)}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+
+	</p:panel>
+	<script language="JavaScript">
+		function printConfirm() {
+			var answer = confirm("Is Print Done?");
+			if (answer) {
+				return true;
+			}
+			alert("Try Printing Again.");
+			return false;
+		}
+	</script>
+</ui:composition>
+

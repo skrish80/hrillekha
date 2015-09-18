@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<div class="visual-block">
+			<h2>Credit Limit for
+				#{receiptController.currentCustomer.customerName}</h2>
+		</div>
+		<p:panel id="panel" header="Update Credit Limit"
+			style="margin-bottom:10px;">
+			<p:growl id="messages" />
+			<h:panelGrid columns="3">
+				<p:outputLabel for="custName" value="Customer Name: " />
+				<p:inputText id="custName"
+					value="#{receiptController.currentCustomer.customerName}"
+					label="Customer Name" readonly="true" />
+				<p:message for="custName" />
+
+				<p:outputLabel for="custCode" value="Customer Code: " />
+				<p:inputText id="custCode"
+					value="#{receiptController.currentCustomer.customerCode}"
+					label="Customer Code" readonly="true" />
+				<p:message for="custCode" />
+
+				<p:outputLabel for="currCredit" value="Current Credit: " />
+				<p:inputText id="currCredit"
+					value="#{receiptController.currentCustomer.currentCredit}"
+					label="Current Credit" readonly="true">
+					<f:convertNumber pattern="#0.00" />
+				</p:inputText>
+				<p:message for="currCredit" />
+
+				<p:outputLabel for="creditLimit" value="Credit Limit: " />
+				<p:inputText id="creditLimit"
+					value="#{receiptController.currentCustomer.creditLimit}"
+					label="Credit Limit" onkeypress="validateDecimal(this, event)"
+					maxlength="13">
+					<f:convertNumber pattern="#0.00" />
+				</p:inputText>
+				<p:message for="creditLimit" />
+
+			</h:panelGrid>
+		</p:panel>
+
+		<p:commandButton value="Submit"
+			action="#{receiptController.updateCreditLimit}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/CreditReceipt.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+</ui:composition>

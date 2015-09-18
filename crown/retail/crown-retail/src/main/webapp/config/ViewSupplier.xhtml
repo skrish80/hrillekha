@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>
+				View Supplier "<u>#{supplierController.currentSupplier.supplierName}</u>"
+			</h2>
+		</div>
+		<p:separator />
+		<h:panelGrid id="display" columns="2" cellpadding="4">
+
+			<h:outputText value="Supplier Code: " />
+			<h:outputText
+				value="#{supplierController.currentSupplier.supplierCode}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Supplier Name: " />
+			<h:outputText
+				value="#{supplierController.currentSupplier.supplierName}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Address: " />
+			<h:outputText value="#{supplierController.currentSupplier.address}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Phone: " />
+			<h:outputText value="#{supplierController.currentSupplier.phone}"
+				style="font-weight:bold" />
+
+			<h:outputText value="FAX: " />
+			<h:outputText value="#{supplierController.currentSupplier.fax}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Point of Contact: " />
+			<h:outputText value="#{supplierController.currentSupplier.poc}"
+				style="font-weight:bold" />
+
+			<h:outputText value="SBN: " />
+			<h:outputText value="#{supplierController.currentSupplier.sbn}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Status: " />
+			<h:outputText value="#{supplierController.currentSupplier.statusBO}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Remarks: " />
+			<h:outputText value="#{supplierController.currentSupplier.remarks}"
+				style="font-weight:bold" />
+
+		</h:panelGrid>
+	</p:panel>
+	<p:spacer />
+	<p:panel>
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/Supplier.xhtml')}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+</ui:composition>

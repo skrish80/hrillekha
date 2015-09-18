@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<div class="visual-block">
+			<h2>Warehouse/Shop-Stock Management</h2>
+		</div>
+		<p:panel id="panel"
+			header="#{warehouseStockController.isCreateMode() ? 'Create Stock' : 'Update Stock'}"
+			style="margin-bottom:10px;">
+			<p:growl id="messages" showDetail="true" />
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="warehouse" value="Warehouse/Shop: " />
+				<p:selectOneMenu id="warehouse"
+					value="#{warehouseStockController.currentWarehouseStock.warehouseID}"
+					required="true" label="Warehouse"
+					disabled="${!warehouseStockController.isCreateMode()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="house"
+						value="#{warehouseStockController.warehouseBOs}"
+						itemValue="#{house.id}" itemLabel="#{house.warehouseName}" />
+
+				</p:selectOneMenu>
+				<p:message for="warehouse" />
+
+				<p:outputLabel for="itemBO" value="Item: " />
+				<p:selectOneMenu id="itemBO"
+					value="#{warehouseStockController.currentWarehouseStock.itemID}"
+					required="true" label="Item"
+					disabled="${!warehouseStockController.isCreateMode()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="itm"
+						value="#{warehouseStockController.itemBOs}" itemValue="#{itm.id}"
+						itemLabel="#{itm.itemName}" />
+
+				</p:selectOneMenu>
+				<p:message for="itemBO" />
+
+				<p:outputLabel for="itemQty" value="Item (Pieces) Qty: " />
+				<p:inputText id="itemQty"
+					value="#{warehouseStockController.currentWarehouseStock.itemQty}"
+					required="true" label="Item (Pieces) Qty"
+					onkeypress="validateInteger(event)" maxlength="5"
+					disabled="${!warehouseStockController.isCreateMode()}" />
+				<p:message for="itemQty" />
+
+				<p:outputLabel for="uomQty" value="UOM Qty: " />
+				<p:inputText id="uomQty"
+					value="#{warehouseStockController.currentWarehouseStock.uomQty}"
+					required="true" label="UOM Qty" onkeypress="validateInteger(event)"
+					maxlength="5"
+					disabled="${!warehouseStockController.isCreateMode()}" />
+				<p:message for="uomQty" />
+
+			</h:panelGrid>
+		</p:panel>
+
+		<p:panel id="updatePanel"
+			rendered="${!warehouseStockController.isCreateMode()}"
+			header="Add Stock">
+			<h:panelGrid columns="3">
+				<p:outputLabel for="upditemQty" value="Add Item (Pieces) Qty: " />
+				<p:inputText id="upditemQty"
+					value="#{warehouseStockController.currentWarehouseStock.updItemQty}"
+					required="true" label="Item (Pieces) Qty"
+					onkeypress="validateInteger(event)" maxlength="5" />
+				<p:message for="upditemQty" />
+
+				<p:outputLabel for="upduomQty" value="Add UOM Qty: " />
+				<p:inputText id="upduomQty"
+					value="#{warehouseStockController.currentWarehouseStock.updUomQty}"
+					required="true" label="UOM Qty" onkeypress="validateInteger(event)"
+					maxlength="5" />
+				<p:message for="upduomQty" />
+
+			</h:panelGrid>
+		</p:panel>
+		<p:commandButton value="Submit"
+			action="#{warehouseStockController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('stock/WarehouseStock.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+</ui:composition>

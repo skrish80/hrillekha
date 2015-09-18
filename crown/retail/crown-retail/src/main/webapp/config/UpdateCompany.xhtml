@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Company Management</h2>
+		</div>
+
+		<p:panel id="panel" style="margin-bottom:10px;"
+			header="#{companyController.currentCompany.isNew() ? 'Create Company' : 'Update Company'}">
+			<p:growl showSummary="true" showDetail="true" />
+			<h:panelGrid columns="3">
+				<p:outputLabel for="companyName" value="Company Name: " />
+				<p:inputText id="companyName"
+					value="#{companyController.currentCompany.companyName}"
+					required="true" label="Company Name"
+					readonly="${!companyController.currentCompany.isNew()}">
+					<p:ajax event="blur" update="validateCompanyName"
+						listener="#{companyController.checkUniqueCompanyName}" />
+				</p:inputText>
+				<p:message for="companyName" />
+
+				<p:spacer />
+				<h:outputText id="validateCompanyName"
+					value="#{companyController.fieldAvailability}"
+					style="font-weight:bold; color:#{companyController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="compType" value="Company Type: " />
+				<p:selectOneMenu id="compType"
+					value="#{companyController.currentCompany.companyType}"
+					required="true">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="compType"
+						value="#{companyController.companyTypeBOs}"
+						itemValue="#{compType.id}" itemLabel="#{compType.companyType}" />
+
+				</p:selectOneMenu>
+				<p:message for="compType" />
+
+				<p:outputLabel for="desc" value="Description: " />
+				<p:inputText id="desc"
+					value="#{companyController.currentCompany.description}"
+					label="Description" />
+				<p:message for="desc" />
+
+				<p:outputLabel for="address" value="Address: " />
+				<p:inputTextarea id="address"
+					value="#{companyController.currentCompany.address}" label="Address" />
+				<p:message for="address" />
+
+				<p:outputLabel for="loc" value="Location: " />
+				<p:selectOneMenu id="loc"
+					value="#{companyController.currentCompany.location}"
+					required="true" label="Location">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="location"
+						value="#{companyController.locationBOs}"
+						itemValue="#{location.id}" itemLabel="#{location.location}" />
+
+				</p:selectOneMenu>
+				<p:message for="loc" />
+
+				<p:outputLabel for="phone" value="Phone: " />
+				<p:inputText id="phone"
+					value="#{companyController.currentCompany.phone}" label="Phone"
+					maxlength="25" />
+				<p:message for="phone" />
+
+				<p:outputLabel for="fax" value="FAX: " />
+				<p:inputText id="fax"
+					value="#{companyController.currentCompany.fax}" label="Mobile"
+					maxlength="25" />
+				<p:message for="fax" />
+
+				<p:outputLabel for="poc" value="Point of Contact: " />
+				<p:inputText id="poc"
+					value="#{companyController.currentCompany.poc}"
+					label="PointofContact" maxlength="25" />
+				<p:message for="poc" />
+
+				<p:outputLabel for="sbn" value="SBN: " />
+				<p:inputText id="sbn"
+					value="#{companyController.currentCompany.sbn}" label="SBN" maxlength="25">
+					<p:ajax event="blur" update="validateSBN"
+						listener="#{companyController.checkUniqueSbn}" />
+				</p:inputText>
+				<p:message for="sbn" />
+
+				<p:spacer />
+				<h:outputText id="validateSBN"
+					value="#{companyController.fieldAvailability}"
+					style="font-weight:bold; color:#{companyController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="tin" value="TIN: " />
+				<p:inputText id="tin"
+					value="#{companyController.currentCompany.tin}" label="TIN" maxlength="25">
+					<p:ajax event="blur" update="validateTIN"
+						listener="#{companyController.checkUniqueTIN}" />
+				</p:inputText>
+				<p:message for="tin" />
+				
+				<p:spacer />
+				<h:outputText id="validateTIN"
+					value="#{companyController.fieldAvailability}"
+					style="font-weight:bold; color:#{companyController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="inc" value="Incorporation: " />
+				<p:inputText id="inc"
+					value="#{companyController.currentCompany.incorporation}"
+					label="Incorporation" maxlength="25">
+					<p:ajax event="blur" update="validateINC"
+						listener="#{companyController.checkUniqueIncorporation}" />
+				</p:inputText>
+				<p:message for="inc" />
+
+				<p:spacer />
+				<h:outputText id="validateINC"
+					value="#{companyController.fieldAvailability}"
+					style="font-weight:bold; color:#{companyController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
+				<p:outputLabel for="parLic" value="Parent Licence: " />
+				<p:inputText id="parLic"
+					value="#{companyController.currentCompany.parentLicence}"
+					label="ParentLicence" maxlength="25"/>
+				<p:message for="parLic" />
+
+				<p:outputLabel for="chLic" value="Child Licence: " />
+				<p:inputText id="chLic"
+					value="#{companyController.currentCompany.childLicence}"
+					label="ChildLicence" maxlength="25"/>
+				<p:message for="chLic" />
+
+			</h:panelGrid>
+		</p:panel>
+
+		<p:commandButton value="Submit" action="#{companyController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/Company.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+</ui:composition>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<crown-report xmlns="http://www.techlords.com/crown-report"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.techlords.com/crown-report crown-report.xsd ">
+	<bean-name>StolenStockBO</bean-name>
+	<title>Stolen Stock Report</title>
+	<sub-title>Stolen Stock Report for all warehouses</sub-title>
+	<margin>20</margin>
+	<detail-height>15</detail-height>
+	<column-params>
+		<column-name>warehouseName</column-name>
+		<column-title>Warehouse Name</column-title>
+		<class-name>java.lang.String</class-name>
+		<column-width>70</column-width>
+		<criteria-column>true</criteria-column>
+	</column-params>
+	<column-params>
+		<column-name>itemName</column-name>
+		<column-title>Item Name</column-title>
+		<class-name>java.lang.String</class-name>
+		<column-width>70</column-width>
+	</column-params>
+	<column-params>
+		<column-name>stolenItemQty</column-name>
+		<column-title>Stolen Item Qty</column-title>
+		<class-name>java.lang.Integer</class-name>
+		<column-width>70</column-width>
+	</column-params>
+	<column-params>
+		<column-name>stolenUOMQty</column-name>
+		<column-title>Stolen UOM Qty</column-title>
+		<class-name>java.lang.Integer</class-name>
+		<column-width>70</column-width>
+	</column-params>
+	<column-params>
+		<column-name>stolenDate</column-name>
+		<column-title>Stolen Date</column-title>
+		<class-name>java.util.Date</class-name>
+		<column-width>70</column-width>
+	</column-params>
+	<column-params>
+		<column-name>createdBy</column-name>
+		<column-title>Created By</column-title>
+		<class-name>java.lang.String</class-name>
+		<column-width>70</column-width>
+	</column-params>
+</crown-report>

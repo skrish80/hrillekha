@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Stock Movement</h2>
+		</div>
+
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Move Stock" icon="ui-icon-circle-plus"
+				action="#{stockMovementController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="stockMovements" var="stockMovementBO"
+			value="#{stockMovementController.stockMovementBOs}"
+			emptyMessage="No Stock found with given criteria"
+			rowKey="#{stockMovementBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15" widgetVar="stockMovementBOTable">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter"
+						onkeyup="stockMovementBOTable.filter()" style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="receiptID" filterBy="#{stockMovementBO.moveReceiptID}"
+				headerText="Move Receipt Id" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockMovementBO.moveReceiptID}" />
+			</p:column>
+
+			<p:column id="fromWarehouse"
+				filterBy="#{stockMovementBO.fromWarehouseBO.warehouseName}"
+				headerText="From Warehouse" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockMovementBO.fromWarehouseBO.warehouseName}" />
+			</p:column>
+
+			<p:column id="moveDate" filterBy="#{stockMovementBO.moveDate}"
+				headerText="Moved Date" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockMovementBO.moveDate}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="toWarehouse"
+				filterBy="#{stockMovementBO.toWarehouseBO.warehouseName}"
+				headerText="To Warehouse" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockMovementBO.toWarehouseBO.warehouseName}" />
+			</p:column>
+
+			<p:column id="receiveDate" filterBy="#{stockMovementBO.receiveDate}"
+				headerText="Received Date" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockMovementBO.receiveDate}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="moveStatus"
+				filterBy="#{stockMovementBO.moveStatusBO.moveStatus}"
+				headerText="Move Status" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockMovementBO.moveStatusBO.moveStatus}" />
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:splitButton value="Update" icon="ui-icon-wrench" id="updMove"
+						action="#{stockMovementController.setupForm(stockMovementBO)}"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this">
+						<p:separator />
+						<p:menuitem value="View" icon="ui-icon-search" id="viewMove"
+							action="#{stockMovementController.view(stockMovementBO)}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+					</p:splitButton>
+				</center>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+	<p:panel>
+		<p:commandButton value="Move Stock" icon="ui-icon-circle-plus"
+			action="#{stockMovementController.setupForm(true)}"
+			update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+	</p:panel>
+</ui:composition>

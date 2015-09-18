@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<p:growl id="messages" showDetail="true" escape="false"
+			autoUpdate="true" />
+		<div class="visual-block">
+			<h2>Goods Receipt</h2>
+		</div>
+		<p:panel id="invPanel" header="Goods Receipt"
+			style="margin-bottom:10px;">
+
+			<h:panelGrid id="display" columns="2" cellpadding="4" width="100%">
+
+				<p:panel>
+					<h:panelGrid id="display2" columns="2" cellpadding="4">
+
+						<h:outputText value="Invoice #: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.invoiceNumber}"
+							style="font-weight:bold" />
+
+						<h:outputText value="Invoice Date: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.invoiceDate}"
+							style="font-weight:bold">
+							<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Received Date: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.receivedDate}"
+							style="font-weight:bold">
+							<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Created By: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.createdBy.firstName} #{purchaseInvoiceController.currentInvoice.createdBy.lastName}"
+							style="font-weight:bold" />
+					</h:panelGrid>
+				</p:panel>
+
+				<p:panel>
+					<h:panelGrid id="display1" columns="2" cellpadding="4">
+
+						<h:outputText value="Currency: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.currency}"
+							style="font-weight:bold" />
+
+						<h:outputText value="Supplier: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.supplierBO.supplierName}"
+							style="font-weight:bold" />
+
+						<h:outputText value="Company: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.companyBO.companyName}"
+							style="font-weight:bold">
+							<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Received By: " />
+						<h:outputText
+							value="#{purchaseInvoiceController.currentInvoice.receivedBy.firstName} #{purchaseInvoiceController.currentInvoice.receivedBy.lastName}"
+							style="font-weight:bold" />
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGrid>
+
+			<p:separator />
+
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="grn" value="Goods Receipt Number:" />
+				<p:inputText id="grn" required="true" label="Goods Receipt Number"
+					value="#{purchaseInvoiceController.currentInvoice.goodsReceiptNumber}" readonly="true"/>
+				<p:message for="grn" />
+
+				<p:outputLabel for="boe" value="Bill Of Entry:" />
+				<p:inputText id="boe" required="true" label="Bill Of Entry"
+					value="#{purchaseInvoiceController.currentInvoice.billOfEntry}" />
+				<p:message for="boe" />
+
+			</h:panelGrid>
+		</p:panel>
+
+		<p:panel style="margin-bottom:10px;">
+			<div class="visual-block">
+				<h3 class="title ui-widget-header ui-corner-all">Invoice Items</h3>
+			</div>
+			<p:separator />
+
+			<p:outputPanel id="invoiceItemsPanel">
+				<p:dataTable id="invoiceItems" var="invItem"
+					emptyMessage="No Invoice Items found..."
+					value="#{purchaseInvoiceController.currentInvoice.invoiceItems}"
+					widgetVar="invItemTable">
+
+					<p:column headerText="Item">
+						<h:outputText value="#{invItem.itemBO.itemName}" />
+					</p:column>
+
+					<p:column headerText="Allocation Type">
+						<h:outputText value="#{invItem.allocationTypeBO.type}" />
+					</p:column>
+
+					<p:column headerText="Units/Pkg">
+						<h:outputText value="#{invItem.itemBO.piecesPerUOM}" />
+					</p:column>
+
+					<p:column headerText="Item (Pieces) Qty">
+						<h:outputText value="#{invItem.itemQty}" />
+					</p:column>
+
+					<p:column headerText="Received Qty">
+						<p:inputText id="recQty" required="true" label="Received Qty"
+							onkeypress="validateInteger(event)" maxlength="15"
+							value="#{invItem.receivedQty}" />
+					</p:column>
+
+					<p:column headerText="Price">
+						<h:outputText value="#{invItem.price}" />
+					</p:column>
+
+					<p:column headerText="Amount">
+						<h:outputText id="amount" value="#{invItem.getAmount()}" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+
+		</p:panel>
+		<h:panelGrid columns="2">
+			<h:outputText value="Remarks: " />
+			<h:outputText
+				value="#{purchaseInvoiceController.currentInvoice.remarks}" />
+			<h:outputText value="Terms and Conditions:" />
+			<h:outputText
+				value="#{purchaseInvoiceController.currentInvoice.termsConditions}" />
+
+			<h:outputLabel value="Total Amount:" />
+			<h:outputText id="invAmt"
+				value="#{purchaseInvoiceController.currentInvoice.invoiceAmount}"
+				style="font-weight: bold; font-size: 1.5em;" />
+		</h:panelGrid>
+		<p:separator />
+		<p:commandButton value="Submit"
+			action="#{purchaseInvoiceController.receiveInvoice}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton id="cancelInv"
+			actionListener="#{hotKeyController.showView('stock/AllPurchaseInvoices.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+</ui:composition>

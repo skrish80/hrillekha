@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Temporary #{invoiceCreateController.invoiceType} Invoices</h2>
+		</div>
+		<p:spacer />
+		<p:separator />
+		<p:panel id="cmdPanel1">
+			<p:commandButton value="Create Invoice" id="createInvTop"
+				actionListener="#{invoiceCreateController.setupForm(invoiceControllerFactory.invoiceType)}"
+				icon="ui-icon-cart" update="#{navigationBean.UPDATE_FORM_ID}"
+				process="@this" />
+			<p:commandButton value="Clear History" id="clearInvTop"
+				actionListener="#{invoiceCreateController.removeAllLocalInvoices()}"
+				onstart="return confirm('Are you sure you want to delete all temporary invoices?')"
+				icon="ui-icon-refresh" update="#{navigationBean.UPDATE_FORM_ID}"
+				process="@this" />
+		</p:panel>
+
+		<p:dataTable id="invoices" var="invoiceBO"
+			value="#{invoiceCreateController.localInvoices}"
+			widgetVar="invoiceBOTable"
+			emptyMessage="No Items found with given criteria" paginator="true"
+			rows="10" rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="invoiceBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="invoiceNum" filterBy="#{invoiceBO.invoiceNumber}"
+				headerText="Invoice Number" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.invoiceNumber}" />
+			</p:column>
+
+			<p:column id="customer"
+				filterBy="#{invoiceBO.customerBO.customerName}"
+				headerText="Customer" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.customerBO.customerName}" />
+			</p:column>
+
+			<p:column id="invoiceAmt" filterBy="#{invoiceBO.finalInvoiceAmount}"
+				headerText="Invoice Amount" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.finalInvoiceAmount}" />
+			</p:column>
+
+			<p:column id="invoiceStatus"
+				filterBy="#{invoiceBO.invoiceStateBO.stateName}"
+				headerText="Invoice Status" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.invoiceStateBO.stateName}" />
+			</p:column>
+
+			<p:column id="paymentStatus"
+				filterBy="#{invoiceBO.paymentStatusBO.status}"
+				headerText="Payment Status" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{invoiceBO.paymentStatusBO.status}" />
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+
+				<center>
+					<p:commandButton value="Edit" id="editInv"
+						actionListener="#{invoiceCreateController.setupForm(invoiceBO)}"
+						icon="ui-icon-extlink" update="#{navigationBean.UPDATE_FORM_ID}"
+						partialSubmit="true" process="@this" />
+
+					<p:commandButton value="Delete" id="deleteInv"
+						actionListener="#{invoiceCreateController.removeLocalInvoice(invoiceBO)}"
+						icon="ui-icon-trash"
+						onstart="return confirm('Are you sure you want to delete #{invoiceBO.invoiceNumber}?')"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+
+				</center>
+			</p:column>
+		</p:dataTable>
+		<p:spacer />
+		<p:panel id="cmdPanel">
+			<p:commandButton value="Create Invoice" id="createInv"
+				actionListener="#{invoiceCreateController.setupForm(invoiceControllerFactory.invoiceType)}"
+				icon="ui-icon-cart" update="#{navigationBean.UPDATE_FORM_ID}"
+				process="@this" />
+			<p:commandButton value="Clear History" id="clearInv"
+				actionListener="#{invoiceCreateController.removeAllLocalInvoices()}"
+				onstart="return confirm('Are you sure you want to delete all temporary invoices?')"
+				icon="ui-icon-refresh" update="#{navigationBean.UPDATE_FORM_ID}"
+				process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

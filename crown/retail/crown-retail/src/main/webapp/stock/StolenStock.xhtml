@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Stolen Stock</h2>
+		</div>
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Create Stolen Stock" icon="ui-icon-circle-plus"
+				action="#{stolenStockController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="stolenStocks" var="stolenStockBO"
+			value="#{stolenStockController.stolenStockBOs}"
+			widgetVar="stolenStockBOTable"
+			emptyMessage="No Stolen Stock found with given criteria"
+			rowKey="#{stolenStockBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter"
+						onkeyup="stolenStockBOTable.filter()" style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="warehouseName"
+				filterBy="#{stolenStockBO.warehouseBO.warehouseName}"
+				headerText="Warehouse Name" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stolenStockBO.warehouseBO.warehouseName}" />
+			</p:column>
+
+			<p:column id="itemName" filterBy="#{stolenStockBO.itemBO.itemName}"
+				headerText="Item Name" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stolenStockBO.itemBO.itemName}" />
+			</p:column>
+
+			<p:column id="stolenDate" filterBy="#{stolenStockBO.stolenDate}"
+				headerText="Stolen Date" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stolenStockBO.stolenDate}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="itemQty" filterBy="#{stolenStockBO.stolenItemQty}"
+				headerText="Stolen Item (Pieces) Qty" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stolenStockBO.stolenItemQty}" />
+			</p:column>
+
+			<p:column id="uomQty" filterBy="#{stolenStockBO.stolenUOMQty}"
+				headerText="Stolen UOM Qty" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stolenStockBO.stolenUOMQty}" />
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:commandButton value="View" icon="ui-icon-search"
+						action="#{stolenStockController.view(stolenStockBO)}"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+				</center>
+			</p:column>
+		</p:dataTable>
+
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Create Stolen Stock" icon="ui-icon-circle-plus"
+				action="#{stolenStockController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

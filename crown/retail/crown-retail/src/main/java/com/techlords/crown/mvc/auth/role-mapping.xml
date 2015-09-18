@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<role-mapping xmlns="http://www.techlords.com/role-mapping"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.techlords.com/role-mapping role-mapping.xsd ">
+	<link-url>
+		<link-name>home.xhtml</link-name>
+		<role>ALL_ROLES</role>
+	</link-url>
+	<link-url>
+		<link-name>Main.xhtml</link-name>
+		<role>ALL_ROLES</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ChangePassword.xhtml</link-name>
+		<role>ALL_ROLES</role>
+	</link-url>
+
+	<!-- CONFIG MENUS -->
+	<!-- USER -->
+	<link-url>
+		<link-name>config/CrownUser.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateUser.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ViewUser.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<!-- USER -->
+
+	<!-- COMPANY -->
+	<link-url>
+		<link-name>config/Company.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateCompany.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ViewCompany.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<!-- COMPANY -->
+
+	<!-- CUSTOMER -->
+	<link-url>
+		<link-name>config/Customer.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>config/CreditReceipt.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateReceipt.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateCreditLimit.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ViewReceipt.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateCustomer.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ViewCustomer.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<!-- CUSTOMER -->
+
+	<!-- AGENT -->
+	<link-url>
+		<link-name>config/Agent.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateAgent.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ViewAgent.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<!-- AGENT -->
+
+	<!-- SUPPLIER -->
+	<link-url>
+		<link-name>config/Supplier.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateSupplier.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ViewSupplier.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<!-- SUPPLIER -->
+
+	<!-- WAREHOUSE/RETAIL SHOP -->
+	<link-url>
+		<link-name>config/Warehouse.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/UpdateWarehouse.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/ViewWarehouse.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>config/RetailShop.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<!-- WAREHOUSE/RETAIL SHOP -->
+
+	<!-- CONFIG MENUS -->
+
+	<!-- STOCK MENUS -->
+	<link-url>
+		<link-name>stock/ItemCategory.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/UpdateItemCategory.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewItemCategory.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+
+	<link-url>
+		<link-name>stock/ItemBrand.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/UpdateItemBrand.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewItemBrand.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+
+	<link-url>
+		<link-name>stock/Item.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/UpdateItem.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewItem.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+
+	<link-url>
+		<link-name>stock/WarehouseStock.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/UpdateWarehouseStock.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewWarehouseStock.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+
+	<link-url>
+		<link-name>stock/StolenStock.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/UpdateStolenStock.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewStolenStock.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+
+	<link-url>
+		<link-name>stock/StockAllocation.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/UpdateStockAllocation.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewStockAllocation.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+
+	<link-url>
+		<link-name>stock/StockMovement.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/UpdateStockMovement.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewStockMovement.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+
+	<link-url>
+		<link-name>stock/AllPurchaseInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/CreatePurchaseInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ReceivePurchaseInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<link-url>
+		<link-name>stock/ViewPurchaseInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<!-- STOCK MENUS -->
+
+	<!-- WHOLESALE INVOICE MENUS -->
+	<link-url>
+		<link-name>invoice/LocalWSInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/InvoiceAmendPayment.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/AllWSInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/CreditNoteWSInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/CreditNote.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/ReturnInvoice.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/DeliverInvoice.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/ViewInvoice.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/ViewCreditNote.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/CancelInvoice.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>WHOLESALE_INCHARGE</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<!-- WHOLESALE INVOICE MENUS -->
+
+	<!-- RETAIL INVOICE MENUS -->
+	<link-url>
+		<link-name>invoice/LocalRTInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/AllRTInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<link-url>
+		<link-name>invoice/CreditNoteRTInvoices.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>RETAIL_INCHARGE</role>
+	</link-url>
+	<!-- RETAIL INVOICE MENUS -->
+
+	<!-- REPORT MENUS -->
+	<link-url>
+		<link-name>reports/AuditReport.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>reports/InvoiceDashboard.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+	</link-url>
+	<link-url>
+		<link-name>reports/ReorderReport.xhtml</link-name>
+		<role>SYSTEM_ADMIN</role>
+		<role>STOCK_MANAGER</role>
+	</link-url>
+	<!-- REPORT MENUS -->
+</role-mapping>

@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Retail Shops</h2>
+		</div>
+
+		<p:spacer />
+		<p:separator />
+		<p:panel>
+			<p:commandButton value="Add Retail Shop" icon="ui-icon-circle-plus"
+				action="#{warehouseController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="warehouses" var="warehouseBO"
+			value="#{warehouseController.warehouseBOs}"
+			widgetVar="warehouseBOTable"
+			emptyMessage="No shops found with given criteria"
+			rowKey="#{warehouseBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="warehouseBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="warehouseName" headerText="Warehouse Name"
+				filterBy="#{warehouseBO.warehouseName}" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{warehouseBO.warehouseName}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+			<p:column id="entity" headerText="Entity"
+				filterBy="#{warehouseBO.entity}" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{warehouseBO.entityBO.entity}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+			<p:column id="incharge" headerText="Incharge"
+				filterBy="#{warehouseBO.inchargeBO.firstName}"
+				filterMatchMode="contains" style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{warehouseBO.inchargeBO.firstName}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="location" headerText="Location"
+				filterBy="#{warehouseBO.locationBO.location}"
+				filterMatchMode="contains" style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{warehouseBO.locationBO.location}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<p:splitButton value="Edit"
+					action="#{warehouseController.setupForm(warehouseBO)}"
+					icon="ui-icon-arrowrefresh-1-w"
+					update="#{navigationBean.UPDATE_FORM_ID}">
+					<p:menuitem value="View" icon="ui-icon-search"
+						action="#{warehouseController.view(warehouseBO)}"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this"
+						immediate="true" />
+					<p:separator />
+					<p:menuitem value="Delete" icon="ui-icon-close"
+						action="#{warehouseController.delete(warehouseBO)}"
+						onstart="return confirm('Are you sure you want to delete #{warehouseBO.warehouseName}?')"
+						update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+				</p:splitButton>
+			</p:column>
+
+		</p:dataTable>
+
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Add Retail Shop" icon="ui-icon-circle-plus"
+				action="#{warehouseController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

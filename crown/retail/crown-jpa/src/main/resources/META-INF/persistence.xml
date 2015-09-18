@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2010, Oracle. All rights reserved. Redistribution and 
+	use in source and binary forms, with or without modification, are permitted 
+	provided that the following conditions are met: * Redistributions of source 
+	code must retain the above copyright notice, this list of conditions and 
+	the following disclaimer. * Redistributions in binary form must reproduce 
+	the above copyright notice, this list of conditions and the following disclaimer 
+	in the documentation and/or other materials provided with the distribution. 
+	* Neither the name of Oracle nor the names of its contributors may be used 
+	to endorse or promote products derived from this software without specific 
+	prior written permission. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS 
+	AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, 
+	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS 
+	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
+	OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+	EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT 
+	OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+	INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+	STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN 
+	ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+	OF SUCH DAMAGE. -->
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="CrownApplicationPU"
+		transaction-type="RESOURCE_LOCAL">
+		<class>com.techlords.crown.persistence.Agent</class>
+		<class>com.techlords.crown.persistence.AgentCommission</class>
+		<class>com.techlords.crown.persistence.AgentCommissionPK</class>
+		<class>com.techlords.crown.persistence.AgentType</class>
+		<class>com.techlords.crown.persistence.AllocationState</class>
+		<class>com.techlords.crown.persistence.AllocationType</class>
+		<class>com.techlords.crown.persistence.AuditAction</class>
+		<class>com.techlords.crown.persistence.Bank</class>
+		<class>com.techlords.crown.persistence.Company</class>
+		<class>com.techlords.crown.persistence.CompanyType</class>
+		<class>com.techlords.crown.persistence.CreditNote</class>
+		<class>com.techlords.crown.persistence.CrownAudit</class>
+		<class>com.techlords.crown.persistence.CrownEntity</class>
+		<class>com.techlords.crown.persistence.CrownUser</class>
+		<class>com.techlords.crown.persistence.Currency</class>
+		<class>com.techlords.crown.persistence.Customer</class>
+		<class>com.techlords.crown.persistence.CustomerType</class>
+		<class>com.techlords.crown.persistence.Department</class>
+		<class>com.techlords.crown.persistence.Designation</class>
+		<class>com.techlords.crown.persistence.DiscountType</class>
+		<class>com.techlords.crown.persistence.Invoice</class>
+		<class>com.techlords.crown.persistence.InvoiceItem</class>
+		<class>com.techlords.crown.persistence.InvoiceItemPK</class>
+		<class>com.techlords.crown.persistence.InvoicePayment</class>
+		<class>com.techlords.crown.persistence.InvoiceReturn</class>
+		<class>com.techlords.crown.persistence.InvoiceState</class>
+		<class>com.techlords.crown.persistence.Item</class>
+		<class>com.techlords.crown.persistence.ItemBrand</class>
+		<class>com.techlords.crown.persistence.ItemCategory</class>
+		<class>com.techlords.crown.persistence.Location</class>
+		<class>com.techlords.crown.persistence.MoveStatus</class>
+		<class>com.techlords.crown.persistence.PaymentMode</class>
+		<class>com.techlords.crown.persistence.PaymentStatus</class>
+		<class>com.techlords.crown.persistence.Right</class>
+		<class>com.techlords.crown.persistence.Role</class>
+		<class>com.techlords.crown.persistence.Status</class>
+		<class>com.techlords.crown.persistence.StockAllocation</class>
+		<class>com.techlords.crown.persistence.StockMovement</class>
+		<class>com.techlords.crown.persistence.StockMovementItem</class>
+		<class>com.techlords.crown.persistence.StockMovementItemPK</class>
+		<class>com.techlords.crown.persistence.StolenStock</class>
+		<class>com.techlords.crown.persistence.TotalEntityStock</class>
+		<class>com.techlords.crown.persistence.TotalStock</class>
+		<class>com.techlords.crown.persistence.UnitOfMeasure</class>
+		<class>com.techlords.crown.persistence.Warehouse</class>
+		<class>com.techlords.crown.persistence.WarehouseStock</class>
+		<class>com.techlords.crown.persistence.WarehouseStockPK</class>
+		<class>com.techlords.crown.persistence.Receipt</class>
+		<class>com.techlords.crown.persistence.ReceiptPayment</class>
+		<class>com.techlords.crown.persistence.PurchaseInvoice</class>
+		<class>com.techlords.crown.persistence.PurchaseInvoiceItem</class>
+		<class>com.techlords.crown.persistence.PurchaseInvoiceItemPK</class>
+		<class>com.techlords.crown.persistence.Supplier</class>
+
+		<properties>
+			<!-- use this property if target server is GlassFish V3 with EclipseLink -->
+			<!-- use this property if target server uses toplink <property name="toplink.ddl-generation" 
+				value="drop-and-create-tables"/> -->
+				<property name="eclipselink.logging.logger" value="JavaLogger"/>
+				<property name="eclipselink.logging.level" value="WARNING"/>
+				<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/CROWN-RETAIL"/>
+				<property name="javax.persistence.jdbc.user" value="postgres"/>
+				<property name="javax.persistence.jdbc.password" value="postgres"/>
+				<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+		</properties>
+	</persistence-unit>
+</persistence>

@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<p:growl id="messages" showDetail="true" escape="false"
+			autoUpdate="true" />
+		<div class="visual-block">
+			<h2>Stock Allocation Management</h2>
+		</div>
+		<p:panel id="panel"
+			header="#{stockAllocationController.currentAllocation.isNew() ? 'Allocate Stock' : 'Release Stock'}"
+			style="margin-bottom:10px;">
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="allocCode" value="Allocation Code: "
+					rendered="${!stockAllocationController.currentAllocation.isNew()}" />
+				<p:inputText id="allocCode"
+					value="#{stockAllocationController.currentAllocation.allocationCode}"
+					required="true" label="Allocation Code" readonly="true"
+					rendered="${!stockAllocationController.currentAllocation.isNew()}">
+				</p:inputText>
+				<p:message for="allocCode"
+					rendered="${!stockAllocationController.currentAllocation.isNew()}" />
+
+				<p:outputLabel for="typ" value="Allocation Type: " />
+				<p:selectOneMenu id="typ"
+					value="#{stockAllocationController.currentAllocation.allocationType}"
+					required="true" label="Allocation Type">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="tt"
+						value="#{stockAllocationController.typeBOs}"
+						itemValue="#{tt.allocationTypeID}" />
+				</p:selectOneMenu>
+				<p:message for="typ" />
+
+				<p:outputLabel for="entity" value="Entity: " />
+				<p:selectOneMenu id="entity"
+					value="#{stockAllocationController.currentAllocation.entity}"
+					required="true" label="Entity">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="ent"
+						value="#{stockAllocationController.entityBOs}"
+						itemValue="#{ent.id}" itemLabel="#{ent.entity}" />
+
+				</p:selectOneMenu>
+				<p:message for="entity" />
+
+				<p:outputLabel for="itemBO" value="Item: " />
+				<p:selectOneMenu id="itemBO"
+					value="#{stockAllocationController.currentAllocation.item}"
+					required="true" label="Item">
+					<p:ajax listener="#{stockAllocationController.getAvailableStock}"
+						update=":includeForm:avlItems" process="@this" />
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="itm"
+						value="#{stockAllocationController.itemBOs}" itemValue="#{itm.id}"
+						itemLabel="#{itm.itemName}" />
+
+				</p:selectOneMenu>
+				<p:message for="itemBO" />
+
+				<p:outputLabel for="allocQty" value="Allocated Qty: " />
+				<p:inputText id="allocQty"
+					value="#{stockAllocationController.currentAllocation.allocatedQty}"
+					required="true" label="Allocated Qty"
+					onkeypress="validateInteger(event)" maxlength="5"
+					readonly="${!stockAllocationController.currentAllocation.isNew()}" />
+				<p:message for="allocQty" />
+
+			</h:panelGrid>
+
+
+			<!-- DIALOGS -->
+			<p:dialog id="avlItems" widgetVar="avlDlg" position="right"
+				visible="true" header="Availability for Allocation" closable="false"
+				rendered="#{stockAllocationController.currentAllocation.isNew()}">
+
+				<p:panel>
+					<p:dataTable id="avlStock" var="stock"
+						value="#{stockAllocationController.totalStock}"
+						widgetVar="avlStockTable"
+						emptyMessage="No Items available for the entity">
+						<p:column id="itemName" headerText="Item Name">
+							<h:outputText value="#{stock.itemBO.itemName}" />
+						</p:column>
+						<p:column id="itemQty" headerText="Item (Pieces) Qty">
+							<h:outputText value="#{stock.itemQty}" />
+						</p:column>
+						<p:column id="uomQty" headerText="UOM Qty">
+							<h:outputText value="#{stock.uomQty}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</p:dialog>
+			<!-- DIALOGS -->
+
+		</p:panel>
+
+		<p:hotkey bind="ctrl+shift+c" update="panel"
+			actionListener="#{stockAllocationController.getAvailableStock}"
+			process="@this,itemBO" />
+
+		<p:commandButton value="Submit"
+			action="#{stockAllocationController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('stock/StockAllocation.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+</ui:composition>

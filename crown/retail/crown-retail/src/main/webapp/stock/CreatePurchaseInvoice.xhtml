@@ -1,0 +1,264 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<p:growl id="messages" showDetail="true" escape="false"
+			autoUpdate="true" />
+		<div class="visual-block">
+			<h2>Create Purchase Invoice</h2>
+		</div>
+		<p:panel id="invPanel" header="Create Purchase Invoice"
+			style="margin-bottom:10px;">
+
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="company" value="Company:" />
+				<p:selectOneMenu id="company"
+					value="#{purchaseInvoiceController.currentInvoice.company}"
+					required="true" label="Company">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="comp"
+						value="#{purchaseInvoiceController.companies}"
+						itemValue="#{comp.id}" itemLabel="#{comp.companyName}" />
+					<p:ajax listener="#{purchaseInvoiceController.setAssociations}"
+						process="@this" />
+				</p:selectOneMenu>
+				<p:message for="company" />
+
+				<p:outputLabel for="supplier" value="Supplier:" />
+				<p:selectOneMenu id="supplier"
+					value="#{purchaseInvoiceController.currentInvoice.supplier}"
+					required="true" label="Supplier">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="supp"
+						value="#{purchaseInvoiceController.suppliers}"
+						itemValue="#{supp.id}" itemLabel="#{supp.supplierName}" />
+					<p:ajax listener="#{purchaseInvoiceController.setAssociations}"
+						process="@this" />
+				</p:selectOneMenu>
+				<p:message for="supplier" />
+
+				<p:outputLabel for="currency" value="Currency: " />
+				<p:selectOneMenu id="currency"
+					value="#{purchaseInvoiceController.currentInvoice.currency}"
+					required="true" label="Currency">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="cur"
+						value="#{purchaseInvoiceController.currencies}"
+						itemValue="#{cur.currencyCode}" itemLabel="#{cur.currencyCode}" />
+				</p:selectOneMenu>
+				<p:message for="currency" />
+			</h:panelGrid>
+		</p:panel>
+
+		<p:panel style="margin-bottom:10px;">
+			<div class="visual-block">
+				<h3 class="title ui-widget-header ui-corner-all">Invoice Items</h3>
+			</div>
+			<h:panelGrid columns="2">
+				<p:commandButton id="addBulkItems" title="Add Bulk" value="Add Bulk"
+					actionListener="#{purchaseInvoiceController.clearBulkItemsForm}"
+					process="@this" update=":includeForm:bulkAdd"
+					oncomplete="PF('bulkDlg').show()" />
+				<p:commandButton id="addInvItems" title="Add Items"
+					value="Add Items" update="invoiceItemsPanel"
+					action="#{purchaseInvoiceController.addInvoiceItem}"
+					process="addInvItems" />
+			</h:panelGrid>
+			<p:separator />
+
+			<p:outputPanel id="invoiceItemsPanel">
+				<p:dataTable id="invoiceItems" var="invItem"
+					emptyMessage="No Invoice Items found..."
+					value="#{purchaseInvoiceController.currentInvoice.invoiceItems}"
+					widgetVar="invItemTable">
+
+					<p:column headerText="Item">
+						<p:autoComplete id="itemBO" value="#{invItem.itemBO}"
+							completeMethod="#{purchaseInvoiceController.completeItems}"
+							var="it" itemLabel="#{it.itemName}(#{it.modelNumber})"
+							itemValue="#{it}" forceSelection="true" required="true"
+							scrollHeight="150"
+							converter="#{crownModelConverter.getCrownModelConverter(purchaseInvoiceController.itemBOs)}">
+							<p:ajax event="itemSelect"
+								listener="#{purchaseInvoiceController.updateInvoiceAmount()}"
+								update=":includeForm:invoiceItemsPanel, :includeForm:invAmt"
+								process="@this" async="true" />
+						</p:autoComplete>
+					</p:column>
+
+					<p:column headerText="Allocation Type">
+						<p:selectOneMenu id="allocType" required="true"
+							label="Allocation Type" value="#{invItem.allocationType}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="allType"
+								value="#{purchaseInvoiceController.typeBOs}"
+								itemValue="#{allType.allocationTypeID}" />
+							<p:ajax
+								listener="#{purchaseInvoiceController.updateInvoiceAmount()}"
+								update="itemPrice amount :includeForm:invAmt @parent"
+								process="@this" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Units/Pkg">
+						<h:outputText value="#{invItem.itemBO.piecesPerUOM}" />
+					</p:column>
+
+					<p:column headerText="Item (Pieces) Qty">
+						<p:inputText id="itemQty" required="true" label="Item (Pieces) Qty"
+							onkeypress="validateInteger(event)" maxlength="5"
+							value="#{invItem.itemQty}">
+							<p:ajax event="blur" update="amount :includeForm:invAmt @parent"
+								listener="#{purchaseInvoiceController.updateInvoiceAmount}" />
+						</p:inputText>
+					</p:column>
+
+					<p:column headerText="Price">
+						<p:inputText id="itemPrice" required="true" label="Price"
+							onkeypress="validateDecimal(this, event)" maxlength="15"
+							value="#{invItem.price}">
+							<f:convertNumber pattern="#0.00" />
+							<p:ajax event="blur" update="amount :includeForm:invAmt"
+								listener="#{purchaseInvoiceController.priceChange(invItem)}" />
+						</p:inputText>
+					</p:column>
+
+					<p:column headerText="Amount">
+						<h:outputText id="amount" label="Amount"
+							value="#{invItem.getAmount()}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Action">
+						<center>
+							<p:commandButton id="remInvItem" icon="ui-icon-closethick"
+								update=":includeForm:invoiceItemsPanel :includeForm:invAmt @parent"
+								process="remInvItem"
+								action="#{purchaseInvoiceController.removeInvoiceItem(invItem)}" />
+						</center>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+
+		</p:panel>
+		<h:panelGrid columns="3">
+			<p:outputLabel for="remarks" value="Remarks:" />
+			<p:inputTextarea id="remarks"
+				value="#{purchaseInvoiceController.currentInvoice.remarks}" />
+			<p:message for="remarks" />
+
+			<p:outputLabel for="termsNCondns" value="Terms and Conditions:" />
+			<p:inputTextarea id="termsNCondns" autoResize="true" cols="30"
+				style="width:100%"
+				value="#{purchaseInvoiceController.currentInvoice.termsConditions}">
+				<p:ajax event="blur"
+					listener="#{purchaseInvoiceController.doNothing}" />
+			</p:inputTextarea>
+			<p:message for="termsNCondns" />
+
+			<h:outputLabel value="Total Amount:" />
+			<h:outputText id="invAmt"
+				value="#{purchaseInvoiceController.currentInvoice.invoiceAmount}"
+				style="font-weight: bold; font-size: 1.5em;">
+				<f:convertNumber pattern="#0.00" />
+			</h:outputText>
+			<p:spacer />
+		</h:panelGrid>
+		<p:separator />
+		<p:commandButton value="Submit"
+			action="#{purchaseInvoiceController.createInvoice}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('stock/AllPurchaseInvoices.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+
+	<!-- BULK ADDITION -->
+	<p:dialog id="bulkAdd" widgetVar="bulkDlg" position="center" closeOnEscape="true"
+		header="Add Bulk Items" modal="true" closable="true" resizable="true" width="750" height="500">
+
+		<p:panel>
+			<h:panelGrid columns="3">
+				<p:outputLabel for="category" value="Category:" />
+				<p:autoComplete id="category"
+					value="#{purchaseInvoiceController.selCategory}"
+					completeMethod="#{purchaseInvoiceController.completeCategories}"
+					var="cat" itemLabel="#{cat.itemCategory}" itemValue="#{cat}"
+					converter="#{crownModelConverter.getCrownModelConverter(purchaseInvoiceController.categoryBOs)}">
+					<p:ajax event="itemSelect"
+						listener="#{purchaseInvoiceController.handleBulkSelect}"
+						update="bulkItemsPanel" process="@this" async="true" />
+				</p:autoComplete>
+				<p:message for="category" />
+
+				<p:outputLabel for="brand" value="Brand:" />
+				<p:autoComplete id="brand"
+					value="#{purchaseInvoiceController.selBrand}"
+					completeMethod="#{purchaseInvoiceController.completeBrands}"
+					var="brd" itemLabel="#{brd.itemBrand}" itemValue="#{brd}"
+					forceSelection="true"
+					converter="#{crownModelConverter.getCrownModelConverter(purchaseInvoiceController.brandBOs)}">
+					<p:ajax event="itemSelect"
+						listener="#{purchaseInvoiceController.handleBulkSelect}"
+						update="bulkItemsPanel" process="@this" async="true" />
+				</p:autoComplete>
+				<p:message for="brand" />
+			</h:panelGrid>
+			<p:outputPanel id="bulkItemsPanel">
+				<p:dataTable id="bulkStock" var="blkItem"
+					value="#{purchaseInvoiceController.bulkItems}"
+					widgetVar="bulkItemsTable" emptyMessage="No Items available..."
+					paginator="true" rows="10" editable="true">
+					<p:column id="cat" headerText="Category">
+						<h:outputText value="#{blkItem.itemBO.categoryBO.itemCategory}" />
+					</p:column>
+					<p:column id="brd" headerText="Brand">
+						<h:outputText value="#{blkItem.itemBO.brandBO.itemBrand}" />
+					</p:column>
+					<p:column id="item" headerText="Item">
+						<h:outputText value="#{blkItem.itemBO.itemName}" />
+					</p:column>
+					<p:column id="itemPrc" headerText="Item Price">
+						<h:outputText value="#{blkItem.itemBO.itemPrice}" />
+					</p:column>
+					<p:column id="uomPrc" headerText="UOM Price">
+						<h:outputText value="#{blkItem.itemBO.uomPrice}" />
+					</p:column>
+					<p:column id="allocc" headerText="Allocation">
+						<p:selectOneMenu id="alloc" label="Allocation"
+							value="#{blkItem.allocationType}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="allbType"
+								value="#{purchaseInvoiceController.typeBOs}"
+								itemValue="#{allbType.allocationTypeID}" />
+						</p:selectOneMenu>
+					</p:column>
+					<p:column headerText="Add Qty">
+						<p:inputText id="addQty" label="Add Qty"
+							onkeypress="validateInteger(event)" maxlength="5"
+							value="#{blkItem.itemQty}">
+						</p:inputText>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+			<p:separator />
+			<h:outputText value="All Prices are in 'SCR'"
+				style="font-style:italic; font-size: .8em;" />
+
+			<p:commandButton value="Add to Invoice"
+				actionListener="#{purchaseInvoiceController.addBulkItems}"
+				update=":includeForm:invoiceItemsPanel :includeForm:invAmt"
+				process="bulkItemsPanel, @this" oncomplete="PF('bulkDlg').hide()" />
+		</p:panel>
+	</p:dialog>
+	<!-- BULK ADDITION -->
+</ui:composition>

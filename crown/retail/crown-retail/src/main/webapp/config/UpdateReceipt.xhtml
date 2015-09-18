@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<div class="visual-block">
+			<h2>Receipt for
+				#{receiptController.currentCustomer.customerName}</h2>
+		</div>
+		<p:panel id="panel" header="Create Receipt"
+			style="margin-bottom:10px;">
+			<p:growl id="messages" />
+			<h:panelGrid columns="2" cellpadding="4" width="100%">
+				<p:panel>
+					<h:panelGrid id="display1" columns="2">
+						<h:outputText value="Customer Name: " />
+						<h:outputText id="custName"
+							value="#{receiptController.currentCustomer.customerName}"
+							style="font-weight:bold" />
+
+						<h:outputText value="Customer Code: " />
+						<h:outputText id="custCode"
+							value="#{receiptController.currentCustomer.customerCode}"
+							style="font-weight:bold" />
+					</h:panelGrid>
+				</p:panel>
+
+				<p:panel>
+					<h:panelGrid id="display2" columns="2">
+						<h:outputText value="Current Credit: " />
+						<h:outputText id="currCredit"
+							value="#{receiptController.currentCustomer.currentCredit}"
+							style="font-weight:bold">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+
+						<h:outputText value="Credit Limit: " />
+						<h:outputText id="creditLimit"
+							value="#{receiptController.currentCustomer.creditLimit}"
+							style="font-weight:bold">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<h:outputText value="Receipt Date: "
+					rendered="${!receiptController.currentReceipt.isNew()}" />
+				<h:outputText
+					value="#{receiptController.currentReceipt.receiptDate}"
+					style="font-weight:bold;font-size: 1.5em;"
+					rendered="${!receiptController.currentReceipt.isNew()}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+				<h:outputText value="Receipt Amount: " />
+				<h:outputText id="receiptAmt"
+					value="#{receiptController.totalPaidAmt}"
+					style="font-weight:bold;font-size: 1.5em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+				<h:outputText value="Receipt Status " />
+				<h:outputText
+					value="#{receiptController.currentReceipt.isIssued() ? 'ISSUED' : 'NEW'}"
+					style="font-weight:bold;font-size: 1.5em;" />
+			</h:panelGrid>
+			<p:separator />
+
+			<h:panelGrid columns="3">
+				<p:outputLabel for="receiptNum" value="Receipt Number: "
+					rendered="${!receiptController.currentReceipt.isNew()}" />
+				<p:inputText id="receiptNum"
+					value="#{receiptController.currentReceipt.receiptNumber}"
+					readonly="true"
+					rendered="${!receiptController.currentReceipt.isNew()}" />
+				<p:message for="receiptNum"
+					rendered="${!receiptController.currentReceipt.isNew()}" />
+
+				<p:outputLabel for="company" value="Issuing Company: " />
+				<p:selectOneMenu id="company"
+					value="#{receiptController.currentReceipt.company}" required="true"
+					label="Company"
+					disabled="${!receiptController.currentReceipt.isNew()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="comp" value="#{receiptController.companyBOs}"
+						itemValue="#{comp.id}" itemLabel="#{comp.companyName}" />
+				</p:selectOneMenu>
+				<p:message for="company" />
+
+				<p:outputLabel for="remarks" value="Remarks:" />
+				<p:inputTextarea id="remarks"
+					value="#{receiptController.currentReceipt.remarks}" />
+				<p:message for="remarks" />
+			</h:panelGrid>
+		</p:panel>
+		<p:separator />
+		<p:panel id="existingPaymentsPanel" header="Existing Payments"
+			rendered="${!receiptController.currentReceipt.isNew()}">
+
+			<p:dataTable id="existingPayments" var="pmt"
+				emptyMessage="No Receipt Payments found..."
+				value="#{receiptController.existingPayments}" widgetVar="pmtTable">
+				<p:column headerText="Mode">
+					<h:outputText value="#{pmt.paymentModeBO.modeName}" />
+				</p:column>
+				<p:column headerText="Bank">
+					<h:outputText value="#{pmt.bankBO.bankName}" />
+				</p:column>
+				<p:column headerText="Cheque #">
+					<h:outputText value="#{pmt.chequeNumber}" />
+				</p:column>
+
+				<p:column headerText="Date">
+					<h:outputText value="#{pmt.chequeDate}" style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Amount">
+					<h:outputText value="#{pmt.amount}" />
+				</p:column>
+				<p:column headerText="Action">
+					<center>
+						<p:commandButton id="remPmt" icon="ui-icon-closethick"
+							update=":includeForm:existingPaymentsPanel, :includeForm:amtLightBox, :includeForm:receiptAmt,  @parent"
+							process="@this"
+							action="#{receiptController.removeExistingPayment(pmt)}"
+							rendered="#{pmt.paymentMode == 2}" />
+					</center>
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+		<p:panel id="paymentsPanel">
+			<p:commandButton value="Add Payment"
+				action="#{receiptController.addPayment}" update="payments" />
+
+			<p:dataTable id="payments" var="pmt"
+				emptyMessage="No Receipt Payments found..."
+				value="#{receiptController.currentReceipt.payments}"
+				widgetVar="pmtTable">
+				<p:column headerText="Mode">
+					<p:selectOneMenu id="pmtModeBO" required="true" label="Pmt Mode"
+						value="#{pmt.paymentMode}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItems var="mode"
+							value="#{receiptController.paymentModeBOs}"
+							itemValue="#{mode.modeID}" itemLabel="#{mode.modeName}" />
+						<p:ajax listener="#{receiptController.doNothing}" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column headerText="Bank">
+					<p:selectOneMenu id="bankBO" required="#{pmt.paymentMode == 2}"
+						label="Bank" value="#{pmt.bank}">
+						<f:selectItem itemLabel="Select One" itemValue="" />
+						<f:selectItems var="bnk" value="#{receiptController.bankBOs}"
+							itemValue="#{bnk.id}" itemLabel="#{bnk.bankName}" />
+					</p:selectOneMenu>
+				</p:column>
+				<p:column headerText="Cheque #">
+					<p:inputText id="cheque" label="Cheque Number."
+						required="#{pmt.paymentMode == 2}" value="#{pmt.chequeNumber}" />
+				</p:column>
+
+				<p:column headerText="Date">
+					<p:calendar id="chqDate" value="#{pmt.chequeDate}"
+						label="chequeDate" showOn="button" pattern="dd-MMM-yyyy"
+						navigator="true" readonlyInput="true" />
+				</p:column>
+
+				<p:column headerText="Amount">
+					<p:inputText id="pmtAmt" required="true" label="Amount"
+						onkeypress="validateDecimal(this,event)" value="#{pmt.amount}"
+						maxlength="10">
+						<p:ajax event="keyup"
+							update=":includeForm:totAmt, :includeForm:receiptAmt"
+							listener="#{receiptController.addPayment(pmt)}" />
+					</p:inputText>
+				</p:column>
+				<p:column headerText="Action">
+					<center>
+						<p:commandButton id="remPmt" icon="ui-icon-closethick"
+							update=":includeForm:paymentsPanel, :includeForm:amtLightBox, :includeForm:receiptAmt, @parent"
+							process="@this" action="#{receiptController.removePayment(pmt)}" />
+					</center>
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:commandButton value="Submit" action="#{receiptController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/CreditReceipt.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+
+	<!-- DIALOGS -->
+
+	<p:dialog id="amtLightBox" widgetVar="amtDlg" position="right"
+		visible="true"
+		header="Receipt Amount - #{receiptController.currentCustomer.customerName}"
+		closable="false">
+		<p:panel>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Total Receipt Amount:" />
+				<h:outputText id="totAmt" value="#{receiptController.totalPaidAmt}"
+					style="font-weight: bold; font-size: 1.5em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+
+				<h:outputLabel value="Credit Limit:" />
+				<h:outputText id="creditLimitLB"
+					value="#{receiptController.currentCustomer.creditLimit}"
+					style="font-weight: bold; font-size: 1.5em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+
+
+				<h:outputLabel value="Current Credit:" />
+				<h:outputText id="currCreditLB"
+					value="#{receiptController.currentCustomer.currentCredit}"
+					style="font-weight: bold; font-size: 1.5em;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+			</h:panelGrid>
+		</p:panel>
+	</p:dialog>
+
+	<!-- DIALOGS -->
+</ui:composition>

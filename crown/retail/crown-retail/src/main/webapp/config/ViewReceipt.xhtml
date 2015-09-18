@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<div class="visual-block">
+		<h2>Receipt for #{receiptController.currentCustomer.customerName}</h2>
+	</div>
+	<p:panel id="receiptPanel">
+		<p:panel>
+			<center>
+				<h:panelGrid>
+					<p:graphicImage id="heder" value="/images/kannus-printLogo.PNG"
+						style="align:center;" />
+					<p:graphicImage id="watermark"
+						value="#{receiptController.currentReceipt.isIssued() ? '/images/duplicate.PNG' : '/images/original.PNG'}"
+						style="display: inline; position: absolute; z-index: -1;"
+						height="10%" width="30%" />
+				</h:panelGrid>
+			</center>
+		</p:panel>
+		<p:separator />
+		<p:panel id="panel"
+			header="Receipt '#{receiptController.currentReceipt.receiptNumber}'"
+			style="margin-bottom:10px;">
+			<p:growl id="messages" />
+			<h:panelGrid columns="2" cellpadding="4" width="100%">
+				<p:panel>
+					<h:panelGrid id="display1" columns="2">
+						<h:outputText value="Receipt Number: " />
+						<h:outputText
+							value="#{receiptController.currentReceipt.receiptNumber}"
+							style="font-weight:bold" />
+
+						<h:outputText value="Customer Name: " />
+						<h:outputText id="custName"
+							value="#{receiptController.currentCustomer.customerName}"
+							style="font-weight:bold" />
+
+					</h:panelGrid>
+				</p:panel>
+
+				<p:panel>
+					<h:panelGrid id="display2" columns="2">
+
+						<h:outputText value="Issuing Company: " />
+						<h:outputText id="company"
+							value="#{receiptController.currentReceipt.companyBO.companyName}"
+							style="font-weight:bold" />
+
+						<h:outputText value="Customer Code: " />
+						<h:outputText id="custCode"
+							value="#{receiptController.currentCustomer.customerCode}"
+							style="font-weight:bold" />
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGrid>
+			<h:panelGrid columns="2">
+				<h:outputText value="Receipt Date: " />
+				<h:outputText
+					value="#{receiptController.currentReceipt.receiptDate}"
+					style="font-weight:bold;font-size: 1.5em;">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+				<h:outputText value="Receipt Amount: " />
+				<h:outputText value="#{receiptController.currentReceipt.amount}"
+					style="font-weight:bold;font-size: 1.5em;" />
+				<h:outputText value="Receipt Status " />
+				<h:outputText
+					value="#{receiptController.currentReceipt.isIssued() ? 'ISSUED' : 'NEW'}"
+					style="font-weight:bold;font-size: 1.5em;" />
+			</h:panelGrid>
+		</p:panel>
+		<p:separator />
+		<p:panel id="paymentsPanel" header="Payments">
+
+			<p:dataTable id="payments" var="pmt"
+				emptyMessage="No Receipt Payments found..."
+				value="#{receiptController.currentReceipt.payments}"
+				widgetVar="pmtTable">
+				<p:column headerText="Mode">
+					<h:outputText value="#{pmt.paymentModeBO.modeName}" />
+				</p:column>
+				<p:column headerText="Bank">
+					<h:outputText value="#{pmt.bankBO.bankName}" />
+				</p:column>
+				<p:column headerText="Cheque #">
+					<h:outputText value="#{pmt.chequeNumber}" />
+
+				</p:column>
+				<p:column headerText="Amount">
+					<h:outputText value="#{pmt.amount}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+		<p:panel>
+			<center>
+				<p:separator />
+
+				<h:outputText
+					value="#{receiptController.currentReceipt.companyBO.companyName}"
+					style="font-weight:bold" />
+				<br />
+				<h:outputText
+					value="#{receiptController.currentReceipt.companyBO.address}, #{receiptController.currentReceipt.companyBO.locationBO.location}, Phone: #{receiptController.currentReceipt.companyBO.phone}, FAX: #{receiptController.currentReceipt.companyBO.fax}"
+					style="font-weight:bold" />
+				<br />
+				<h:outputText
+					value="TIN: #{receiptController.currentReceipt.companyBO.tin}"
+					style="font-weight:bold" />
+				<br />
+			</center>
+		</p:panel>
+		<h:outputText value="All amounts are in 'SCR' currency"
+			style="font-style:italic;font-weight:bold;font-size: .8em;" />
+	</p:panel>
+	<p:panel>
+		<p:commandButton value="Print" type="button" icon="ui-icon-print">
+			<p:printer target="receiptPanel" />
+		</p:commandButton>
+		<p:commandButton actionListener="#{receiptController.printReceipt}"
+			value="Done" update="#{navigationBean.UPDATE_FORM_ID}"
+			process="@this" onstart="return printConfirm()" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/CreditReceipt.xhtml')}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+
+	<script language="JavaScript">
+		function printConfirm() {
+			var answer = confirm("Is Print Done?");
+			if (answer) {
+				return true;
+			}
+			alert("Try Printing Again.");
+			return false;
+		}
+	</script>
+</ui:composition>

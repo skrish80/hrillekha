@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Audit Report</h2>
+		</div>
+		<p:separator />
+
+		<p:dataTable id="auditData" var="auditBO"
+			value="#{reportsController.auditData}"
+			emptyMessage="No Audit Data found" paginator="true" rows="10"
+			rowsPerPageTemplate="10,25,50,100">
+
+			<p:column id="table">
+				<f:facet name="header">
+					<h:outputText value="Table" style="font-weight:bold;" />
+				</f:facet>
+				<h:outputText value="#{auditBO.tableName}"
+					style="font-weight:normal;" />
+			</p:column>
+
+			<p:column id="user">
+				<f:facet name="header">
+					<h:outputText value="User" style="font-weight:bold;" />
+				</f:facet>
+				<h:outputText value="#{auditBO.crownUser}"
+					style="font-weight:normal;" />
+
+			</p:column>
+
+			<p:column id="action">
+				<f:facet name="header">
+					<h:outputText value="Action" style="font-weight:bold;" />
+				</f:facet>
+				<h:outputText value="#{auditBO.action}" style="font-weight:normal;" />
+
+			</p:column>
+
+			<p:column id="description">
+				<f:facet name="header">
+					<h:outputText value="Description" style="font-weight:bold;" />
+				</f:facet>
+				<h:outputText value="#{auditBO.description}"
+					style="font-weight:normal;" />
+
+			</p:column>
+
+			<p:column id="timestamp">
+				<f:facet name="header">
+					<h:outputText value="Timestamp" style="font-weight:bold;" />
+				</f:facet>
+				<h:outputText value="#{auditBO.timestamp}"
+					style="font-weight:normal;" />
+
+			</p:column>
+		</p:dataTable>
+		<h:panelGrid columns="4">
+			<h:commandLink>
+				<p:graphicImage value="/images/excel.png" />
+				<p:dataExporter type="xls" target="auditData"
+					fileName="audit-report" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/images/pdf.png" />
+				<p:dataExporter type="pdf" target="auditData"
+					fileName="audit-report" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/images/csv.png" />
+				<p:dataExporter type="csv" target="auditData"
+					fileName="audit-report" />
+			</h:commandLink>
+
+			<h:commandLink>
+				<p:graphicImage value="/images/xml.png" />
+				<p:dataExporter type="xml" target="auditData"
+					fileName="audit-report" />
+			</h:commandLink>
+		</h:panelGrid>
+	</p:panel>
+</ui:composition>

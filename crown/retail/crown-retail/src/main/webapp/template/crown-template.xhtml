@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="pragma" content="" />
+	<meta http-equiv="cache-control" content="" />
+	<meta http-equiv="expires" content="6048000000" />
+	<title>#{navigationBean.title}</title>
+	<!-- Load the printer and charts first -->
+	<script type="text/javascript"
+		src="javax.faces.resource/printer/printer.js.jsf?ln=primefaces"></script>
+	<link href="javax.faces.resource/charts/charts.css.jsf?ln=primefaces"
+		rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="javax.faces.resource/charts/charts.js.jsf?ln=primefaces"></script>
+	<!-- Load the printer and charts first -->
+
+	<link href="resources/css/default.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/tableLayout.css" rel="stylesheet"
+		type="text/css" />
+	<link rel="icon" type="image/png" href="images/techLORDS-icon.png" />
+	<script type="text/javascript" src="resources/js/crown-events.js" />
+</h:head>
+<ui:insert name="metadata">
+	<!-- NOTHING HERE -->
+</ui:insert>
+<h:body>
+	<table cellspacing="10px" width="100%">
+		<tr>
+			<td id="top" colspan="3"><ui:insert name="top">
+					<p:panel>
+						<center>
+							<p:graphicImage value="/images/Banner.jpg" width="100%"
+								height="120px" />
+						</center>
+					</p:panel>
+				</ui:insert></td>
+		</tr>
+		<tr>
+			<ui:insert name="welcome">
+				<h:form>
+					<td id="welcome" align="center" colspan="3"><h:panelGrid
+							columns="3">
+							<p:commandLink actionListener="#{hotKeyController.getHomePage}"
+								process="@this" title="Home"
+								update="#{navigationBean.UPDATE_FORM_ID}">
+								<p:graphicImage value="/images/home.PNG" />
+							</p:commandLink>
+							<h:button outcome="/logout.jsp" value="Logout"
+								image="/images/Shutdown.png" title="Logout" />
+							<p:outputPanel>
+								<h:outputText value="Welcome " style="font-weight:bold" />
+								<p:menuButton
+									value="#{crownUserController.loggedInUser.firstName} #{crownUserController.loggedInUser.lastName}">
+									<p:menuitem
+										actionListener="#{crownUserController.changePassword}"
+										value="Change Password"
+										update="#{navigationBean.UPDATE_FORM_ID}" />
+									<p:menuitem url="/logout.jsp" value="Logout" />
+
+								</p:menuButton>
+							</p:outputPanel>
+						</h:panelGrid> <p:separator id="separator" /></td>
+				</h:form>
+			</ui:insert>
+		</tr>
+		<tr align="center" style="width: 100%; height: 100%">
+			<td id="menu" align="left" valign="top" width="10%"><ui:insert
+					name="menu">Menu</ui:insert></td>
+			<td valign="top"><p:separator style="width:1px;height:730px" /></td>
+			<td id="content" align="center" width="100%"><ui:insert
+					name="content">Content</ui:insert></td>
+		</tr>
+	</table>
+	<script language="JavaScript">
+		
+	</script>
+</h:body>
+
+</html>

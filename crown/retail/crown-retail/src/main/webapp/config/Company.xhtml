@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Companies</h2>
+		</div>
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Add Company" icon="ui-icon-circle-plus"
+				action="#{companyController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="companies" var="companyBO"
+			value="#{companyController.companyBOs}" widgetVar="companyBOTable"
+			emptyMessage="No Companies found with given criteria"
+			rowKey="#{companyBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="companyBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="companyName" headerText="Company Name"
+				filterBy="#{companyBO.companyName}" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{companyBO.companyName}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="sbn" headerText="SBN" filterBy="#{companyBO.sbn}"
+				filterMatchMode="contains" style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{companyBO.sbn}" style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="address" headerText="Address"
+				filterBy="#{companyBO.address}" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{companyBO.address}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="phone" headerText="Phone" filterBy="#{companyBO.phone}"
+				filterMatchMode="contains" style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{companyBO.phone}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="poc" headerText="Point of Contact"
+				filterBy="#{companyBO.poc}" filterMatchMode="contains"
+				style="font-weight:bold;">
+
+				<center>
+					<h:outputText value="#{companyBO.poc}" style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="location" headerText="Location"
+				filterBy="#{companyBO.locationBO.location}"
+				filterMatchMode="contains" style="font-weight:bold;">
+				<center>
+					<h:outputText value="#{companyBO.locationBO.location}"
+						style="font-weight:normal;" />
+				</center>
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:splitButton value="Edit"
+						action="#{companyController.setupForm(companyBO)}"
+						icon="ui-icon-arrowrefresh-1-w"
+						update="#{navigationBean.UPDATE_FORM_ID}">
+						<p:menuitem value="View" icon="ui-icon-search"
+							action="#{companyController.view(companyBO)}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this"
+							immediate="true" />
+						<p:separator />
+						<p:menuitem value="Delete" icon="ui-icon-close"
+							action="#{companyController.delete(companyBO)}"
+							onstart="return confirm('Are you sure you want to delete #{companyBO.companyName}?')"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+					</p:splitButton>
+				</center>
+			</p:column>
+
+		</p:dataTable>
+
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Add Company" icon="ui-icon-circle-plus"
+				action="#{companyController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

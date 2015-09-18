@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<div class="visual-block">
+		<h2>
+			Stock Movement"<u>#{stockMovementController.currentMovement.moveReceiptID}</u>"
+		</h2>
+	</div>
+	<p:panel id="stockMovementPanel" widgetVar="stockMov">
+		<p:panel>
+			<center>
+				<h:panelGrid>
+					<p:graphicImage id="heder" value="/images/kannus-printLogo.PNG"
+						style="align:center;" />
+				</h:panelGrid>
+			</center>
+		</p:panel>
+
+		<h:panelGrid id="display" columns="2" cellpadding="4">
+
+			<h:outputText value="Move Receipt ID: " />
+			<h:outputText
+				value="#{stockMovementController.currentMovement.moveReceiptID}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Move Status: " />
+			<h:outputText
+				value="#{stockMovementController.currentMovement.moveStatusBO}"
+				style="font-weight:bold" />
+
+			<h:outputText value="From: " />
+			<h:outputText
+				value="#{stockMovementController.currentMovement.fromWarehouseBO.warehouseName}"
+				style="font-weight:bold" />
+
+			<h:outputText value="To: " />
+			<h:outputText
+				value="#{stockMovementController.currentMovement.toWarehouseBO.warehouseName}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Moved Date: " />
+			<h:outputText
+				value="#{stockMovementController.currentMovement.moveDate}"
+				style="font-weight:bold">
+				<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+			</h:outputText>
+
+			<h:outputText value="Received Date: " />
+			<h:outputText
+				value="#{stockMovementController.currentMovement.receiveDate}"
+				style="font-weight:bold">
+				<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+			</h:outputText>
+		</h:panelGrid>
+
+		<p:spacer />
+		<div class="visual-block">
+			<h3 class="title ui-widget-header ui-corner-all">Movement Items</h3>
+		</div>
+		<p:separator />
+
+		<p:outputPanel id="moveItems">
+			<p:dataTable id="stockMovementItems" var="moveItem"
+				emptyMessage="No Movement Items found..."
+				value="#{stockMovementController.currentMovement.stockMovementItems}"
+				widgetVar="moveItemTable">
+
+				<p:column headerText="Item">
+					<h:outputText value="#{moveItem.itemBO.itemName}" />
+				</p:column>
+
+				<p:column headerText="Move Type">
+					<h:outputText value="#{moveItem.allocationTypeBO}" />
+				</p:column>
+
+				<p:column headerText="Moved Qty">
+					<h:outputText value="#{moveItem.movedQty}" />
+				</p:column>
+
+				<p:column headerText="Received Qty">
+					<h:outputText value="#{moveItem.receivedQty}" />
+				</p:column>
+
+				<p:column headerText="Returned Qty">
+					<h:outputText value="#{moveItem.returnedQty}" />
+				</p:column>
+			</p:dataTable>
+		</p:outputPanel>
+
+		<p:panel>
+			<center>
+				<h:panelGrid>
+					<p:graphicImage id="futer" value="/images/kannus-footer.PNG" />
+				</h:panelGrid>
+			</center>
+		</p:panel>
+	</p:panel>
+	<p:spacer />
+	<p:panel>
+
+		<p:commandButton value="Print" type="button" icon="ui-icon-print">
+			<p:printer target="stockMovementPanel" />
+		</p:commandButton>
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('stock/StockMovement.xhtml')}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+</ui:composition>
+

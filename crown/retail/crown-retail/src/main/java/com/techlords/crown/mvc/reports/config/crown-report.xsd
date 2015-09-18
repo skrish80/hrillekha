@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.techlords.com/crown-report" xmlns:tns="http://www.techlords.com/crown-report"
+	elementFormDefault="qualified">
+	<xs:element name="crown-report">
+		<xs:annotation>
+			<xs:documentation>Crown Report Schema Definition</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="bean-name" nillable="false" maxOccurs="1"
+					type="xs:string" />
+				<xs:element name="title" nillable="false" maxOccurs="1"
+					type="xs:string" />
+				<xs:element name="sub-title" nillable="false" maxOccurs="1"
+					type="xs:string" />
+				<xs:element name="margin" nillable="false" maxOccurs="1"
+					type="xs:int" />
+				<xs:element name="detail-height" nillable="false" maxOccurs="1"
+					type="xs:int" />
+				<xs:element ref="tns:column-params" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- COLUMN-PARAMS -->
+	<xs:element name="column-params">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="column-name" nillable="false"
+					maxOccurs="1" type="xs:string" />
+				<xs:element name="column-title" nillable="false"
+					maxOccurs="1" type="xs:string" />
+				<xs:element name="class-name" nillable="false" maxOccurs="1"
+					type="xs:string" />
+				<xs:element name="column-width" nillable="false"
+					maxOccurs="1" type="xs:int" />
+				<xs:element name="criteria-column" minOccurs="0" maxOccurs="1" type="xs:boolean"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

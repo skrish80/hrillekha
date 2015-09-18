@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:growl id="messages" showDetail="true" escape="false"
+		autoUpdate="true" />
+	<div class="visual-block">
+		<h2>
+			Invoice Delivery "<u>#{deliverInvoiceController.currentInvoice.invoiceNumber}</u>"
+		</h2>
+	</div>
+	<p:panel id="invoicePanel" style="margin-bottom:10px;"
+		header="#{deliverInvoiceController.currentInvoice.invoiceNumber} (#{deliverInvoiceController.currentInvoice.paymentStatusBO.status.toUpperCase()})">
+
+		<h:panelGrid id="display" columns="2" cellpadding="4" width="100%">
+
+			<p:panel>
+				<h:panelGrid id="display2" columns="2" cellpadding="4">
+
+					<h:outputText value="Invoice #: " />
+					<h:outputText
+						value="#{deliverInvoiceController.currentInvoice.invoiceNumber} (#{deliverInvoiceController.currentInvoice.invoiceStateBO.stateName})"
+						style="font-weight:bold" />
+
+					<h:outputText value="Invoice Date: " />
+					<h:outputText
+						value="#{deliverInvoiceController.currentInvoice.invoiceDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+
+					<h:outputText value="Return Date: " />
+					<h:outputText
+						value="#{deliverInvoiceController.currentInvoice.returnDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel>
+				<h:panelGrid id="display1" columns="2" cellpadding="4">
+
+					<h:outputText value="Customer: " />
+					<h:outputText
+						value="#{deliverInvoiceController.currentInvoice.customerBO.customerName}"
+						style="font-weight:bold" />
+
+					<h:outputText value="Delivery Date: " />
+					<h:outputText
+						value="#{deliverInvoiceController.currentInvoice.deliveryDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+
+					<h:outputText value="Return Amount: " />
+					<h:outputText
+						value="#{deliverInvoiceController.currentInvoice.returnAmount}"
+						style="font-weight:bold">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+		</h:panelGrid>
+
+		<p:separator />
+
+		<p:panel header="Invoice Payments">
+			<p:dataTable id="invoicePayments" var="invPmt"
+				emptyMessage="No Invoice Payments found..."
+				value="#{deliverInvoiceController.currentInvoice.invoicePayments}"
+				widgetVar="invPmtTable">
+				<p:column headerText="Mode">
+					<h:outputText value="#{invPmt.paymentModeBO.modeName}" />
+				</p:column>
+				<p:column headerText="Bank">
+					<h:outputText value="#{invPmt.bankBO.bankName}" />
+				</p:column>
+				<p:column headerText="Draft #">
+					<h:outputText value="#{invPmt.draftNumber}" />
+				</p:column>
+				<p:column headerText="Payer">
+					<h:outputText value="#{invPmt.payer}" />
+				</p:column>
+				<p:column headerText="Amount">
+					<h:outputText value="#{invPmt.amount}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+				<p:column headerText="Remarks">
+					<h:outputText value="#{invPmt.remarks}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:separator />
+		<p:panel>
+			<h:panelGrid columns="2">
+				<h:outputText value="Discount Type: " />
+				<h:outputText
+					value="#{deliverInvoiceController.currentInvoice.discountTypeBO.discountType}"
+					style="font-weight:bold;" />
+				<h:outputText value="Discount Amount: " />
+				<h:outputText
+					value="#{deliverInvoiceController.currentInvoice.discountAmount}"
+					style="font-weight:bold;">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+			</h:panelGrid>
+		</p:panel>
+
+		<p:separator />
+
+		<p:panel>
+			<h:panelGrid columns="3">
+				<p:outputLabel for="delWH" value="Delivery Warehouse:" />
+				<p:selectOneMenu id="delWH"
+					value="#{deliverInvoiceController.currentInvoice.deliveryWarehouse}"
+					required="true" label="Delivery Warehouse">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="wh"
+						value="#{deliverInvoiceController.warehouseBOs}"
+						itemValue="#{wh.id}" itemLabel="#{wh.warehouseName}" />
+					<p:ajax update=":includeForm:avlItems"
+						listener="#{deliverInvoiceController.checkWarehouseItemsAvailability}"
+						process="delWH" />
+				</p:selectOneMenu>
+				<p:message for="delWH" />
+
+				<p:outputLabel for="invStt" value="Invoice Status:" />
+				<p:selectOneMenu id="invStt"
+					value="#{deliverInvoiceController.currentInvoice.invoiceState}"
+					required="true" label="Invoice State">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="stt"
+						value="#{deliverInvoiceController.invoiceStateBOs}"
+						itemValue="#{stt.stateID}" itemLabel="#{stt.stateName}" />
+					<p:ajax update=":includeForm:invoiceItemsPanel"
+						listener="#{deliverInvoiceController.fullDelivery}"
+						process="invStt" />
+				</p:selectOneMenu>
+				<p:message for="invStt" />
+			</h:panelGrid>
+		</p:panel>
+		<p:separator />
+		<p:panel style="margin-bottom:10px;" header="Invoice Items">
+
+			<p:outputPanel id="invoiceItemsPanel">
+				<p:dataTable id="invoiceItems" var="invItem"
+					emptyMessage="No Invoice Items found..."
+					value="#{deliverInvoiceController.currentInvoice.invoiceItems}"
+					widgetVar="invItemTable">
+
+					<p:column headerText="Item">
+						<h:outputText value="#{invItem.itemBO.itemName}" />
+					</p:column>
+					<p:column headerText="UOM">
+						<h:outputText value="#{invItem.allocationTypeBO.type}" />
+					</p:column>
+					<p:column headerText="Pkg">
+						<h:outputText id="pkk" value="#{invItem.itemBO.uomBO.uom}" />
+					</p:column>
+					<p:column headerText="Units/Pkg">
+						<h:outputText value="#{invItem.itemBO.piecesPerUOM}" />
+					</p:column>
+					<p:column headerText="Item (Pieces) Qty">
+						<h:outputText value="#{invItem.itemQty}" />
+					</p:column>
+					<p:column headerText="Deliver Qty">
+						<center>
+							<p:inputText id="delQty" required="true" label="Deliver Qty"
+								onkeypress="validateInteger(event)" maxlength="5"
+								value="#{invItem.deliveredQty}"
+								readonly="#{deliverInvoiceController.isFullDelivery()}" />
+						</center>
+					</p:column>
+					<p:column headerText="Already Delivered Qty">
+						<h:outputText value="#{invItem.alreadyDeliveredQty}" />
+					</p:column>
+					<p:column headerText="Amount">
+						<h:outputText value="#{invItem.amount}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+		</p:panel>
+	</p:panel>
+
+	<p:panel>
+		<p:commandButton value="Deliver"
+			action="#{deliverInvoiceController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton id="cancelInv"
+			actionListener="#{invoiceControllerFactory.showView('DELIVER', invoiceControllerFactory.invoiceType)}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+
+	<!-- DIALOGS -->
+
+
+	<p:dialog id="amtLightBox" widgetVar="amtDlg" position="left"
+		visible="true"
+		header="Invoice Amount - #{deliverInvoiceController.currentInvoice.paymentStatusBO.status.toUpperCase()}"
+		closable="false">
+		<p:panel>
+			<h:panelGrid columns="2">
+				<h:outputLabel value="Total Invoice Amount:"
+					title="Total Amount - Discount" />
+				<h:outputText id="totAmtLB"
+					value="#{deliverInvoiceController.currentInvoice.invoiceAmount}"
+					style="font-weight: bold; font-size: 1.5em;" />
+
+				<h:outputLabel value="Final Invoice Amount:"
+					title="Total Amount - Discount" />
+				<h:outputText id="finalAmtLB"
+					value="#{deliverInvoiceController.currentInvoice.finalInvoiceAmount}"
+					style="font-weight: bold; font-size: 1.5em;" />
+
+
+				<h:outputLabel value="Total Paid Amount:" />
+				<h:outputText id="totPaidAmtLB"
+					value="#{deliverInvoiceController.currentInvoice.totalPaidAmount}"
+					style="font-weight: bold; font-size: 1.5em;" />
+			</h:panelGrid>
+		</p:panel>
+	</p:dialog>
+
+	<p:dialog id="avlItems" widgetVar="avlDlg" position="right"
+		visible="true"
+		header="Items Availability for '#{deliverInvoiceController.currentInvoice.deliveryWarehouseBO.warehouseName}'"
+		closable="false">
+
+		<p:panel>
+			<p:dataTable id="avlStock" var="stock"
+				value="#{deliverInvoiceController.warehouseStockBOs}"
+				widgetVar="avlStockTable"
+				emptyMessage="No Items available in the warehouse">
+				<p:column id="itemName" headerText="Item Name">
+					<h:outputText value="#{stock.itemBO.itemCode}" />
+				</p:column>
+				<p:column id="itemQty" headerText="Item (Pieces) Qty">
+					<h:outputText value="#{stock.itemQty}" />
+				</p:column>
+				<p:column id="uomQty" headerText="UOM Qty">
+					<h:outputText value="#{stock.uomQty}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</p:dialog>
+	<!-- DIALOGS -->
+</ui:composition>
+

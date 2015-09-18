@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link href="resources/css/default.css" rel="stylesheet" type="text/css" />
+	<link href="resources/css/tableLayout.css" rel="stylesheet"
+		type="text/css" />
+	<link rel="icon" type="image/png" href="images/techLORDS-icon.png" />
+
+	<title>Crown Wholesale/Retail Product</title>
+</h:head>
+<ui:insert name="metadata">
+	<!-- NOTHING HERE -->
+</ui:insert>
+<h:body>
+	<table cellspacing="10px" width="100%">
+		<tr>
+			<td id="top"><ui:insert name="top">
+					<p:panel style="width:100%; height: 20%; vertical-align: middle; ">
+						<center>
+							<p:graphicImage value="/images/Banner.jpg" />
+						</center>
+					</p:panel>
+				</ui:insert></td>
+		</tr>
+		<tr align="center" style="width: 100%;">
+			<td id="content" align="center" width="100%"><ui:insert
+					name="content">Content</ui:insert></td>
+		</tr>
+		<tr>
+			<td id="bottom"><ui:insert name="bottom">
+					<p:panel style="width:100%; height:100%;">
+						<p:separator />
+						<center>
+							<a href="http://www.thetechlords.com" target="_blank"> <p:graphicImage
+									value="/images/techLORDS-LOGO.png" />
+							</a>
+						</center>
+					</p:panel>
+				</ui:insert></td>
+		</tr>
+	</table>
+</h:body>
+
+</html>

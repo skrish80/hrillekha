@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.techlords.com/crown-flow" xmlns:tns="http://www.techlords.com/crown-flow"
+	elementFormDefault="qualified">
+	<xs:element name="crown-flow">
+		<xs:annotation>
+			<xs:documentation>Crown Flow involved in cases where there is a
+				business
+				flow to go across different states</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="flow-id" type="xs:string" nillable="false"
+					maxOccurs="1" />
+				<xs:element name="flow-class" type="xs:string" nillable="false"
+					maxOccurs="1" />
+				<xs:element ref="tns:flow-steps" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- FLOW STEPS -->
+	<xs:element name="flow-steps">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="tns:step" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- STEPS -->
+	<xs:element name="step">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="step-id" type="xs:int" nillable="false"
+					maxOccurs="1" />
+				<xs:element name="step-name" type="xs:string" nillable="false"
+					maxOccurs="1" />
+				<xs:element name="step-description" type="xs:string"
+					maxOccurs="1" />
+				<xs:element name="first-step" type="xs:boolean"
+					maxOccurs="1" minOccurs="0" />
+				<xs:element name="next-step-id" type="xs:int"
+					maxOccurs="unbounded" minOccurs="0" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

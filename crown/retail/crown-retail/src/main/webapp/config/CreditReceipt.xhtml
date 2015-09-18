@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Customer - Receipts</h2>
+		</div>
+		<p:separator />
+
+
+		<h:panelGrid columns="4">
+			<p:outputLabel for="custSel" value="Customer:" />
+			<p:selectOneMenu id="custSel"
+				value="#{receiptController.currentCustomerID}" required="true"
+				label="Invoice">
+				<f:selectItem itemLabel="Select One" itemValue="" />
+				<f:selectItems var="cust" value="#{receiptController.customerBOs}"
+					itemValue="#{cust.id}" itemLabel="#{cust.customerName}" />
+				<p:ajax
+					update=":includeForm:receiptsPanel :includeForm:creditLim :includeForm:currCredit"
+					listener="#{receiptController.loadReceipts}" process="custSel" />
+			</p:selectOneMenu>
+
+			<p:commandButton value="Set Credit Limit" icon="ui-icon-pencil"
+				action="#{receiptController.loadCreditLimitForm}"
+				update="#{navigationBean.UPDATE_FORM_ID}" />
+			<p:message for="custSel" />
+
+			<h:outputText value="Credit Limit:" />
+			<h:outputText id="creditLim"
+				value="#{receiptController.currentCustomer.creditLimit}"
+				style="color:#9900FF; font-weight:bolder;" />
+
+			<h:outputText value="Current Credit:" />
+			<h:outputText id="currCredit"
+				value="#{receiptController.currentCustomer.currentCredit}"
+				style="color:#CC0000; font-weight:bolder;" />
+		</h:panelGrid>
+
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Create Receipt" icon="ui-icon-circle-plus"
+				action="#{receiptController.loadReceiptForm}"
+				update="#{navigationBean.UPDATE_FORM_ID}" />
+		</p:panel>
+
+		<p:panel id="receiptsPanel">
+			<p:dataTable id="receipts" var="receipt"
+				value="#{receiptController.receiptBOs}" widgetVar="receiptTable"
+				emptyMessage="No Receipts found for customer" paginator="true"
+				rows="10" rowsPerPageTemplate="5,10,15">
+
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText style="font-weight:normal;"
+							value="Search all fields:" />
+						<p:inputText id="globalFilter" onkeyup="receiptTable.filter()"
+							style="width:150px" />
+					</p:outputPanel>
+				</f:facet>
+
+				<p:column id="receiptNum" filterBy="#{receipt.receiptNumber}"
+					headerText="Receipt #" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{receipt.receiptNumber}" />
+				</p:column>
+
+				<p:column id="customerName"
+					filterBy="#{receipt.customerBO.customerName}"
+					headerText="Customer Name" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{receipt.customerBO.customerName}" />
+				</p:column>
+
+				<p:column id="amount" filterBy="#{receipt.amount}"
+					headerText="Amount" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;" value="#{receipt.amount}" />
+				</p:column>
+
+				<p:column id="receiptDate" filterBy="#{receipt.receiptDate}"
+					headerText="Receipt Date" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{receipt.receiptDate}">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="company" filterBy="#{receipt.companyBO.companyName}"
+					headerText="Company Name" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{receipt.companyBO.companyName}" />
+				</p:column>
+
+				<p:column id="action" headerText="Action" style="font-weight:bold;">
+
+					<center>
+						<p:splitButton value="Edit"
+							action="#{receiptController.loadReceiptForm(receipt)}"
+							icon="ui-icon-arrowrefresh-1-w"
+							update="#{navigationBean.UPDATE_FORM_ID}">
+							<p:menuitem value="View" id="viewRec"
+								actionListener="#{receiptController.viewReceipt(receipt)}"
+								icon="ui-icon-extlink" update="#{navigationBean.UPDATE_FORM_ID}"
+								immediate="true" partialSubmit="true" process="@this" />
+						</p:splitButton>
+					</center>
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+		<p:panel>
+			<p:commandButton value="Create Receipt" icon="ui-icon-circle-plus"
+				action="#{receiptController.loadReceiptForm}"
+				update="#{navigationBean.UPDATE_FORM_ID}" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

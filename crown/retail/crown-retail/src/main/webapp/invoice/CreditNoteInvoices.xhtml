@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Credit Note - Invoices</h2>
+		</div>
+		<h:panelGrid columns="3">
+			<p:outputLabel for="invSel" value="Invoice:" />
+			<p:selectOneMenu id="invSel"
+				value="#{creditNoteController.currentInvoiceID}" required="true"
+				label="Invoice">
+				<f:selectItem itemLabel="Select One" itemValue="" />
+				<f:selectItems var="inv" value="#{creditNoteController.invoiceBOs}"
+					itemValue="#{inv.id}" itemLabel="#{inv.invoiceNumber}" />
+				<p:ajax update=":includeForm:creditNotesPanel"
+					listener="#{creditNoteController.doNothing}" process="invSel" />
+			</p:selectOneMenu>
+			<p:message for="invSel" />
+		</h:panelGrid>
+		<p:separator />
+
+		<p:panel id="cmdPanel1">
+			<p:commandButton value="Create Credit Note" id="createCN1"
+				actionListener="#{creditNoteController.setupForm}"
+				icon="ui-icon-circle-plus" update="#{navigationBean.UPDATE_FORM_ID}" />
+		</p:panel>
+
+		<p:panel id="creditNotesPanel">
+			<p:dataTable id="creditNotes" var="creditNote"
+				value="#{creditNoteController.creditNoteBOs}"
+				widgetVar="creditNoteTable"
+				emptyMessage="No Credit Notes found with given criteria"
+				paginator="true" rows="10" rowsPerPageTemplate="5,10,15">
+
+				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="Search all fields:" />
+						<p:inputText id="globalFilter" onkeyup="creditNoteTable.filter()"
+							style="width:150px" />
+					</p:outputPanel>
+				</f:facet>
+
+				<p:column id="creditNoteNum"
+					filterBy="#{creditNote.creditNoteNumber}"
+					headerText="Credit Note #" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{creditNote.creditNoteNumber}" />
+				</p:column>
+
+				<p:column id="invoiceNum"
+					filterBy="#{creditNote.invoiceBO.invoiceNumber}"
+					headerText="Invoice #" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{creditNote.invoiceBO.invoiceNumber}" />
+				</p:column>
+
+				<p:column id="customerName"
+					filterBy="#{creditNote.customerBO.customerName}"
+					headerText="Customer Name" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{creditNote.customerBO.customerName}" />
+				</p:column>
+
+				<p:column id="issueDate" filterBy="#{creditNote.issueDate}"
+					headerText="Issue Date" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{creditNote.issueDate}">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="amount" filterBy="#{creditNote.amount}"
+					headerText="Amount" filterMatchMode="contains"
+					style="font-weight:bold;">
+					<h:outputText style="font-weight:normal;"
+						value="#{creditNote.amount}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:column id="action" headerText="Action" style="font-weight:bold;">
+
+					<center>
+						<p:commandButton value="View" id="viewCN"
+							actionListener="#{creditNoteController.viewCreditNote(creditNote)}"
+							icon="ui-icon-extlink" update="#{navigationBean.UPDATE_FORM_ID}"
+							partialSubmit="true" process="@this" />
+					</center>
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+		<p:panel id="cmdPanel">
+			<p:commandButton value="Create Credit Note" id="createCN"
+				actionListener="#{creditNoteController.setupForm}"
+				icon="ui-icon-circle-plus" update="#{navigationBean.UPDATE_FORM_ID}" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

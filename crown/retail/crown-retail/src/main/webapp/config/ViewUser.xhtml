@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>
+				View User "<u>#{crownUserController.currentUser.username}</u>"
+			</h2>
+		</div>
+		<p:separator />
+		<h:panelGrid id="display" columns="2" cellpadding="4">
+
+			<h:outputText value="Username: " />
+			<h:outputText value="#{crownUserController.currentUser.username}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Employee Number: " />
+			<h:outputText value="#{crownUserController.currentUser.employeeNo}"
+				style="font-weight:bold" />
+
+			<h:outputText value="First Name: " />
+			<h:outputText value="#{crownUserController.currentUser.firstName}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Last Name: " />
+			<h:outputText value="#{crownUserController.currentUser.lastName}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Email: " />
+			<h:outputText value="#{crownUserController.currentUser.email}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Address: " />
+			<h:outputText value="#{crownUserController.currentUser.address}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Phone: " />
+			<h:outputText value="#{crownUserController.currentUser.phone}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Mobile Number: " />
+			<h:outputText value="#{crownUserController.currentUser.mobileNumber}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Role: " />
+			<h:outputText value="#{crownUserController.currentUser.roleBO.role}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Designation: " />
+			<h:outputText
+				value="#{crownUserController.currentUser.designationBO.designation}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Department: " />
+			<h:outputText
+				value="#{crownUserController.currentUser.departmentBO.department}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Join Date: " />
+			<h:outputText value="#{crownUserController.currentUser.joinDate}"
+				style="font-weight:bold">
+				<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+			</h:outputText>
+
+			<h:outputText value="Date of Birth: " />
+			<h:outputText value="#{crownUserController.currentUser.dateOfBirth}"
+				style="font-weight:bold">
+				<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+			</h:outputText>
+
+			<h:outputText value="Location: " />
+			<h:outputText
+				value="#{crownUserController.currentUser.locationBO.location}"
+				style="font-weight:bold" />
+
+			<h:outputText value="Status: " />
+			<h:outputText value="#{crownUserController.currentUser.status}"
+				style="font-weight:bold" />
+
+		</h:panelGrid>
+	</p:panel>
+	<p:spacer />
+	<p:panel>
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/CrownUser.xhtml')}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+	</p:panel>
+</ui:composition>

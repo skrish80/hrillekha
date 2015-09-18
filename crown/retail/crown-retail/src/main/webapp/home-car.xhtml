@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<p:panel style="width:100%; height: 60%; vertical-align: middle; ">
+		<!-- HOT KEY FOR USER (SAMPLE) -->
+		<center>
+			<h:panelGrid columns="1">
+				<p:carousel value="#{wholesaleInvoiceMenu.invoiceMenus}"
+					var="invMenu" effect="fade" circular="true"
+					rendered="#{not empty wholesaleInvoiceMenu.invoiceMenus}"
+					headerText="Wholesale" style="width:100%; height:100%"
+					itemStyle="min-width: 130px;min-height:75px; vertical-align: middle;"
+					rows="8">
+					<p:column>
+						<p:panel>
+							<center>
+								<p:commandLink id="invNav"
+									actionListener="#{invoiceControllerFactory.showView(invMenu.nextAction, invMenu.invoiceType)}"
+									update="#{navigationBean.UPDATE_FORM_ID}" process="invNav">
+									<p:graphicImage value="#{invMenu.imageURL}" />
+								</p:commandLink>
+
+								<br />
+								<h:outputText value="#{invMenu.description}" />
+								<br />
+							</center>
+						</p:panel>
+					</p:column>
+				</p:carousel>
+
+				<p:carousel value="#{retailInvoiceMenu.invoiceMenus}" var="rtMenu"
+					effect="fade" circular="true"
+					rendered="#{not empty retailInvoiceMenu.invoiceMenus}"
+					headerText="Retail" style="width:100%; height:100%"
+					itemStyle="min-width: 130px;min-height:75px; vertical-align: middle;"
+					rows="8">
+					<p:column>
+						<p:panel>
+							<center>
+								<p:commandLink id="rtNav"
+									actionListener="#{invoiceControllerFactory.showView(rtMenu.nextAction, rtMenu.invoiceType)}"
+									update="#{navigationBean.UPDATE_FORM_ID}" process="rtNav">
+									<p:graphicImage value="#{rtMenu.imageURL}" />
+								</p:commandLink>
+
+								<br />
+								<h:outputText value="#{rtMenu.description}" />
+								<br />
+							</center>
+						</p:panel>
+					</p:column>
+				</p:carousel>
+
+				<p:carousel value="#{configMenu.configMenus}" var="confMenu"
+					effect="fade" circular="true"
+					rendered="#{not empty configMenu.configMenus}"
+					headerText="Settings" style="width:100%; height:100%"
+					itemStyle="min-width: 130px;min-height:75px; vertical-align: middle;align:center;"
+					rows="8">
+					<center>
+					<p:column>
+						<p:panel>
+							<center>
+								<p:commandLink
+									actionListener="#{hotKeyController.showView(confMenu.linkURL)}"
+									update="#{navigationBean.UPDATE_FORM_ID}" process="@this">
+									<p:graphicImage value="#{confMenu.imageURL}" />
+								</p:commandLink>
+								<br />
+								<h:outputText value="#{confMenu.description}" />
+								<br />
+							</center>
+						</p:panel>
+					</p:column></center>
+				</p:carousel>
+
+				<p:carousel value="#{stockMenu.stockMenus}" var="stkMenu"
+					effect="fade" circular="true"
+					rendered="#{not empty stockMenu.stockMenus}" headerText="Stock"
+					style="width:100%; height:100%"
+					itemStyle="min-width: 130px;min-height:75px; vertical-align: middle;"
+					rows="8">
+					<p:column>
+						<p:panel>
+							<center>
+								<p:commandLink id="stkNav"
+									actionListener="#{hotKeyController.showView(stkMenu.linkURL)}"
+									update="#{navigationBean.UPDATE_FORM_ID}">
+									<p:graphicImage value="#{stkMenu.imageURL}" />
+								</p:commandLink>
+								<br />
+								<h:outputText value="#{stkMenu.description}" />
+								<br />
+							</center>
+						</p:panel>
+					</p:column>
+				</p:carousel>
+			</h:panelGrid>
+
+			<h:outputText
+				value="Sorry,	You don't have rights to access the application"
+				style="font: Verdana; font-style: italic; color: #FF0000; font-weight: bolder;"
+				rendered="#{empty stockMenu.stockMenus and empty configMenu.configMenus and empty invoiceMenu.invoiceMenus}" />
+		</center>
+	</p:panel>
+
+</ui:composition>
+

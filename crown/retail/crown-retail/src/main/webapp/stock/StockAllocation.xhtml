@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Stock Allocation</h2>
+		</div>
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Allocate Stock" icon="ui-icon-circle-plus"
+				action="#{stockAllocationController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="stockAllocations" var="stockAllocationBO"
+			value="#{stockAllocationController.stockAllocationBOs}"
+			widgetVar="stockAllocationBOTable"
+			emptyMessage="No Stolen Stock found with given criteria"
+			rowKey="#{stockAllocationBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter"
+						onkeyup="stockAllocationBOTable.filter()" style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="entity" filterBy="#{stockAllocationBO.entityBO.entity}"
+				headerText="Entity" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockAllocationBO.entityBO.entity}" />
+			</p:column>
+
+			<p:column id="itemName"
+				filterBy="#{stockAllocationBO.itemBO.itemName}"
+				headerText="Item Name" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockAllocationBO.itemBO.itemName}" />
+			</p:column>
+
+			<p:column id="allocatedType"
+				filterBy="#{stockAllocationBO.allocationTypeBO}"
+				headerText="Allocation Type" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockAllocationBO.allocationTypeBO}" />
+			</p:column>
+
+			<p:column id="allocatedQty"
+				filterBy="#{stockAllocationBO.allocatedQty}"
+				headerText="Allocated Qty" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockAllocationBO.allocatedQty}" />
+			</p:column>
+
+			<p:column id="allocatedDate"
+				filterBy="#{stockAllocationBO.allocatedDate}"
+				headerText="Allocated Date" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockAllocationBO.allocatedDate}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="releasedDate"
+				filterBy="#{stockAllocationBO.releasedDate}"
+				headerText="Released Date" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockAllocationBO.releasedDate}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</h:outputText>
+			</p:column>
+
+			<p:column id="state"
+				filterBy="#{stockAllocationBO.allocationStateBO}" headerText="State"
+				filterMatchMode="contains" style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{stockAllocationBO.allocationStateBO}" />
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:splitButton value="Execute" icon="ui-icon-wrench">
+						<p:menuitem value="Release"
+							action="#{stockAllocationController.release(stockAllocationBO)}"
+							icon="ui-icon-close"
+							onstart="return confirm('Are you sure you want to release #{stockAllocationBO.allocationCode}?')"
+							rendered="#{empty stockAllocationBO.releasedDate}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+						<p:separator />
+						<p:menuitem value="View" icon="ui-icon-search"
+							action="#{stockAllocationController.view(stockAllocationBO)}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+					</p:splitButton>
+				</center>
+			</p:column>
+		</p:dataTable>
+
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Allocate Stock" icon="ui-icon-circle-plus"
+				action="#{stockAllocationController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

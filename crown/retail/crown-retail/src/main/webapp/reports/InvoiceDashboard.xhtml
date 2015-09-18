@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Invoice Dashboard</h2>
+		</div>
+		<p:separator />
+		<h:panelGrid columns="2">
+			<p:panel>
+				<p:chart type="pie" id="rtPmt" model="#{reportsController.retailInvPmtData}"
+					legendPosition="e" title="Retail Payment" showDataLabels="true"
+					style="font-weight:bold;width:400px;height:300px" sliceMargin="5" />
+			</p:panel>
+			<p:panel>
+				<p:chart type="pie" id="rtStt" model="#{reportsController.retailInvSttData}"
+					legendPosition="e" title="Retail State" showDataLabels="true"
+					style="font-weight:bold;width:400px;height:300px" sliceMargin="5" />
+			</p:panel>
+			<p:panel>
+				<p:chart type="pie" id="wsPmt"
+					model="#{reportsController.wholesaleInvPmtData}" legendPosition="e"
+					title="Wholesale Payment" showDataLabels="true"
+					style="font-weight:bold;width:400px;height:300px" sliceMargin="5" />
+			</p:panel>
+			<p:panel>
+				<p:chart type="pie" id="wsStt"
+					model="#{reportsController.wholesaleInvSttData}" legendPosition="e"
+					title="Wholesale State" showDataLabels="true"
+					style="font-weight:bold;width:400px;height:300px" sliceMargin="5" />
+			</p:panel>
+		</h:panelGrid>
+	</p:panel>
+</ui:composition>

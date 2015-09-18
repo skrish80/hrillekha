@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+	<p:panel>
+		<div class="visual-block">
+			<h2>Item Brands</h2>
+		</div>
+		<p:separator />
+
+		<p:panel>
+			<p:commandButton value="Add Item Brand" icon="ui-icon-circle-plus"
+				action="#{itemBrandController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+
+		<p:dataTable id="brands" var="brandBO"
+			value="#{itemBrandController.brandBOs}" widgetVar="brandBOTable"
+			emptyMessage="No Item Brands found with given criteria"
+			rowKey="#{brandBO.id}" paginator="true" rows="10"
+			rowsPerPageTemplate="5,10,15">
+
+			<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="brandBOTable.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+			</f:facet>
+
+			<p:column id="brandName" filterBy="#{brandBO.itemBrand}"
+				headerText="Brand Name" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{brandBO.itemBrand}" />
+			</p:column>
+
+			<p:column id="desc" filterBy="#{brandBO.description}"
+				headerText="Description" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{brandBO.description}" />
+			</p:column>
+
+			<p:column id="action" headerText="Action" style="font-weight:bold;">
+				<center>
+					<p:splitButton value="Edit"
+						action="#{itemBrandController.setupForm(brandBO)}"
+						icon="ui-icon-arrowrefresh-1-w"
+						update="#{navigationBean.UPDATE_FORM_ID}">
+						<p:menuitem value="View" icon="ui-icon-search"
+							action="#{itemBrandController.view(brandBO)}"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+						<p:separator />
+						<p:menuitem value="Delete" icon="ui-icon-close"
+							action="#{itemBrandController.delete(brandBO)}"
+							onstart="return confirm('Are you sure you want to delete #{brandBO.itemBrand}?')"
+							update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+					</p:splitButton>
+				</center>
+			</p:column>
+		</p:dataTable>
+		
+		<p:spacer />
+		<p:panel>
+			<p:commandButton value="Add Item Brand" icon="ui-icon-circle-plus"
+				action="#{itemBrandController.setupForm(true)}"
+				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
+		</p:panel>
+	</p:panel>
+</ui:composition>

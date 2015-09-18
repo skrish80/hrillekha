@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:sm="http://jboss.org/seam/faces">
+	<p:panel>
+		<p:growl id="messages" showDetail="true" escape="false"
+			autoUpdate="true" />
+		<div class="visual-block">
+			<h2>Stock Movement Management</h2>
+		</div>
+		<p:panel id="panel"
+			header="#{stockMovementController.currentMovement.isNew() ? 'Create Stock Movement' : 'Update Stock Movement'}"
+			style="margin-bottom:10px;">
+			<h:panelGrid columns="3">
+
+				<p:outputLabel for="moveReceiptID" value="Move Receipt ID: "
+					rendered="${!stockMovementController.currentMovement.isNew()}" />
+				<p:inputText id="moveReceiptID"
+					value="#{stockMovementController.currentMovement.moveReceiptID}"
+					required="true" label="Move Receipt ID" readonly="true"
+					rendered="${!stockMovementController.currentMovement.isNew()}">
+				</p:inputText>
+				<p:message for="moveReceiptID"
+					rendered="${!stockMovementController.currentMovement.isNew()}" />
+
+				<p:outputLabel for="fromWH" value="From Warehouse:" />
+				<p:selectOneMenu id="fromWH"
+					value="#{stockMovementController.currentMovement.fromWarehouse}"
+					required="true" label="From Warehouse"
+					disabled="${!stockMovementController.currentMovement.isNew()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="wh"
+						value="#{stockMovementController.warehouseBOs}"
+						itemValue="#{wh.id}" itemLabel="#{wh.warehouseName}" />
+				</p:selectOneMenu>
+				<p:message for="fromWH" />
+
+				<p:outputLabel for="moveDate" value="Move Date: "
+					rendered="${!stockMovementController.currentMovement.isNew()}" />
+				<p:inputText id="moveDate"
+					value="#{stockMovementController.currentMovement.moveDate}"
+					label="Move Date" readonly="true"
+					rendered="${!stockMovementController.currentMovement.isNew()}">
+					<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+				</p:inputText>
+				<p:message for="moveDate"
+					rendered="${!stockMovementController.currentMovement.isNew()}" />
+
+				<p:outputLabel for="toWH" value="To Warehouse:" />
+				<p:selectOneMenu id="toWH"
+					value="#{stockMovementController.currentMovement.toWarehouse}"
+					required="true" label="To Warehouse"
+					disabled="${!stockMovementController.currentMovement.isNew()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="house"
+						value="#{stockMovementController.warehouseBOs}"
+						itemValue="#{house.id}" itemLabel="#{house.warehouseName}" />
+				</p:selectOneMenu>
+				<p:message for="toWH" />
+
+				<p:outputLabel for="comments" value="Comments: " />
+				<p:inputTextarea id="comments"
+					value="#{stockMovementController.currentMovement.comments}"
+					label="Comments" />
+				<p:message for="comments" />
+
+				<p:outputLabel for="moveStatus" value="Move Status:" />
+				<p:selectOneMenu id="moveStatus"
+					value="#{stockMovementController.currentMovement.moveStatus}"
+					required="true" label="Move Status">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="mvSt"
+						value="#{stockMovementController.moveStatusBOs}"
+						itemValue="#{mvSt.moveStatusID}" />
+					<p:ajax listener="#{stockMovementController.doNothing}"
+						update="moveItems" />
+				</p:selectOneMenu>
+				<p:message for="moveStatus" />
+			</h:panelGrid>
+			<div class="visual-block">
+				<h3 class="title ui-widget-header ui-corner-all">Movement Items</h3>
+			</div>
+			<p:spacer />
+			<p:commandButton title="Check Availability"
+				value="Check Availability" update="availableStockPanel @parent"
+				action="#{stockMovementController.checkWarehouseItemsAvailability}"
+				rendered="#{stockMovementController.currentMovement.isNew()}" />
+			<p:commandButton title="Add Items" value="Add Items"
+				update="moveItems @parent"
+				action="#{stockMovementController.reinitMoveItem}"
+				rendered="#{stockMovementController.currentMovement.isNew()}" />
+
+			<p:hotkey bind="ctrl+shift+c" update="availableStockPanel @parent"
+				actionListener="#{stockMovementController.checkWarehouseItemsAvailability}" />
+			<p:hotkey bind="ctrl+shift+a" update="@parent"
+				action="#{stockMovementController.reinitMoveItem}" />
+			<p:spacer />
+			<p:separator />
+
+			<p:outputPanel id="moveItems">
+				<p:dataTable id="stockMovementItems" var="moveItem"
+					emptyMessage="No Movement Items found..."
+					value="#{stockMovementController.currentMovement.stockMovementItems}"
+					widgetVar="moveItemTable">
+
+					<p:column headerText="Item">
+						<p:selectOneMenu id="itemBO" required="true" label="Item"
+							value="#{moveItem.item}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="itm"
+								value="#{stockMovementController.itemBOs}" itemValue="#{itm.id}"
+								itemLabel="#{itm.itemName}" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Move Type">
+						<p:selectOneMenu id="moveType" required="true" label="Move Type"
+							value="#{moveItem.allocationType}">
+							<f:selectItem itemLabel="Select One" itemValue="" />
+							<f:selectItems var="mvType"
+								value="#{stockMovementController.typeBOs}"
+								itemValue="#{mvType.allocationTypeID}" />
+						</p:selectOneMenu>
+					</p:column>
+
+					<p:column headerText="Moved Qty">
+						<p:inputText id="movedQty" required="true" label="Moved Qty"
+							onkeypress="validateInteger(event)" maxlength="5"
+							readonly="${!stockMovementController.currentMovement.isNew()}"
+							value="#{moveItem.movedQty}" />
+					</p:column>
+
+					<p:column headerText="Received Qty">
+						<p:inputText id="receivedQty" required="true" label="Received Qty"
+							onkeypress="validateInteger(event)" maxlength="5"
+							readonly="${!stockMovementController.canReceive()}"
+							value="#{moveItem.receivedQty}" />
+					</p:column>
+
+					<p:column headerText="Returned Qty">
+						<p:inputText id="returnedQty" required="true" label="Returned Qty"
+							onkeypress="validateInteger(event)" maxlength="5"
+							readonly="${!stockMovementController.canReturn()}"
+							value="#{moveItem.returnedQty}" />
+					</p:column>
+					<p:column headerText="Action">
+						<center>
+							<p:commandButton icon="ui-icon-closethick"
+								update=":includeForm:moveItems" process=":includeForm:moveItems"
+								action="#{stockMovementController.removeMoveItem(moveItem)}" />
+
+						</center>
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+			<p:spacer />
+
+			<p:outputPanel
+				rendered="#{stockMovementController.currentMovement.isNew()}">
+				<h3 class="title ui-widget-header ui-corner-all">Available
+					Warehouse Stock</h3>
+			</p:outputPanel>
+
+			<p:separator
+				rendered="#{stockMovementController.currentMovement.isNew()}" />
+			<p:outputPanel id="availableStockPanel" closable="true"
+				rendered="#{stockMovementController.currentMovement.isNew()}">
+				<p:dataTable id="availableStock" var="stock"
+					emptyMessage="No Warehouse Stock found..."
+					value="#{stockMovementController.warehouseStockBOs}">
+					<p:column headerText="Item">
+						<h:outputText value="#{stock.itemBO.itemName}" />
+					</p:column>
+					<p:column headerText="Available Item (Pieces) Qty">
+						<h:outputText value="#{stock.itemQty}" />
+					</p:column>
+					<p:column headerText="Available UOM Qty">
+						<h:outputText value="#{stock.uomQty}" />
+					</p:column>
+				</p:dataTable>
+			</p:outputPanel>
+
+			<h:outputText
+				value="Press 'ctrl+shift+c' for 'Check Availability' and 'ctrl+shift+a' for 'Add Items'"
+				style="font-style:italic; font-size: .8em;" />
+		</p:panel>
+
+
+
+		<p:commandButton value="Submit"
+			action="#{stockMovementController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('stock/StockMovement.xhtml')}"
+			value="Cancel" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+	</p:panel>
+</ui:composition>

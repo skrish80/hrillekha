@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="visual-block">
+		<h2>
+			Credit Note For "<u>#{creditNoteController.currentInvoice.invoiceNumber}</u>"
+		</h2>
+	</div>
+
+	<p:growl id="messages" />
+	<p:panel id="creditNotePanel" style="margin-bottom:10px;">
+		<p:separator />
+		<h:panelGrid id="display" columns="2" cellpadding="4" width="100%">
+
+			<p:panel>
+				<h:panelGrid id="display2" columns="2" cellpadding="4">
+
+					<h:outputText value="Invoice #: " />
+					<h:outputText
+						value="#{creditNoteController.currentInvoice.invoiceNumber}"
+						style="font-weight:bold" />
+
+					<h:outputText value="Invoice Date: " />
+					<h:outputText
+						value="#{creditNoteController.currentInvoice.invoiceDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+
+					<h:outputText value="Return Date: " />
+					<h:outputText
+						value="#{creditNoteController.currentInvoice.returnDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+			<p:panel>
+				<h:panelGrid columns="2">
+					<h:outputText value="Status: " />
+					<h:outputText
+						value="#{creditNoteController.currentInvoice.invoiceStateBO.stateName}"
+						style="font-weight:bold" />
+
+					<h:outputText value="Delivery Date: " />
+					<h:outputText
+						value="#{creditNoteController.currentInvoice.deliveryDate}"
+						style="font-weight:bold">
+						<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+					</h:outputText>
+
+					<h:outputText value="Return Amount: " />
+					<h:outputText
+						value="#{creditNoteController.currentInvoice.returnAmount}"
+						style="font-weight:bold">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</h:panelGrid>
+			</p:panel>
+		</h:panelGrid>
+		<p:separator />
+		<p:panel>
+			<h:panelGrid columns="2">
+				<h:outputText value="Existing Credit Notes Amount: " />
+				<h:outputText
+					value="#{creditNoteController.currentInvoice.creditNoteAmount}"
+					style="font-weight:bold">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+			</h:panelGrid>
+		</p:panel>
+		<p:separator />
+		<p:panel>
+			<h:panelGrid columns="3">
+
+				<p:outputLabel value="Amount: " for="amt" />
+				<p:inputText id="amt"
+					value="#{creditNoteController.currentCreditNote.amount}"
+					style="font-weight:bold" readonly="true">
+					<f:convertNumber pattern="#0.00" />
+				</p:inputText>
+				<p:message for="amt" />
+
+				<p:outputLabel value="Remarks: " for="remarks" />
+				<p:inputTextarea escape="false" id="remarks"
+					value="#{creditNoteController.currentCreditNote.remarks}"
+					style="font-weight:bold" required="true" />
+				<p:message for="remarks" />
+			</h:panelGrid>
+		</p:panel>
+		<p:separator />
+	</p:panel>
+
+	<p:panel id="actionPanel">
+		<p:commandButton value="Done"
+			actionListener="#{creditNoteController.save}"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+		<p:commandButton id="cancelInv"
+			actionListener="#{invoiceControllerFactory.showView('CREDIT_NOTE', invoiceControllerFactory.invoiceType)}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" />
+
+	</p:panel>
+</ui:composition>
+

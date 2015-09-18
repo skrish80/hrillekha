@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Export-Package: com.techlords.crown;uses:="javax.persistence,org.junit
+ .runner,org.springframework.beans.factory.annotation,org.springframew
+ ork.context.annotation,org.springframework.orm.jpa,org.springframewor
+ k.test.context,org.springframework.transaction"
+Bundle-Vendor: Techlords
+Bundle-Version: 1.0
+Tool: Bundlor 1.0.0.RELEASE
+Bundle-Name: Crown JPA
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: com.techlords.crown
+Import-Package: javax.persistence,javax.sql,org.hibernate.cache,org.hi
+ bernate.dialect,org.junit.runner,org.springframework.beans.factory.an
+ notation,org.springframework.context.annotation,org.springframework.o
+ rm.jpa,org.springframework.orm.jpa.vendor,org.springframework.test.co
+ ntext,org.springframework.transaction
+
