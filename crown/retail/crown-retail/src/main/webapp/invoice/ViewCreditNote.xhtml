@@ -47,7 +47,7 @@
 				<h:panelGrid columns="2">
 					<h:outputText value="Status: " />
 					<h:outputText
-						value="#{creditNoteController.currentCreditNote.isIssued() ? 'ISSUED' : 'NEW'}"
+						value="${creditNoteController.currentCreditNote.isIssued() ? 'ISSUED' : 'NEW'}"
 						style="font-weight:bold" />
 
 					<h:outputText value="Customer: " />

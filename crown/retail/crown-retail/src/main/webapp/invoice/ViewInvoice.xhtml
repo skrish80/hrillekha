@@ -156,7 +156,7 @@
 			<h:panelGrid columns="2">
 				<h:outputText value="Total Quantity: " />
 				<h:outputText
-					value="#{invoiceCommonController.currentInvoice.getTotalQuantity()}"
+					value="${invoiceCommonController.currentInvoice.getTotalQuantity()}"
 					style="font-weight:bold;font-size: 1.2em;" />
 			</h:panelGrid>
 		</p:panel>
@@ -232,7 +232,7 @@
 			<h:panelGrid columns="2">
 				<h:outputText value="Payment Status: " />
 				<h:outputText
-					value="#{invoiceCommonController.currentInvoice.paymentStatusBO.status.toUpperCase()}"
+					value="${invoiceCommonController.currentInvoice.paymentStatusBO.status.toUpperCase()}"
 					style="font-weight:bold;font-size: 1.2em;" />
 				<h:outputText value="Discount Type: " />
 				<h:outputText
@@ -258,14 +258,14 @@
 
 				<h:outputLabel value="Invoice Amount:" />
 				<h:outputText
-					value="#{invoiceCommonController.currentInvoice.getAmountWithoutTax()}"
+					value="${invoiceCommonController.currentInvoice.getAmountWithoutTax()}"
 					style="font-weight:bold;font-size: 1.2em;">
 					<f:convertNumber pattern="#0.00" />
 				</h:outputText>
 
 				<h:outputLabel value="Total VAT:" />
 				<h:outputText
-					value="#{invoiceCommonController.currentInvoice.getTotalTax()}"
+					value="${invoiceCommonController.currentInvoice.getTotalTax()}"
 					style="font-weight:bold;font-size: 1.2em;">
 					<f:convertNumber pattern="#0.00" />
 				</h:outputText>

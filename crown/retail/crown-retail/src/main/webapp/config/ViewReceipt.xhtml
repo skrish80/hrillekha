@@ -71,7 +71,7 @@
 					style="font-weight:bold;font-size: 1.5em;" />
 				<h:outputText value="Receipt Status " />
 				<h:outputText
-					value="#{receiptController.currentReceipt.isIssued() ? 'ISSUED' : 'NEW'}"
+					value="${receiptController.currentReceipt.isIssued() ? 'ISSUED' : 'NEW'}"
 					style="font-weight:bold;font-size: 1.5em;" />
 			</h:panelGrid>
 		</p:panel>
