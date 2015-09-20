@@ -1,4 +1,4 @@
-﻿/*
+/*
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////DROP DEPENDENT TABLES//////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1067,4 +1067,60 @@ ALTER TABLE purchase_invoice_items
     ADD CONSTRAINT invoice_id_fk FOREIGN KEY (invoice_id) REFERENCES purchase_invoice(invoice_id);
 ALTER TABLE purchase_invoice_items
     ADD CONSTRAINT allocation_type_fk FOREIGN KEY (allocation_type) REFERENCES allocation_type(allocation_type_id);
+    
+/*
+***********************************************************************************************************************
+********************************************** PURCHASE INVOICE PAYMENT ***********************************************
+***********************************************************************************************************************
+*/
+CREATE TABLE purchase_invoice_payment (
+	payment_id		serial NOT NULL,
+	version			bigint NOT NULL default 0,
+	invoice_id		int NOT NULL,
+	payment_mode		int NOT NULL,
+	bank_id			int, /*This is not a foreign key to bank (in case of cash payment)*/
+	draft_number		character varying(25), /*Cheque or Credit Card Number*/
+	cheque_date		date DEFAULT CURRENT_DATE,
+	amount			double precision, 
+	remarks			text,
+	PRIMARY KEY		(payment_id)
+);
 
+ALTER TABLE purchase_invoice_payment
+    ADD CONSTRAINT pur_invoice_id_fk FOREIGN KEY (invoice_id) REFERENCES purchase_invoice(invoice_id);
+ALTER TABLE purchase_invoice_payment
+    ADD CONSTRAINT pur_invoice_pmt_fk FOREIGN KEY (payment_mode) REFERENCES payment_mode(payment_mode_id);
+ALTER TABLE purchase_invoice_payment ADD CONSTRAINT pur_pmt_bank_fk FOREIGN KEY (bank_id) REFERENCES bank (bank_id);
+
+/*
+***********************************************************************************************************************
+**************************************** EXPENSE ALLOCATION ***********************************************************
+***********************************************************************************************************************
+*/
+CREATE TABLE expense_allocation (
+	allocation_id	serial NOT NULL,
+	version			bigint NOT NULL default 0,
+	allocation_date	date DEFAULT CURRENT_DATE,
+	allocation_amount double precision,
+	is_open			boolean default TRUE,
+	valid_till		date,
+	remarks			text,
+	PRIMARY KEY		(allocation_id)
+);
+/*
+***********************************************************************************************************************
+**************************************** EXPENSES *********************************************************************
+***********************************************************************************************************************
+*/
+CREATE TABLE expense (
+	expense_id		serial NOT NULL,
+	version			bigint NOT NULL default 0,
+	allocation_id	int NOT NULL,
+	expense_amount	double precision,
+	voucher_number	character varying(25), /*Cheque or Credit Card Number*/
+	expense_date	date DEFAULT CURRENT_DATE,
+	remarks			text,
+	PRIMARY KEY		(expense_id)
+);
+ALTER TABLE expense
+    ADD CONSTRAINT alloc_id_fk FOREIGN KEY (allocation_id) REFERENCES expense_allocation(allocation_id);
