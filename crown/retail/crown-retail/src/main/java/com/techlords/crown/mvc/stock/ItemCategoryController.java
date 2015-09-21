@@ -59,6 +59,11 @@ public class ItemCategoryController extends CrownModelController {
 				currentCategory.getItemCategory()) ? AVAILABLE : UNAVAILABLE);
 	}
 
+	public void checkUniqueCategoryCode() {
+		setFieldAvailability(CrownMVCHelper.checkUniqueness("category_code",
+				currentCategory.getCategoryCode()) ? AVAILABLE : UNAVAILABLE);
+	}
+
 	public String save() {
 		return currentCategory.isNew() ? create() : update();
 	}

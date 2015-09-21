@@ -20,8 +20,7 @@ import com.techlords.crown.service.ItemService;
 @ManagedBean
 @SessionScoped
 public class ItemBrandController extends CrownModelController {
-	private static final Logger LOGGER = Logger
-			.getLogger(ItemBrandController.class);
+	private static final Logger LOGGER = Logger.getLogger(ItemBrandController.class);
 
 	private final List<ItemBrandBO> brandBOs = new ArrayList<ItemBrandBO>();
 	private ItemBrandBO currentBrand;
@@ -33,8 +32,7 @@ public class ItemBrandController extends CrownModelController {
 		if (FacesUtil.isRenderPhase() && !isListLoaded) {
 			brandBOs.clear();
 			setCurrentBrand(null);
-			ItemService service = CrownServiceLocator.INSTANCE
-					.getCrownService(ItemService.class);
+			ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 			brandBOs.addAll(service.findAllItemBrands());
 			isListLoaded = true;
 		}
@@ -58,18 +56,21 @@ public class ItemBrandController extends CrownModelController {
 				currentBrand.getItemBrand()) ? AVAILABLE : UNAVAILABLE);
 	}
 
+	public void checkUniqueBrandCode() {
+		setFieldAvailability(CrownMVCHelper.checkUniqueness("brand_code",
+				currentBrand.getBrandCode()) ? AVAILABLE : UNAVAILABLE);
+	}
+
 	public String save() {
 		return currentBrand.isNew() ? create() : update();
 	}
 
 	public String create() {
 
-		ItemService service = CrownServiceLocator.INSTANCE
-				.getCrownService(ItemService.class);
+		ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 		try {
-			service.createItemBrand(currentBrand, CrownUserDetailsService
-					.getCurrentUser().getId());
-		} catch(Exception e) {
+			service.createItemBrand(currentBrand, CrownUserDetailsService.getCurrentUser().getId());
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
 			return null;
@@ -80,12 +81,10 @@ public class ItemBrandController extends CrownModelController {
 
 	public String update() {
 
-		ItemService service = CrownServiceLocator.INSTANCE
-				.getCrownService(ItemService.class);
+		ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 		try {
-			service.updateItemBrand(currentBrand, CrownUserDetailsService
-					.getCurrentUser().getId());
-		} catch(Exception e) {
+			service.updateItemBrand(currentBrand, CrownUserDetailsService.getCurrentUser().getId());
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
 			return null;
@@ -95,12 +94,10 @@ public class ItemBrandController extends CrownModelController {
 	}
 
 	public String delete(ItemBrandBO bo) {
-		ItemService service = CrownServiceLocator.INSTANCE
-				.getCrownService(ItemService.class);
+		ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 		try {
-			service.deleteItemBrand(bo, CrownUserDetailsService
-					.getCurrentUser().getId());
-		} catch(Exception e) {
+			service.deleteItemBrand(bo, CrownUserDetailsService.getCurrentUser().getId());
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
 			return null;

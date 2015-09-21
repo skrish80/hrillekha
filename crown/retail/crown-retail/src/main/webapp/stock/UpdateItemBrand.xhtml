@@ -32,6 +32,22 @@
 					style="font-weight:bold; color:#{itemBrandController.fieldAvailability=='Available' ? 'green' : 'red'};" />
 				<p:spacer />
 
+				<p:outputLabel for="brandCode" value="Brand Code: " />
+				<p:inputText id="brandCode"
+					value="#{itemBrandController.currentBrand.brandCode}"
+					required="true" label="Brand Code"
+					readonly="${!itemBrandController.currentBrand.isNew()}">
+					<p:ajax event="blur" update="validateBrandCode"
+						listener="#{itemBrandController.checkUniqueBrandCode}" />
+				</p:inputText>
+				<p:message for="brandCode" />
+
+				<p:spacer />
+				<h:outputText id="validateBrandCode"
+					value="#{itemBrandController.fieldAvailability}"
+					style="font-weight:bold; color:#{itemBrandController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
+
 				<p:outputLabel for="desc" value="Description: " />
 				<p:inputTextarea id="desc"
 					value="#{itemBrandController.currentBrand.description}"

@@ -89,8 +89,8 @@ insert into allocation_state (state,description, version) values ('DELIVERED','S
 insert into allocation_state (state,description, version) values ('STOLEN_DAMAGED','Stock Stolen or Damaged', 1);
 
 /*CUSTOMER TYPE*/
-insert into customer_type (customer_type,description, version) values ('Internal','Internal Customer', 1);
-insert into customer_type (customer_type,description, version) values ('External','External Customer', 1);
+insert into customer_type (customer_type,description, version) values ('Privileged','Privileged Customer', 1);
+insert into customer_type (customer_type,description, version) values ('Non-Privileged','Non-Privileged Customer', 1);
 
 /*DISCOUNT YTPE*/
 insert into discount_type (discount,description, version) values ('Percentage','Percentage', 1);

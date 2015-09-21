@@ -34,6 +34,9 @@ public class ItemBrand implements Serializable {
 	@Column(name = "brand_name", nullable = false, length = 25)
 	private String brandName;
 
+	@Column(name = "brand_code", nullable = false, length = 25)
+	private String brandCode;
+
 	@Column(name = "description", length = 50)
 	private String description;
 
@@ -99,6 +102,20 @@ public class ItemBrand implements Serializable {
 
 	public final void setVersion(long version) {
 		this.version = version;
+	}
+
+	/**
+	 * @return the brandCode
+	 */
+	public String getBrandCode() {
+		return brandCode;
+	}
+
+	/**
+	 * @param brandCode the brandCode to set
+	 */
+	public void setBrandCode(String brandCode) {
+		this.brandCode = brandCode;
 	}
 
 }

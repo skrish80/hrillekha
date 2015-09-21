@@ -24,6 +24,7 @@ public final class ItemHelper {
 		bo.setId(category.getCategoryId());
 		bo.setVersion(category.getVersion());
 		bo.setItemCategory(category.getCategoryName());
+		bo.setCategoryCode(category.getCategoryCode());
 		bo.setDescription(category.getDescription());
 		return bo;
 	}
@@ -38,6 +39,7 @@ public final class ItemHelper {
 				: toEdit;
 		category.setVersion(bo.getVersion());
 		category.setCategoryName(bo.getItemCategory());
+		category.setCategoryCode(bo.getCategoryCode());
 		category.setDescription(bo.getDescription());
 		return category;
 	}
@@ -46,6 +48,7 @@ public final class ItemHelper {
 		final ItemBrandBO bo = new ItemBrandBO();
 		bo.setId(brand.getBrandId());
 		bo.setItemBrand(brand.getBrandName());
+		bo.setBrandCode(brand.getBrandCode());
 		bo.setDescription(brand.getDescription());
 		bo.setVersion(brand.getVersion());
 		return bo;
@@ -58,6 +61,7 @@ public final class ItemHelper {
 	public ItemBrand createItemBrand(ItemBrandBO bo, ItemBrand toEdit) {
 		final ItemBrand brand = (toEdit == null) ? new ItemBrand() : toEdit;
 		brand.setBrandName(bo.getItemBrand());
+		brand.setBrandCode(bo.getBrandCode());
 		brand.setDescription(bo.getDescription());
 		brand.setVersion(bo.getVersion());
 		return brand;

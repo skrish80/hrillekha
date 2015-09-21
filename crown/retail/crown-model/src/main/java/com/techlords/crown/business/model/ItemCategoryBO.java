@@ -14,6 +14,10 @@ public class ItemCategoryBO extends AppModel {
 	@NotEmpty(message = "Category cannot be empty")
 	@Size(min = 1, max = 25, message = "Category shall be from 1 to 25 chars")
 	private String itemCategory;
+
+	@NotEmpty(message = "Category code cannot be empty")
+	@Size(min = 1, max = 25, message = "Category code shall be from 1 to 25 chars")
+	private String categoryCode;
 	@Size(min=5, max=50, message="Description shall be from 5 to 50 chars")
 	private String description;
 	@NotNull(message = "Select a Status")
@@ -41,5 +45,19 @@ public class ItemCategoryBO extends AppModel {
 
 	public void setStatus(StatusBO status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the categoryCode
+	 */
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	/**
+	 * @param categoryCode the categoryCode to set
+	 */
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
 	}
 }

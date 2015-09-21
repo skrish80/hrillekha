@@ -234,6 +234,7 @@ CREATE TABLE item_category (
 	category_id		serial NOT NULL,
 	version			bigint NOT NULL default 0,
 	category_name		character varying(25) UNIQUE NOT NULL,
+    category_code		character varying(12) UNIQUE NOT NULL,
 	description		character varying(50),
 	status			int NOT NULL,
 	PRIMARY KEY		(category_id)
@@ -420,12 +421,8 @@ CREATE TABLE crown_user (
 	first_name       	character varying(32) NOT NULL,
 	last_name        	character varying(32) NOT NULL,
 	email            	character varying(64) UNIQUE NOT NULL,
-	designation		int,
-	department		int,
 	role			int,
-	location		int,
 	address			text,
-	phone			character varying(25),
 	mobile			character varying(25),
 	date_of_birth		date NOT NULL,
 	joining_date		date,
@@ -433,12 +430,6 @@ CREATE TABLE crown_user (
 	PRIMARY KEY		(user_id)
 );
 
-ALTER TABLE crown_user
-    ADD CONSTRAINT user_dept_fk FOREIGN KEY (department) REFERENCES department(department_id);
-ALTER TABLE crown_user
-    ADD CONSTRAINT user_desgn_fk FOREIGN KEY (designation) REFERENCES designation(designation_id);
-ALTER TABLE crown_user
-    ADD CONSTRAINT user_location_fk FOREIGN KEY (location) REFERENCES location(location_id);
 ALTER TABLE crown_user
     ADD CONSTRAINT user_role_fk FOREIGN KEY (role) REFERENCES role(role_id);
 ALTER TABLE crown_user
@@ -487,14 +478,8 @@ CREATE TABLE company (
 	location		int NOT NULL,
 	address			text,
 	phone			character varying(25),
-	fax			character varying(25),
-	poc			character varying(25),
 	status			int,
-	sbn			character varying(25) UNIQUE NOT NULL,
 	tin			character varying(25),
-	incorporation		character varying(25),
-	parent_licence		character varying(25),
-	child_licence		character varying(25),
 	PRIMARY KEY		(company_id)
 );
 
@@ -507,7 +492,7 @@ ALTER TABLE company
 
 /*
 ***********************************************************************************************************************
-********************************************** CUSTOMER ***************************************************************
+******************************************** RETAIL CUSTOMER **********************************************************
 ***********************************************************************************************************************
 */
 CREATE TABLE customer (
@@ -515,13 +500,34 @@ CREATE TABLE customer (
 	version			bigint NOT NULL default 0,
 	customer_code		character varying(25) UNIQUE NOT NULL,
 	customer_name		character varying(50),
-	customer_type		int,
-	location		int,
+	customer_type		int, /*Privilege or Non-Privilege*/
 	address			text,
 	phone			character varying(50),
-	fax			character varying(50),
+	remarks			text,
+	status			int,
+	PRIMARY KEY		(customer_id)
+);
+
+ALTER TABLE customer
+    ADD CONSTRAINT customer_type_fk FOREIGN KEY (customer_type) REFERENCES customer_type(customer_type_id);
+ALTER TABLE only customer
+    ADD CONSTRAINT status_fk FOREIGN KEY (status) REFERENCES status(status_id);
+
+/*
+***********************************************************************************************************************
+********************************************** WHOLESALE CUSTOMER *****************************************************
+***********************************************************************************************************************
+*/
+CREATE TABLE ws_customer (
+	customer_id		serial NOT NULL,
+	version			bigint NOT NULL default 0,
+	customer_code		character varying(25) UNIQUE NOT NULL,
+	customer_name		character varying(50),
+	customer_type		int,
+	address			text,
+	phone			character varying(50),
 	POC			character varying(50),
-	SBN			character varying(25) UNIQUE NOT NULL,
+	TIN			character varying(25) UNIQUE NOT NULL,
 	remarks			text,
 	status			int,
 	credit_limit		double precision,
@@ -529,12 +535,10 @@ CREATE TABLE customer (
 	PRIMARY KEY		(customer_id)
 );
 
-ALTER TABLE customer
-    ADD CONSTRAINT customer_type_fk FOREIGN KEY (customer_type) REFERENCES customer_type(customer_type_id);
-ALTER TABLE only customer
-    ADD CONSTRAINT location_fk FOREIGN KEY (location) REFERENCES location(location_id);
-ALTER TABLE only customer
-    ADD CONSTRAINT status_fk FOREIGN KEY (status) REFERENCES status(status_id);
+ALTER TABLE ws_customer
+    ADD CONSTRAINT ws_customer_type_fk FOREIGN KEY (customer_type) REFERENCES customer_type(customer_type_id);
+ALTER TABLE only ws_customer
+    ADD CONSTRAINT ws_status_fk FOREIGN KEY (status) REFERENCES status(status_id);
 
 /*
 ***********************************************************************************************************************
@@ -996,9 +1000,8 @@ CREATE TABLE supplier (
 	supplier_name		character varying(50),
 	address			text,
 	phone			character varying(50),
-	fax			character varying(50),
 	POC			character varying(50),
-	SBN			character varying(25),
+	TIN			character varying(25),
 	remarks			text,
 	status			int,
 	PRIMARY KEY		(supplier_id)
@@ -1028,7 +1031,6 @@ CREATE TABLE purchase_invoice (
 	received_by		int,
 	company			int,
 	terms_conditions	text,
-	bill_of_entry		character varying(25),
 	goods_receipt_number	character varying(50),
 	PRIMARY KEY		(invoice_id)
 );

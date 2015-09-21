@@ -40,6 +40,12 @@
 				<h:outputText style="font-weight:normal;"
 					value="#{categoryBO.itemCategory}" />
 			</p:column>
+			<p:column id="categoryCode" filterBy="#{categoryBO.categoryCode}"
+				headerText="Category Name" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{categoryBO.categoryCode}" />
+			</p:column>
 
 			<p:column id="desc" filterBy="#{categoryBO.description}"
 				headerText="Description" filterMatchMode="contains"

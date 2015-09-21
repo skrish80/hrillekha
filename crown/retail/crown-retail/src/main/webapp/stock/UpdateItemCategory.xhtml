@@ -31,6 +31,22 @@
 					value="#{itemCategoryController.fieldAvailability}"
 					style="font-weight:bold; color:#{itemCategoryController.fieldAvailability=='Available' ? 'green' : 'red'};" />
 				<p:spacer />
+				
+				<p:outputLabel for="categoryCode" value="Category Code" />
+				<p:inputText id="categoryCode"
+					value="#{itemCategoryController.currentCategory.categoryCode}"
+					required="true" label="Category Code"
+					readonly="${!itemCategoryController.currentCategory.isNew()}">
+					<p:ajax event="blur" update="validateCategoryCode"
+						listener="#{itemCategoryController.checkUniqueCategoryCode}" />
+				</p:inputText>
+				<p:message for="itemCategory" />
+
+				<p:spacer />
+				<h:outputText id="validateCategoryCode"
+					value="#{itemCategoryController.fieldAvailability}"
+					style="font-weight:bold; color:#{itemCategoryController.fieldAvailability=='Available' ? 'green' : 'red'};" />
+				<p:spacer />
 
 				<p:outputLabel for="desc" value="Description: " />
 				<p:inputTextarea id="desc"

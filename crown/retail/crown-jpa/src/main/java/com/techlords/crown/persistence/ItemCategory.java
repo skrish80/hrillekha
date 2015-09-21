@@ -33,6 +33,9 @@ public class ItemCategory implements Serializable {
 
 	@Column(name = "category_name", nullable = false, length = 10)
 	private String categoryName;
+	
+	@Column(name = "category_code", nullable = false, length = 10)
+	private String categoryCode;
 
 	@Column(name = "description", length = 50)
 	private String description;
@@ -99,6 +102,20 @@ public class ItemCategory implements Serializable {
 
 	public final void setVersion(long version) {
 		this.version = version;
+	}
+
+	/**
+	 * @return the categoryCode
+	 */
+	public String getCategoryCode() {
+		return categoryCode;
+	}
+
+	/**
+	 * @param categoryCode the categoryCode to set
+	 */
+	public void setCategoryCode(String categoryCode) {
+		this.categoryCode = categoryCode;
 	}
 
 }

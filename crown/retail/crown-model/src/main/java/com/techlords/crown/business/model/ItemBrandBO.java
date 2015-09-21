@@ -14,6 +14,7 @@ public class ItemBrandBO extends AppModel {
 	@NotEmpty(message = "Brand cannot be empty")
 	@Size(min = 1, max = 25, message = "Brand shall be from 1 to 25 chars")
 	private String itemBrand;
+	private String brandCode;
 	private String description;
 	@NotNull(message = "Select a Status")
 	private StatusBO status;
@@ -40,5 +41,19 @@ public class ItemBrandBO extends AppModel {
 
 	public void setStatus(StatusBO status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the brandCode
+	 */
+	public String getBrandCode() {
+		return brandCode;
+	}
+
+	/**
+	 * @param brandCode the brandCode to set
+	 */
+	public void setBrandCode(String brandCode) {
+		this.brandCode = brandCode;
 	}
 }
