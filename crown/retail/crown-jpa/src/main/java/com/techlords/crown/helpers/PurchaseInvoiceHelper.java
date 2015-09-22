@@ -32,9 +32,8 @@ public final class PurchaseInvoiceHelper {
 		bo.setSupplierName(supplier.getSupplierName());
 		bo.setAddress(supplier.getAddress());
 		bo.setPhone(supplier.getPhone());
-		bo.setFax(supplier.getFax());
 		bo.setPoc(supplier.getPoc());
-		bo.setSbn(supplier.getSbn());
+		bo.setTin(supplier.getTin());
 		bo.setRemarks(supplier.getRemarks());
 
 		bo.setStatusBO(StatusBO.valueOf(supplier.getStatusBean().getStatusId()));
@@ -52,9 +51,8 @@ public final class PurchaseInvoiceHelper {
 		supplier.setSupplierName(bo.getSupplierName());
 		supplier.setAddress(bo.getAddress());
 		supplier.setPhone(bo.getPhone());
-		supplier.setFax(bo.getFax());
 		supplier.setPoc(bo.getPoc());
-		supplier.setSbn(bo.getSbn());
+		supplier.setTin(bo.getTin());
 		supplier.setRemarks(bo.getRemarks());
 		return supplier;
 	}
@@ -78,7 +76,6 @@ public final class PurchaseInvoiceHelper {
 			break;
 		case RECEIVED:
 			invoice.setReceivedDate(actionDate);
-			invoice.setBillOfEntry(bo.getBillOfEntry());
 			invoice.setGoodsReceiptNumber(bo.getGoodsReceiptNumber());
 			break;
 		default:
@@ -114,7 +111,6 @@ public final class PurchaseInvoiceHelper {
 		bo.setInvoiceAmount(invoice.getInvoiceAmount());
 		bo.setTermsConditions(invoice.getTermsConditions());
 		bo.setReceivedDate(invoice.getReceivedDate());
-		bo.setBillOfEntry(invoice.getBillOfEntry());
 		bo.setGoodsReceiptNumber(invoice.getGoodsReceiptNumber());
 		bo.setInvoiceState(PurchaseInvoiceStateBO.getValueOf(invoice
 				.getInvoiceState()));

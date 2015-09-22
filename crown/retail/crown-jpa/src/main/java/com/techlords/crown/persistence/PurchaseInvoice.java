@@ -61,9 +61,6 @@ public class PurchaseInvoice implements Serializable {
 	@Column(name = "terms_conditions")
 	private String termsConditions;
 
-	@Column(name = "bill_of_entry")
-	private String billOfEntry;
-
 	@Column(name = "goods_receipt_number")
 	private String goodsReceiptNumber;
 
@@ -210,14 +207,6 @@ public class PurchaseInvoice implements Serializable {
 
 	public final void setCurrencyBean(Currency currencyBean) {
 		this.currencyBean = currencyBean;
-	}
-
-	public final String getBillOfEntry() {
-		return billOfEntry;
-	}
-
-	public final void setBillOfEntry(String billOfEntry) {
-		this.billOfEntry = billOfEntry;
 	}
 
 	public final String getGoodsReceiptNumber() {

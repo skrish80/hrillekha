@@ -25,20 +25,16 @@ public class Supplier implements Serializable {
 	@Column(name = "address", length = 2147483647)
 	private String address;
 
-	@Column(name = "fax", length = 50)
-	private String fax;
-
 	@Column(name = "phone", length = 50)
 	private String phone;
-
-	@Column(name = "poc", length = 50)
-	private String poc;
 
 	@Column(name = "remarks", length = 2147483647)
 	private String remarks;
 
-	@Column(name = "sbn", length = 25)
-	private String sbn;
+	@Column(name = "tin", length = 25)
+	private String tin;
+	@Column(name = "poc", length = 50)
+	private String poc;
 
 	// bi-directional many-to-one association to Status
 	@ManyToOne
@@ -74,14 +70,6 @@ public class Supplier implements Serializable {
 		this.address = address;
 	}
 
-	public String getFax() {
-		return this.fax;
-	}
-
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-
 	public String getPhone() {
 		return this.phone;
 	}
@@ -90,28 +78,12 @@ public class Supplier implements Serializable {
 		this.phone = phone;
 	}
 
-	public String getPoc() {
-		return this.poc;
-	}
-
-	public void setPoc(String poc) {
-		this.poc = poc;
-	}
-
 	public String getRemarks() {
 		return this.remarks;
 	}
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
-	}
-
-	public String getSbn() {
-		return this.sbn;
-	}
-
-	public void setSbn(String sbn) {
-		this.sbn = sbn;
 	}
 
 	public String getSupplierCode() {
@@ -156,6 +128,34 @@ public class Supplier implements Serializable {
 
 	public final void setVersion(long version) {
 		this.version = version;
+	}
+
+	/**
+	 * @return the tin
+	 */
+	public String getTin() {
+		return tin;
+	}
+
+	/**
+	 * @param tin the tin to set
+	 */
+	public void setTin(String tin) {
+		this.tin = tin;
+	}
+
+	/**
+	 * @return the poc
+	 */
+	public String getPoc() {
+		return poc;
+	}
+
+	/**
+	 * @param poc the poc to set
+	 */
+	public void setPoc(String poc) {
+		this.poc = poc;
 	}
 
 }

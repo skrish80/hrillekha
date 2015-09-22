@@ -28,7 +28,6 @@ public class PurchaseInvoiceBO extends AppModel {
 	private String remarks;
 	private String termsConditions;
 	private PurchaseInvoiceStateBO invoiceState;
-	private String billOfEntry;
 	private String goodsReceiptNumber;
 
 	@Min(value = 1, message = "Please select \"Company\"")
@@ -215,14 +214,6 @@ public class PurchaseInvoiceBO extends AppModel {
 
 	public final void setInvoiceItems(List<PurchaseInvoiceItemBO> invoiceItems) {
 		this.invoiceItems = invoiceItems;
-	}
-
-	public final String getBillOfEntry() {
-		return billOfEntry;
-	}
-
-	public final void setBillOfEntry(String billOfEntry) {
-		this.billOfEntry = billOfEntry;
 	}
 
 	public final String getGoodsReceiptNumber() {

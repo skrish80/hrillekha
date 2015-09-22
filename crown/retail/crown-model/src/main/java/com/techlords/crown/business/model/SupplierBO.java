@@ -23,15 +23,12 @@ public class SupplierBO extends AppModel {
 	@NotEmpty(message = "Supplier Phone cannot be empty")
 	@Size(min = 5, max = 25, message = "Supplier Phone shall be from 5 to 25 chars")
 	private String phone;
-	@NotEmpty(message = "Supplier FAX cannot be empty")
-	@Size(min = 5, max = 25, message = "Supplier FAX shall be from 5 to 25 chars")
-	private String fax;
 	@NotEmpty(message = "Point of Contact cannot be empty")
 	@Size(min = 5, max = 25, message = "Point of Contact shall be from 5 to 25 chars")
 	private String poc;
-	@NotEmpty(message = "Supplier SBN cannot be empty")
-	@Size(min = 5, max = 25, message = "Supplier SBN shall be from 5 to 25 chars")
-	private String sbn;// shall be unique
+	@NotEmpty(message = "Supplier TIN cannot be empty")
+	@Size(min = 5, max = 25, message = "Supplier TIN shall be from 5 to 25 chars")
+	private String tin;// shall be unique
 	@NotEmpty(message = "Supplier Remarks cannot be empty")
 	@Size(min = 5, max = 25, message = "Supplier Remarks shall be from 5 to 25 chars")
 	private String remarks;
@@ -74,28 +71,12 @@ public class SupplierBO extends AppModel {
 		this.phone = phone;
 	}
 
-	public final String getFax() {
-		return fax;
-	}
-
-	public final void setFax(String fax) {
-		this.fax = fax;
-	}
-
 	public final String getPoc() {
 		return poc;
 	}
 
 	public final void setPoc(String poc) {
 		this.poc = poc;
-	}
-
-	public final String getSbn() {
-		return sbn;
-	}
-
-	public final void setSbn(String sbn) {
-		this.sbn = sbn;
 	}
 
 	public final String getRemarks() {
@@ -128,5 +109,20 @@ public class SupplierBO extends AppModel {
 
 	public final void setStatusBO(StatusBO statusBO) {
 		this.statusBO = statusBO;
+	}
+
+	/**
+	 * @return the tin
+	 */
+	public String getTin() {
+		return tin;
+	}
+
+	/**
+	 * @param tin
+	 *            the tin to set
+	 */
+	public void setTin(String tin) {
+		this.tin = tin;
 	}
 }
