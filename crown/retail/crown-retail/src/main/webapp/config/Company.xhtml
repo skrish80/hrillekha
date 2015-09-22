@@ -42,13 +42,6 @@
 				</center>
 			</p:column>
 
-			<p:column id="sbn" headerText="SBN" filterBy="#{companyBO.sbn}"
-				filterMatchMode="contains" style="font-weight:bold;">
-				<center>
-					<h:outputText value="#{companyBO.sbn}" style="font-weight:normal;" />
-				</center>
-			</p:column>
-
 			<p:column id="address" headerText="Address"
 				filterBy="#{companyBO.address}" filterMatchMode="contains"
 				style="font-weight:bold;">
@@ -63,15 +56,6 @@
 				<center>
 					<h:outputText value="#{companyBO.phone}"
 						style="font-weight:normal;" />
-				</center>
-			</p:column>
-
-			<p:column id="poc" headerText="Point of Contact"
-				filterBy="#{companyBO.poc}" filterMatchMode="contains"
-				style="font-weight:bold;">
-
-				<center>
-					<h:outputText value="#{companyBO.poc}" style="font-weight:normal;" />
 				</center>
 			</p:column>
 

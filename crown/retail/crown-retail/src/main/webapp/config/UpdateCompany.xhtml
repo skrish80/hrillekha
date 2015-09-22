@@ -74,32 +74,6 @@
 					maxlength="25" />
 				<p:message for="phone" />
 
-				<p:outputLabel for="fax" value="FAX: " />
-				<p:inputText id="fax"
-					value="#{companyController.currentCompany.fax}" label="Mobile"
-					maxlength="25" />
-				<p:message for="fax" />
-
-				<p:outputLabel for="poc" value="Point of Contact: " />
-				<p:inputText id="poc"
-					value="#{companyController.currentCompany.poc}"
-					label="PointofContact" maxlength="25" />
-				<p:message for="poc" />
-
-				<p:outputLabel for="sbn" value="SBN: " />
-				<p:inputText id="sbn"
-					value="#{companyController.currentCompany.sbn}" label="SBN" maxlength="25">
-					<p:ajax event="blur" update="validateSBN"
-						listener="#{companyController.checkUniqueSbn}" />
-				</p:inputText>
-				<p:message for="sbn" />
-
-				<p:spacer />
-				<h:outputText id="validateSBN"
-					value="#{companyController.fieldAvailability}"
-					style="font-weight:bold; color:#{companyController.fieldAvailability=='Available' ? 'green' : 'red'};" />
-				<p:spacer />
-
 				<p:outputLabel for="tin" value="TIN: " />
 				<p:inputText id="tin"
 					value="#{companyController.currentCompany.tin}" label="TIN" maxlength="25">
@@ -113,33 +87,6 @@
 					value="#{companyController.fieldAvailability}"
 					style="font-weight:bold; color:#{companyController.fieldAvailability=='Available' ? 'green' : 'red'};" />
 				<p:spacer />
-
-				<p:outputLabel for="inc" value="Incorporation: " />
-				<p:inputText id="inc"
-					value="#{companyController.currentCompany.incorporation}"
-					label="Incorporation" maxlength="25">
-					<p:ajax event="blur" update="validateINC"
-						listener="#{companyController.checkUniqueIncorporation}" />
-				</p:inputText>
-				<p:message for="inc" />
-
-				<p:spacer />
-				<h:outputText id="validateINC"
-					value="#{companyController.fieldAvailability}"
-					style="font-weight:bold; color:#{companyController.fieldAvailability=='Available' ? 'green' : 'red'};" />
-				<p:spacer />
-
-				<p:outputLabel for="parLic" value="Parent Licence: " />
-				<p:inputText id="parLic"
-					value="#{companyController.currentCompany.parentLicence}"
-					label="ParentLicence" maxlength="25"/>
-				<p:message for="parLic" />
-
-				<p:outputLabel for="chLic" value="Child Licence: " />
-				<p:inputText id="chLic"
-					value="#{companyController.currentCompany.childLicence}"
-					label="ChildLicence" maxlength="25"/>
-				<p:message for="chLic" />
 
 			</h:panelGrid>
 		</p:panel>

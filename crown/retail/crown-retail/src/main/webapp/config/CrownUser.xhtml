@@ -75,31 +75,13 @@
 				</center>
 			</p:column>
 
-			<p:column id="phone" headerText="Phone" filterBy="#{userBO.phone}"
+			<p:column id="mobile" headerText="Mobile" filterBy="#{userBO.mobile}"
 				filterMatchMode="contains" style="font-weight:bold;">
 				<center>
-					<h:outputText style="font-weight:normal;" value="#{userBO.phone}" />
+					<h:outputText style="font-weight:normal;" value="#{userBO.mobile}" />
 				</center>
 			</p:column>
 
-			<p:column id="department" headerText="Department"
-				filterBy="#{userBO.departmentBO.department}"
-				filterMatchMode="contains" style="font-weight:bold;">
-
-				<center>
-					<h:outputText style="font-weight:normal;"
-						value="#{userBO.departmentBO.department}" />
-				</center>
-			</p:column>
-
-			<p:column id="designation" headerText="Designation"
-				filterBy="#{userBO.designationBO.designation}"
-				filterMatchMode="contains" style="font-weight:bold;">
-				<center>
-					<h:outputText style="font-weight:normal;"
-						value="#{userBO.designationBO.designation}" />
-				</center>
-			</p:column>
 
 			<p:column id="action" headerText="Action" style="font-weight:bold;">
 				<center>

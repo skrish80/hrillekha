@@ -1,7 +1,6 @@
 package com.techlords.crown.persistence;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
-
 
 /**
  * The persistent class for the department database table.
@@ -36,10 +33,6 @@ public class Department implements Serializable {
 
 	@Column(name = "description", length = 25)
 	private String description;
-
-	// bi-directional many-to-one association to CrownUser
-	@OneToMany(mappedBy = "departmentBean")
-	private Set<CrownUser> crownUsers;
 
 	public Department() {
 	}
@@ -68,14 +61,6 @@ public class Department implements Serializable {
 		this.description = description;
 	}
 
-	public Set<CrownUser> getCrownUsers() {
-		return this.crownUsers;
-	}
-
-	public void setCrownUsers(Set<CrownUser> crownUsers) {
-		this.crownUsers = crownUsers;
-	}
-	
 	@Version
 	@Column(name = "version", unique = true, nullable = false)
 	private long version;

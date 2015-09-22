@@ -68,9 +68,6 @@ public class CrownUser implements Serializable {
 	@Column(name = "password", nullable = false, length = 32)
 	private String password;
 
-	@Column(name = "phone", length = 25)
-	private String phone;
-
 	@Column(name = "username", nullable = false, length = 32)
 	private String username;
 
@@ -89,21 +86,6 @@ public class CrownUser implements Serializable {
 	// bi-directional many-to-one association to Invoice
 	@OneToMany(mappedBy = "receivedBy")
 	private Set<PurchaseInvoice> receivedInvoices;
-
-	// bi-directional many-to-one association to Department
-	@ManyToOne
-	@JoinColumn(name = "department")
-	private Department departmentBean;
-
-	// bi-directional many-to-one association to Designation
-	@ManyToOne
-	@JoinColumn(name = "designation")
-	private Designation designationBean;
-
-	// bi-directional many-to-one association to Location
-	@ManyToOne
-	@JoinColumn(name = "location")
-	private Location locationBean;
 
 	// bi-directional many-to-one association to Role
 	@ManyToOne
@@ -206,14 +188,6 @@ public class CrownUser implements Serializable {
 		this.password = password;
 	}
 
-	public String getPhone() {
-		return this.phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public String getUsername() {
 		return this.username;
 	}
@@ -228,30 +202,6 @@ public class CrownUser implements Serializable {
 
 	public void setCrownAudits(Set<CrownAudit> crownAudits) {
 		this.crownAudits = crownAudits;
-	}
-
-	public Department getDepartmentBean() {
-		return this.departmentBean;
-	}
-
-	public void setDepartmentBean(Department departmentBean) {
-		this.departmentBean = departmentBean;
-	}
-
-	public Designation getDesignationBean() {
-		return this.designationBean;
-	}
-
-	public void setDesignationBean(Designation designationBean) {
-		this.designationBean = designationBean;
-	}
-
-	public Location getLocationBean() {
-		return this.locationBean;
-	}
-
-	public void setLocationBean(Location locationBean) {
-		this.locationBean = locationBean;
 	}
 
 	public Role getRoleBean() {

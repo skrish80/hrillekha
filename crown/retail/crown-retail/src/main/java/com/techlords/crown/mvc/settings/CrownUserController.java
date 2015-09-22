@@ -87,12 +87,6 @@ public class CrownUserController extends CrownModelController {
 	}
 
 	public String save() {
-		currentUser.setDesignationBO(getAppModel(currentUser.getDesignation(),
-				designationBOs));
-		currentUser.setLocationBO(getAppModel(currentUser.getLocation(),
-				locationBOs));
-		currentUser.setDepartmentBO(getAppModel(currentUser.getDepartment(),
-				departmentBOs));
 		currentUser.setRoleBO(getAppModel(currentUser.getRole(), roleBOs));
 		return (currentUser.isNew()) ? create() : update();
 

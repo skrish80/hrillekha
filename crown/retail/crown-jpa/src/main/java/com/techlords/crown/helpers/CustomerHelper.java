@@ -42,23 +42,16 @@ public final class CustomerHelper {
 		bo.setCustomerName(customer.getCustomerName());
 		bo.setAddress(customer.getAddress());
 		bo.setPhone(customer.getPhone());
-		bo.setFax(customer.getFax());
-		bo.setPoc(customer.getPoc());
-		bo.setSbn(customer.getSbn());
 		bo.setRemarks(customer.getRemarks());
+		bo.setDateOfBirth(customer.getDateOfBirth());
+		bo.setAnniversary(customer.getAnniversary());
 
 		bo.setCustomerType(customer.getCustomerTypeBean().getCustomerTypeId());
 		bo.setCustomerTypeBO(createCustomerTypeBO(customer
 				.getCustomerTypeBean()));
 
-		bo.setLocation(customer.getLocationBean().getLocationId());
-		bo.setLocationBO(new LocationHelper().createLocationBO(customer
-				.getLocationBean()));
-
 		bo.setStatusBO(StatusBO.valueOf(customer.getStatusBean().getStatusId()));
 		
-		bo.setCreditLimit(customer.getCreditLimit());
-		bo.setCurrentCredit(customer.getCurrentCredit());
 		return bo;
 	}
 
@@ -73,10 +66,9 @@ public final class CustomerHelper {
 		customer.setCustomerName(bo.getCustomerName());
 		customer.setAddress(bo.getAddress());
 		customer.setPhone(bo.getPhone());
-		customer.setFax(bo.getFax());
-		customer.setPoc(bo.getPoc());
-		customer.setSbn(bo.getSbn());
 		customer.setRemarks(bo.getRemarks());
+		customer.setDateOfBirth(bo.getDateOfBirth());
+		customer.setAnniversary(bo.getAnniversary());
 		return customer;
 	}
 }

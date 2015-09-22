@@ -226,10 +226,10 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 			auditLog(AuditActionEnum.UTILIZED, userID, "receipt", draftNumber);
 
 			// UPDATE CUSTOMER CREDIT
-			final Customer cust = note.getCustomerBean();
-			double currCredit = cust.getCurrentCredit();
-			currCredit += pmtAmount;
-			cust.setCurrentCredit(currCredit);
+//			final Customer cust = note.getCustomerBean();
+//			double currCredit = cust.getCurrentCredit();
+//			currCredit += pmtAmount;
+//			cust.setCurrentCredit(currCredit);
 		}
 	}
 
@@ -252,12 +252,12 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 			createInvoicePayments(invoice, bo, false, userID);
 			manager.merge(invoice);
 
-			// Customer CREDIT HISTORY
+			// Customer CREDIT HISTORY TODO use for wholesale not for retail
 			if (bo.getPaymentStatus() != PaymentStatusBO.FULL_PAYMENT.getStatusID()) {
 				final Customer cust = manager.find(Customer.class, bo.getCustomer());
-				double currCredit = cust.getCurrentCredit();
-				double invoiceCreditAmount = (bo.getFinalInvoiceAmount() - bo.getTotalPaidAmount());
-				cust.setCurrentCredit(currCredit + invoiceCreditAmount);
+//				double currCredit = cust.getCurrentCredit();
+//				double invoiceCreditAmount = (bo.getFinalInvoiceAmount() - bo.getTotalPaidAmount());
+//				cust.setCurrentCredit(currCredit + invoiceCreditAmount);
 				manager.merge(cust);
 			}
 			auditLog(AuditActionEnum.CREATE, userID, "invoice", invoice.getInvoiceNumber());

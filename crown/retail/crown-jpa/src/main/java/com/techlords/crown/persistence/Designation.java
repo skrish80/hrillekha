@@ -1,14 +1,12 @@
 package com.techlords.crown.persistence;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -33,10 +31,6 @@ public class Designation implements Serializable {
 
 	@Column(nullable = false, length = 10)
 	private String designation;
-
-	// bi-directional many-to-one association to CrownUser
-	@OneToMany(mappedBy = "designationBean")
-	private Set<CrownUser> crownUsers;
 
 	public Designation() {
 	}
@@ -65,14 +59,6 @@ public class Designation implements Serializable {
 		this.designation = designation;
 	}
 
-	public Set<CrownUser> getCrownUsers() {
-		return this.crownUsers;
-	}
-
-	public void setCrownUsers(Set<CrownUser> crownUsers) {
-		this.crownUsers = crownUsers;
-	}
-	
 	@Version
 	@Column(name = "version", unique = true, nullable = false)
 	private long version;

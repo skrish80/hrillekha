@@ -29,14 +29,11 @@ public class Company implements Serializable {
 	@Id
 	@SequenceGenerator(name = "COMPANY_COMPANYID_GENERATOR", sequenceName = "COMPANY_COMPANY_ID_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMPANY_COMPANYID_GENERATOR")
-	@Column(name = "company_id", unique = true, nullable = false, columnDefinition="BIGSERIAL")
+	@Column(name = "company_id", unique = true, nullable = false, columnDefinition = "BIGSERIAL")
 	private Integer companyId;
 
 	@Column(name = "address", length = 2147483647)
 	private String address;
-
-	@Column(name = "child_licence", length = 25)
-	private String childLicence;
 
 	@Column(name = "company_name", nullable = false, length = 50)
 	private String companyName;
@@ -44,23 +41,8 @@ public class Company implements Serializable {
 	@Column(name = "description", nullable = false, length = 100)
 	private String description;
 
-	@Column(name = "fax", length = 25)
-	private String fax;
-
-	@Column(name = "incorporation", length = 25)
-	private String incorporation;
-
-	@Column(name = "parent_licence", length = 25)
-	private String parentLicence;
-
 	@Column(name = "phone", length = 25)
 	private String phone;
-
-	@Column(name = "poc", length = 25)
-	private String poc;
-
-	@Column(name = "sbn", length = 25)
-	private String sbn;
 
 	@Column(name = "tin", length = 25)
 	private String tin;
@@ -103,14 +85,6 @@ public class Company implements Serializable {
 		this.address = address;
 	}
 
-	public String getChildLicence() {
-		return this.childLicence;
-	}
-
-	public void setChildLicence(String childLicence) {
-		this.childLicence = childLicence;
-	}
-
 	public String getCompanyName() {
 		return this.companyName;
 	}
@@ -127,52 +101,12 @@ public class Company implements Serializable {
 		this.description = description;
 	}
 
-	public String getFax() {
-		return this.fax;
-	}
-
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-
-	public String getIncorporation() {
-		return this.incorporation;
-	}
-
-	public void setIncorporation(String incorporation) {
-		this.incorporation = incorporation;
-	}
-
-	public String getParentLicence() {
-		return this.parentLicence;
-	}
-
-	public void setParentLicence(String parentLicence) {
-		this.parentLicence = parentLicence;
-	}
-
 	public String getPhone() {
 		return this.phone;
 	}
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getPoc() {
-		return this.poc;
-	}
-
-	public void setPoc(String poc) {
-		this.poc = poc;
-	}
-
-	public String getSbn() {
-		return this.sbn;
-	}
-
-	public void setSbn(String sbn) {
-		this.sbn = sbn;
 	}
 
 	public String getTin() {
@@ -214,7 +148,7 @@ public class Company implements Serializable {
 	public final void setInvoices(Set<Invoice> invoices) {
 		this.invoices = invoices;
 	}
-	
+
 	@Version
 	@Column(name = "version", unique = true, nullable = false)
 	private long version;

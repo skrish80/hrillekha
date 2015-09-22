@@ -40,26 +40,12 @@
 			<h:outputText value="#{crownUserController.currentUser.address}"
 				style="font-weight:bold" />
 
-			<h:outputText value="Phone: " />
-			<h:outputText value="#{crownUserController.currentUser.phone}"
-				style="font-weight:bold" />
-
 			<h:outputText value="Mobile Number: " />
 			<h:outputText value="#{crownUserController.currentUser.mobileNumber}"
 				style="font-weight:bold" />
 
 			<h:outputText value="Role: " />
 			<h:outputText value="#{crownUserController.currentUser.roleBO.role}"
-				style="font-weight:bold" />
-
-			<h:outputText value="Designation: " />
-			<h:outputText
-				value="#{crownUserController.currentUser.designationBO.designation}"
-				style="font-weight:bold" />
-
-			<h:outputText value="Department: " />
-			<h:outputText
-				value="#{crownUserController.currentUser.departmentBO.department}"
 				style="font-weight:bold" />
 
 			<h:outputText value="Join Date: " />
@@ -73,11 +59,6 @@
 				style="font-weight:bold">
 				<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
 			</h:outputText>
-
-			<h:outputText value="Location: " />
-			<h:outputText
-				value="#{crownUserController.currentUser.locationBO.location}"
-				style="font-weight:bold" />
 
 			<h:outputText value="Status: " />
 			<h:outputText value="#{crownUserController.currentUser.status}"

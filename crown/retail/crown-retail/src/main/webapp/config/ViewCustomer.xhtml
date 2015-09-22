@@ -39,26 +39,21 @@
 			<h:outputText value="#{customerController.currentCustomer.phone}"
 				style="font-weight:bold" />
 
-			<h:outputText value="FAX: " />
-			<h:outputText value="#{customerController.currentCustomer.fax}"
-				style="font-weight:bold" />
-
-			<h:outputText value="Point of Contact: " />
-			<h:outputText value="#{customerController.currentCustomer.poc}"
-				style="font-weight:bold" />
-
-			<h:outputText value="SBN: " />
-			<h:outputText value="#{customerController.currentCustomer.sbn}"
-				style="font-weight:bold" />
-
-			<h:outputText value="Location: " />
-			<h:outputText
-				value="#{customerController.currentCustomer.locationBO.location}"
-				style="font-weight:bold" />
-
 			<h:outputText value="Status: " />
 			<h:outputText value="#{customerController.currentCustomer.statusBO}"
 				style="font-weight:bold" />
+			
+			<h:outputText value="Date of Birth: " />
+			<h:outputText value="#{customerController.currentCustomer.dateOfBirth}"
+				style="font-weight:bold">
+				<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+			</h:outputText>
+			
+			<h:outputText value="Anniversary: " />
+			<h:outputText value="#{customerController.currentCustomer.anniversary}"
+				style="font-weight:bold">
+				<f:convertDateTime type="date" pattern="dd-MMM-yyyy" />
+			</h:outputText>
 
 			<h:outputText value="Remarks: " />
 			<h:outputText value="#{customerController.currentCustomer.remarks}"

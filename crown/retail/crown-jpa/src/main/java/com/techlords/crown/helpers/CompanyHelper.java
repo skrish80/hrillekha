@@ -23,14 +23,8 @@ public final class CompanyHelper {
 		companyBO.setCompanyName(company.getCompanyName());
 		companyBO.setAddress(company.getAddress());
 		companyBO.setDescription(company.getDescription());
-		companyBO.setFax(company.getFax());
 		companyBO.setPhone(company.getPhone());
-		companyBO.setPoc(company.getPoc());
-		companyBO.setIncorporation(company.getIncorporation());
-		companyBO.setSbn(company.getSbn());
 		companyBO.setTin(company.getTin());
-		companyBO.setParentLicence(company.getParentLicence());
-		companyBO.setChildLicence(company.getChildLicence());
 
 		Location loc = company.getLocationBean();
 		companyBO.setLocationBO(new LocationHelper().createLocationBO(loc));
@@ -59,15 +53,8 @@ public final class CompanyHelper {
 		company.setVersion(companyBO.getVersion());
 		company.setAddress(companyBO.getAddress());
 		company.setDescription(companyBO.getDescription());
-		company.setFax(companyBO.getFax());
 		company.setPhone(companyBO.getPhone());
-		company.setPoc(companyBO.getPoc());
-		company.setIncorporation(companyBO.getIncorporation());
-		company.setSbn(companyBO.getSbn());
 		company.setTin(companyBO.getTin());
-
-		company.setParentLicence(companyBO.getParentLicence());
-		company.setChildLicence(companyBO.getChildLicence());
 
 		return company;
 	}

@@ -91,12 +91,6 @@
 					value="#{crownUserController.currentUser.address}" label="Address" />
 				<p:message for="address" />
 
-				<p:outputLabel for="phone" value="Phone: " />
-				<p:inputText id="phone"
-					value="#{crownUserController.currentUser.phone}" label="Phone"
-					mask="999999999999" />
-				<p:message for="phone" />
-
 				<p:outputLabel for="mobile" value="Mobile: " />
 				<p:inputText id="mobile"
 					value="#{crownUserController.currentUser.mobileNumber}"
@@ -126,43 +120,6 @@
 						itemValue="#{role.id}" itemLabel="#{role.role}" />
 				</p:selectOneMenu>
 				<p:message for="role" />
-
-				<p:outputLabel for="desg" value="Designation: " />
-				<p:selectOneMenu id="desg"
-					value="#{crownUserController.currentUser.designation}"
-					required="true" label="Designation">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems var="designation"
-						value="#{crownUserController.designationBOs}"
-						itemValue="#{designation.id}"
-						itemLabel="#{designation.designation}" />
-
-				</p:selectOneMenu>
-				<p:message for="desg" />
-
-				<p:outputLabel for="dept" value="Department: " />
-				<p:selectOneMenu id="dept"
-					value="#{crownUserController.currentUser.department}"
-					required="true" label="Department">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems var="department"
-						value="#{crownUserController.departmentBOs}"
-						itemValue="#{department.id}" itemLabel="#{department.department}" />
-
-				</p:selectOneMenu>
-				<p:message for="dept" />
-
-				<p:outputLabel for="loc" value="Location: " />
-				<p:selectOneMenu id="loc"
-					value="#{crownUserController.currentUser.location}" required="true"
-					label="Location">
-					<f:selectItem itemLabel="Select One" itemValue="" />
-					<f:selectItems var="location"
-						value="#{crownUserController.locationBOs}"
-						itemValue="#{location.id}" itemLabel="#{location.location}" />
-
-				</p:selectOneMenu>
-				<p:message for="loc" />
 
 			</h:panelGrid>
 		</p:panel>

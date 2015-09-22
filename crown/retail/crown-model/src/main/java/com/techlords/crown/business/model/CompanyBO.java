@@ -27,33 +27,11 @@ public class CompanyBO extends AppModel {
 	// if the field contains phone or fax number consider using this annotation
 	// to enforce field validation
 	private String phone;
-	@NotEmpty(message = "FAX Number cannot be empty")
-	@Size(min = 5, max = 25, message = "FAX Number shall be from 5 to 25 chars")
-	// @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message
-	// = "Invalid phone/fax format, should be as xxx-xxx-xxxx")
-	// if the field contains phone or fax number consider using this annotation
-	// to enforce field validation
-	private String fax;
-	@NotEmpty(message = "POC cannot be empty")
-	@Size(min = 5, max = 25, message = "POC shall be from 5 to 25 chars")
-	private String poc;
 	private String createdby;
 
-	@NotEmpty(message = "SBN Number cannot be empty")
-	@Size(min = 5, max = 25, message = "SBN shall be from 5 to 25 chars")
-	private String sbn;// Shall be unique
 	@NotEmpty(message = "TIN cannot be empty")
 	@Size(min = 5, max = 25, message = "TIN shall be from 5 to 25 chars")
 	private String tin;
-	@NotEmpty(message = "Incorporation cannot be empty")
-	@Size(min = 5, max = 25, message = "Incorporation shall be from 5 to 25 chars")
-	private String incorporation;
-	@NotEmpty(message = "Parent License cannot be empty")
-	@Size(min = 5, max = 25, message = "Parent License shall be from 5 to 25 chars")
-	private String parentLicence;
-	@NotEmpty(message = "Child License cannot be empty")
-	@Size(min = 5, max = 25, message = "Child License shall be from 5 to 25 chars")
-	private String childLicence;
 
 	@Min(value = 1, message = "Select a company type")
 	private int companyType;
@@ -127,36 +105,6 @@ public class CompanyBO extends AppModel {
 	}
 
 	/**
-	 * @return the fax
-	 */
-	public final String getFax() {
-		return fax;
-	}
-
-	/**
-	 * @param fax
-	 *            the fax to set
-	 */
-	public final void setFax(String fax) {
-		this.fax = fax;
-	}
-
-	/**
-	 * @return the poc
-	 */
-	public final String getPoc() {
-		return poc;
-	}
-
-	/**
-	 * @param poc
-	 *            the poc to set
-	 */
-	public final void setPoc(String poc) {
-		this.poc = poc;
-	}
-
-	/**
 	 * @return the createdby
 	 */
 	public final String getCreatedby() {
@@ -172,21 +120,6 @@ public class CompanyBO extends AppModel {
 	}
 
 	/**
-	 * @return the sbn
-	 */
-	public final String getSbn() {
-		return sbn;
-	}
-
-	/**
-	 * @param sbn
-	 *            the sbn to set
-	 */
-	public final void setSbn(String sbn) {
-		this.sbn = sbn;
-	}
-
-	/**
 	 * @return the tin
 	 */
 	public final String getTin() {
@@ -199,51 +132,6 @@ public class CompanyBO extends AppModel {
 	 */
 	public final void setTin(String tin) {
 		this.tin = tin;
-	}
-
-	/**
-	 * @return the incorporation
-	 */
-	public final String getIncorporation() {
-		return incorporation;
-	}
-
-	/**
-	 * @param incorporation
-	 *            the incorporation to set
-	 */
-	public final void setIncorporation(String incorporation) {
-		this.incorporation = incorporation;
-	}
-
-	/**
-	 * @return the parentLicence
-	 */
-	public final String getParentLicence() {
-		return parentLicence;
-	}
-
-	/**
-	 * @param parentLicence
-	 *            the parentLicence to set
-	 */
-	public final void setParentLicence(String parentLicence) {
-		this.parentLicence = parentLicence;
-	}
-
-	/**
-	 * @return the childLicence
-	 */
-	public final String getChildLicence() {
-		return childLicence;
-	}
-
-	/**
-	 * @param childLicence
-	 *            the childLicence to set
-	 */
-	public final void setChildLicence(String childLicence) {
-		this.childLicence = childLicence;
 	}
 
 	/**

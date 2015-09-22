@@ -35,8 +35,7 @@ import com.techlords.infra.CrownConstants;
 public class ReceiptController extends CrownModelController {
 
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger
-			.getLogger(ReceiptController.class);
+	private static final Logger LOGGER = Logger.getLogger(ReceiptController.class);
 
 	private final List<CustomerBO> customerBOs = new ArrayList<CustomerBO>();
 	private final List<CompanyBO> companyBOs = new ArrayList<CompanyBO>();
@@ -80,18 +79,17 @@ public class ReceiptController extends CrownModelController {
 	}
 
 	public void updateCreditLimit() {
-		final double creditLimit = currentCustomer.getCreditLimit();
+		final double creditLimit = 0;// currentCustomer.getCreditLimit();
 		if (creditLimit <= 0) {
-			FacesUtil.addErrorFlashMessage("Credit Limit Error",
-					"Credit Limit cannot be zero");
+			FacesUtil.addErrorFlashMessage("Credit Limit Error", "Credit Limit cannot be zero");
 			return;
 		}
 
 		final CustomerService service = CrownServiceLocator.INSTANCE
 				.getCrownService(CustomerService.class);
 		try {
-			service.updateCreditLimit(currentCustomer, creditLimit,
-					CrownUserDetailsService.getCurrentUser().getId());
+			service.updateCreditLimit(currentCustomer, creditLimit, CrownUserDetailsService
+					.getCurrentUser().getId());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
@@ -157,8 +155,7 @@ public class ReceiptController extends CrownModelController {
 
 		executorService.shutdown();
 		try {
-			executorService.awaitTermination(CrownConstants.WAIT_TIME,
-					TimeUnit.SECONDS);
+			executorService.awaitTermination(CrownConstants.WAIT_TIME, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			executorService.shutdownNow();
 			e.printStackTrace();
@@ -211,14 +208,13 @@ public class ReceiptController extends CrownModelController {
 		}
 
 		currentReceipt.setCustomerBO(currentCustomer);
-		currentReceipt.setCompanyBO(getAppModel(currentReceipt.getCompany(),
-				companyBOs));
+		currentReceipt.setCompanyBO(getAppModel(currentReceipt.getCompany(), companyBOs));
 
 		final ReceiptService service = CrownServiceLocator.INSTANCE
 				.getCrownService(ReceiptService.class);
 		try {
-			currentReceipt = service.createReceipt(currentReceipt,
-					CrownUserDetailsService.getCurrentUser().getId());
+			currentReceipt = service.createReceipt(currentReceipt, CrownUserDetailsService
+					.getCurrentUser().getId());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
@@ -233,8 +229,8 @@ public class ReceiptController extends CrownModelController {
 			final ReceiptService service = CrownServiceLocator.INSTANCE
 					.getCrownService(ReceiptService.class);
 			try {
-				service.printReceipt(currentReceipt, CrownUserDetailsService
-						.getCurrentUser().getId());
+				service.printReceipt(currentReceipt, CrownUserDetailsService.getCurrentUser()
+						.getId());
 			} catch (Exception e) {
 				LOGGER.error(e.getMessage(), e);
 				FacesUtil.addExceptionMessages(e);
@@ -255,8 +251,8 @@ public class ReceiptController extends CrownModelController {
 		final ReceiptService service = CrownServiceLocator.INSTANCE
 				.getCrownService(ReceiptService.class);
 		try {
-			service.amendReceiptPayments(currentReceipt, removedPayments,
-					CrownUserDetailsService.getCurrentUser().getId());
+			service.amendReceiptPayments(currentReceipt, removedPayments, CrownUserDetailsService
+					.getCurrentUser().getId());
 		} catch (Exception e) {
 			FacesUtil.addExceptionMessages(e);
 			return null;

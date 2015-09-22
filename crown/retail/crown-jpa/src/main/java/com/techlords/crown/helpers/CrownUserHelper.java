@@ -42,24 +42,12 @@ public final class CrownUserHelper {
 		bo.setLastName(user.getLastName());
 		bo.setEmail(user.getEmail());
 		bo.setAddress(user.getAddress());
-		bo.setPhone(user.getPhone());
 		bo.setMobileNumber(user.getMobile());
 		bo.setDateOfBirth(user.getDateOfBirth());
 		bo.setJoinDate(user.getJoiningDate());
 
-		bo.setDesignationBO(createDesignationBO(user.getDesignationBean()));
-		bo.setDesignation(user.getDesignationBean().getDesignationId());
-
-		bo.setDepartmentBO(new DepartmentHelper().createDepartmentBO(user
-				.getDepartmentBean()));
-		bo.setDepartment(user.getDepartmentBean().getDepartmentId());
-
 		bo.setRoleBO(new RoleHelper().createRoleBO(user.getRoleBean()));
 		bo.setRole(user.getRoleBean().getRoleId());
-
-		bo.setLocationBO(new LocationHelper().createLocationBO(user
-				.getLocationBean()));
-		bo.setLocation(user.getLocationBean().getLocationId());
 
 		bo.setStatus(StatusBO.valueOf(user.getStatusBean().getStatusId()));
 
@@ -83,7 +71,6 @@ public final class CrownUserHelper {
 		user.setLastName(bo.getLastName());
 		user.setEmail(bo.getEmail());
 		user.setAddress(bo.getAddress());
-		user.setPhone(bo.getPhone());
 		user.setMobile(bo.getMobileNumber());
 		user.setDateOfBirth(bo.getDateOfBirth());
 		user.setJoiningDate(bo.getJoinDate());

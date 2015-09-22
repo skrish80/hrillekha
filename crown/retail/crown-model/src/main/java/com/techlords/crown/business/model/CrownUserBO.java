@@ -44,31 +44,14 @@ public class CrownUserBO extends AppModel implements UserDetails {
 	@NotEmpty(message = "Address cannot be empty")
 	@Size(min = 5, max = 2500, message = "Address shall be from 5 to 2500 chars")
 	private String address;
-	@NotEmpty(message = "Phone number cannot be empty")
-	@Size(min = 5, max = 25, message = "Phone number shall be from 5 to 25 chars")
-	// @Pattern(regexp = "^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$", message
-	// = "Invalid phone/fax format, should be as xxx-xxx-xxxx")
-	private String phone;
 	@NotEmpty(message = "Mobile Number cannot be empty")
 	private String mobileNumber;
 
-	@Min(value = 1, message = "Select a designation")
-	private int designation;
-	@Min(value = 1, message = "Select a department")
-	private int department;
 	@Min(value = 1, message = "Select a role")
 	private int role;
-	@Min(value = 1, message = "Select a location")
-	private int location;
-	
-	@JsonIgnore
-	private DesignationBO designationBO;
-	@JsonIgnore
-	private DepartmentBO departmentBO;
+
 	@JsonIgnore
 	private RoleBO roleBO;
-	@JsonIgnore
-	private LocationBO locationBO;
 
 	@NotNull(message = "Join Date cannot be null")
 	private Date joinDate;
@@ -101,44 +84,6 @@ public class CrownUserBO extends AppModel implements UserDetails {
 		this.address = address;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	/**
-	 * @return the designation
-	 */
-	public final int getDesignation() {
-		return designation;
-	}
-
-	/**
-	 * @param designation
-	 *            the designation to set
-	 */
-	public final void setDesignation(int designation) {
-		this.designation = designation;
-	}
-
-	/**
-	 * @return the department
-	 */
-	public final int getDepartment() {
-		return department;
-	}
-
-	/**
-	 * @param department
-	 *            the department to set
-	 */
-	public final void setDepartment(int department) {
-		this.department = department;
-	}
-
 	/**
 	 * @return the role
 	 */
@@ -152,36 +97,6 @@ public class CrownUserBO extends AppModel implements UserDetails {
 	 */
 	public final void setRole(int role) {
 		this.role = role;
-	}
-
-	/**
-	 * @return the designationBO
-	 */
-	public final DesignationBO getDesignationBO() {
-		return designationBO;
-	}
-
-	/**
-	 * @param designationBO
-	 *            the designationBO to set
-	 */
-	public final void setDesignationBO(DesignationBO designationBO) {
-		this.designationBO = designationBO;
-	}
-
-	/**
-	 * @return the departmentBO
-	 */
-	public final DepartmentBO getDepartmentBO() {
-		return departmentBO;
-	}
-
-	/**
-	 * @param departmentBO
-	 *            the departmentBO to set
-	 */
-	public final void setDepartmentBO(DepartmentBO departmentBO) {
-		this.departmentBO = departmentBO;
 	}
 
 	/**
@@ -227,36 +142,6 @@ public class CrownUserBO extends AppModel implements UserDetails {
 	 */
 	public final void setStatus(StatusBO status) {
 		this.status = status;
-	}
-
-	/**
-	 * @return the location
-	 */
-	public final int getLocation() {
-		return location;
-	}
-
-	/**
-	 * @param location
-	 *            the location to set
-	 */
-	public final void setLocation(int location) {
-		this.location = location;
-	}
-
-	/**
-	 * @return the locationBO
-	 */
-	public final LocationBO getLocationBO() {
-		return locationBO;
-	}
-
-	/**
-	 * @param locationBO
-	 *            the locationBO to set
-	 */
-	public final void setLocationBO(LocationBO locationBO) {
-		this.locationBO = locationBO;
 	}
 
 	/**

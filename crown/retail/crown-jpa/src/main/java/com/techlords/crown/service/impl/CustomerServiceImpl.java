@@ -23,7 +23,6 @@ import com.techlords.crown.helpers.GeneralHelper;
 import com.techlords.crown.helpers.QueryBuilder;
 import com.techlords.crown.persistence.Customer;
 import com.techlords.crown.persistence.CustomerType;
-import com.techlords.crown.persistence.Location;
 import com.techlords.crown.persistence.Status;
 import com.techlords.crown.service.CustomerService;
 import com.techlords.crown.service.GeneralService;
@@ -39,7 +38,6 @@ final class CustomerServiceImpl extends AbstractCrownService implements Customer
 	private static final String CUSTOMER_PREFIX = "CUS";
 
 	private void setCustomerAttributes(Customer customer, CustomerBO bo) {
-		customer.setLocationBean(manager.find(Location.class, bo.getLocationBO().getId()));
 		customer.setCustomerTypeBean(manager.find(CustomerType.class, bo.getCustomerType()));
 		customer.setStatusBean(manager.find(Status.class, StatusBO.ACTIVE.getStatusID()));
 		customer.setVersion(bo.getVersion());
@@ -165,7 +163,7 @@ final class CustomerServiceImpl extends AbstractCrownService implements Customer
 		try {
 			final Customer customer = manager.find(Customer.class, customerBO.getId());
 			customer.setVersion(customerBO.getVersion());
-			customer.setCreditLimit(creditLimit);
+			// customer.setCreditLimit(creditLimit);
 			auditLog(AuditActionEnum.CREDIT_LIMIT, userID, "customer", customer.getCustomerCode()
 					+ "credit limit - " + creditLimit);
 		} catch (OptimisticLockException e) {

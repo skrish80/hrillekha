@@ -73,16 +73,6 @@ public class CompanyController extends CrownModelController {
 				currentCompany.getCompanyName()) ? AVAILABLE : UNAVAILABLE);
 	}
 
-	public void checkUniqueSbn() {
-		setFieldAvailability(CrownMVCHelper.checkUniqueness("company@sbn",
-				currentCompany.getSbn()) ? AVAILABLE : UNAVAILABLE);
-	}
-
-	public void checkUniqueIncorporation() {
-		setFieldAvailability(CrownMVCHelper.checkUniqueness("incorporation",
-				currentCompany.getIncorporation()) ? AVAILABLE : UNAVAILABLE);
-	}
-
 	public void checkUniqueTIN() {
 		setFieldAvailability(CrownMVCHelper.checkUniqueness("tin",
 				currentCompany.getTin()) ? AVAILABLE : UNAVAILABLE);

@@ -64,13 +64,13 @@ final class ReceiptServiceImpl extends AbstractCrownService implements ReceiptSe
 			receipt.setReceiptPayments(payments);
 			manager.merge(receipt);
 
-			// UPDATE CUSTOMER CURRENT CREDIT
-			double currentCredit = cust.getCurrentCredit();
-			currentCredit -= receipt.getAmount();
-			cust.setCurrentCredit(currentCredit);
-			manager.persist(cust);
+			// UPDATE CUSTOMER CURRENT CREDIT FOR WS ONLY
+			// double currentCredit = cust.getCurrentCredit();
+			// currentCredit -= receipt.getAmount();
+			// cust.setCurrentCredit(currentCredit);
+			// manager.persist(cust);
 
-			bo.getCustomerBO().setCurrentCredit(cust.getCurrentCredit());
+			// bo.getCustomerBO().setCurrentCredit(cust.getCurrentCredit());
 			bo.setReceiptDate(receipt.getReceiptDate());
 			bo.setId(receipt.getReceiptId());
 
@@ -110,8 +110,8 @@ final class ReceiptServiceImpl extends AbstractCrownService implements ReceiptSe
 			double receiptAmt = receipt.getAmount();// 5000
 
 			final Customer cust = manager.find(Customer.class, bo.getCustomer());
-			// UPDATE CUSTOMER CURRENT CREDIT
-			double currentCredit = cust.getCurrentCredit();
+			// UPDATE CUSTOMER CURRENT CREDIT FOR WS
+			double currentCredit = 0;// cust.getCurrentCredit();
 			// RECEIPT IS REMOVED. ADD CURRENT CREDIT NOW
 			currentCredit += receiptAmt;
 
@@ -149,8 +149,8 @@ final class ReceiptServiceImpl extends AbstractCrownService implements ReceiptSe
 
 			// NOW SUBTRACT FROM CURRENT CREDIT
 			currentCredit -= receiptAmt;
-			cust.setCurrentCredit(currentCredit);
-			manager.persist(cust);
+			// cust.setCurrentCredit(currentCredit);
+			manager.merge(cust);
 
 			auditLog(AuditActionEnum.AMEND_RECEIPT, userID, "receipt", receipt.getReceiptNumber());
 		} catch (OptimisticLockException e) {

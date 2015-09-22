@@ -42,14 +42,6 @@ public class Location implements Serializable {
 	@OneToMany(mappedBy = "locationBean")
 	private Set<Company> companies;
 
-	// bi-directional many-to-one association to CrownUser
-	@OneToMany(mappedBy = "locationBean")
-	private Set<CrownUser> crownUsers;
-
-	// bi-directional many-to-one association to Customer
-	@OneToMany(mappedBy = "locationBean")
-	private Set<Customer> customers;
-
 	// bi-directional many-to-one association to Warehouse
 	@OneToMany(mappedBy = "locationBean")
 	private Set<Warehouse> warehouses;
@@ -95,22 +87,6 @@ public class Location implements Serializable {
 
 	public void setCompanies(Set<Company> companies) {
 		this.companies = companies;
-	}
-
-	public Set<CrownUser> getCrownUsers() {
-		return this.crownUsers;
-	}
-
-	public void setCrownUsers(Set<CrownUser> crownUsers) {
-		this.crownUsers = crownUsers;
-	}
-
-	public Set<Customer> getCustomers() {
-		return this.customers;
-	}
-
-	public void setCustomers(Set<Customer> customers) {
-		this.customers = customers;
 	}
 
 	public Set<Warehouse> getWarehouses() {

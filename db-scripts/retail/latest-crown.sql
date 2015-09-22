@@ -503,6 +503,8 @@ CREATE TABLE customer (
 	customer_type		int, /*Privilege or Non-Privilege*/
 	address			text,
 	phone			character varying(50),
+	date_of_birth	date,
+	anniversary		date,
 	remarks			text,
 	status			int,
 	PRIMARY KEY		(customer_id)

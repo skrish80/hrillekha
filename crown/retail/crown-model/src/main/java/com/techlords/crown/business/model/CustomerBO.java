@@ -25,28 +25,12 @@ public class CustomerBO extends AppModel {
 	@NotEmpty(message = "Customer Phone cannot be empty")
 	@Size(min = 5, max = 25, message = "Customer Phone shall be from 5 to 25 chars")
 	private String phone;
-	@NotEmpty(message = "Customer FAX cannot be empty")
-	@Size(min = 5, max = 25, message = "Customer FAX shall be from 5 to 25 chars")
-	private String fax;
-	@NotEmpty(message = "Point of Contact cannot be empty")
-	@Size(min = 5, max = 25, message = "Point of Contact shall be from 5 to 25 chars")
-	private String poc;
-	@NotEmpty(message = "Customer SBN cannot be empty")
-	@Size(min = 5, max = 25, message = "Customer SBN shall be from 5 to 25 chars")
-	private String sbn;// shall be unique
-	@NotEmpty(message = "Customer Remarks cannot be empty")
-	@Size(min = 5, max = 25, message = "Customer Remarks shall be from 5 to 25 chars")
 	private String remarks;
-	private String createdby;
-	private Date createdDate;
+	private Date dateOfBirth;
+	private Date anniversary;
 
 	@Min(value = 1, message = "Select a customer type")
 	private int customerType;
-	@Min(value = 1, message = "Select a location")
-	private int location;
-
-	private double creditLimit;
-	private double currentCredit;
 
 	private CrownUserBO crownUserBO;
 	private CustomerTypeBO customerTypeBO;
@@ -85,44 +69,12 @@ public class CustomerBO extends AppModel {
 		this.phone = phone;
 	}
 
-	public String getFax() {
-		return fax;
-	}
-
-	public void setFax(String fax) {
-		this.fax = fax;
-	}
-
-	public String getPoc() {
-		return poc;
-	}
-
-	public void setPoc(String poc) {
-		this.poc = poc;
-	}
-
-	public String getSbn() {
-		return sbn;
-	}
-
-	public void setSbn(String sbn) {
-		this.sbn = sbn;
-	}
-
 	public String getRemarks() {
 		return remarks;
 	}
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
-	}
-
-	public String getCreatedby() {
-		return createdby;
-	}
-
-	public void setCreatedby(String createdby) {
-		this.createdby = createdby;
 	}
 
 	/**
@@ -138,21 +90,6 @@ public class CustomerBO extends AppModel {
 	 */
 	public final void setCustomerType(int customerType) {
 		this.customerType = customerType;
-	}
-
-	/**
-	 * @return the location
-	 */
-	public final int getLocation() {
-		return location;
-	}
-
-	/**
-	 * @param location
-	 *            the location to set
-	 */
-	public final void setLocation(int location) {
-		this.location = location;
 	}
 
 	/**
@@ -216,33 +153,32 @@ public class CustomerBO extends AppModel {
 	}
 
 	/**
-	 * @return the createdDate
+	 * @return the dateOfBirth
 	 */
-	public final Date getCreatedDate() {
-		return createdDate;
+	public Date getDateOfBirth() {
+		return dateOfBirth;
 	}
 
 	/**
-	 * @param createdDate
-	 *            the createdDate to set
+	 * @param dateOfBirth
+	 *            the dateOfBirth to set
 	 */
-	public final void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
-	public final double getCreditLimit() {
-		return creditLimit;
+	/**
+	 * @return the anniversary
+	 */
+	public Date getAnniversary() {
+		return anniversary;
 	}
 
-	public final void setCreditLimit(double creditLimit) {
-		this.creditLimit = creditLimit;
-	}
-
-	public final double getCurrentCredit() {
-		return currentCredit;
-	}
-
-	public final void setCurrentCredit(double currentCredit) {
-		this.currentCredit = currentCredit;
+	/**
+	 * @param anniversary
+	 *            the anniversary to set
+	 */
+	public void setAnniversary(Date anniversary) {
+		this.anniversary = anniversary;
 	}
 }

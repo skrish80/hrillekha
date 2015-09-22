@@ -19,7 +19,7 @@
 				update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
 		</p:panel>
 
-		<p:dataTable id="companies" var="customerBO"
+		<p:dataTable id="customers" var="customerBO"
 			value="#{customerController.customerBOs}" widgetVar="customerBOTable"
 			emptyMessage="No Customers found with given criteria"
 			rowKey="#{customerBO.id}" paginator="true" rows="10"
@@ -52,13 +52,6 @@
 				</center>
 			</p:column>
 
-			<p:column id="sbn" headerText="SBN" filterBy="#{customerBO.sbn}"
-				filterMatchMode="contains" style="font-weight:bold;">
-				<center>
-					<h:outputText style="font-weight:normal;" value="#{customerBO.sbn}" />
-				</center>
-			</p:column>
-
 			<p:column id="address" headerText="Address"
 				filterBy="#{customerBO.address}" filterMatchMode="contains"
 				style="font-weight:bold;">
@@ -74,24 +67,6 @@
 				<center>
 					<h:outputText style="font-weight:normal;"
 						value="#{customerBO.phone}" />
-				</center>
-			</p:column>
-
-			<p:column id="poc" headerText="Point of Contact"
-				filterBy="#{customerBO.poc}" filterMatchMode="contains"
-				style="font-weight:bold;">
-
-				<center>
-					<h:outputText style="font-weight:normal;" value="#{customerBO.poc}" />
-				</center>
-			</p:column>
-
-			<p:column id="location" headerText="Location"
-				filterBy="#{customerBO.locationBO.location}"
-				filterMatchMode="contains" style="font-weight:bold;">
-				<center>
-					<h:outputText style="font-weight:normal;"
-						value="#{customerBO.locationBO.location}" />
 				</center>
 			</p:column>
 

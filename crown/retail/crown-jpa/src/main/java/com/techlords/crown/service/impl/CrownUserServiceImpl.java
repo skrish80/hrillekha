@@ -20,9 +20,7 @@ import com.techlords.crown.helpers.AuditActionEnum;
 import com.techlords.crown.helpers.CrownUserHelper;
 import com.techlords.crown.helpers.RoleHelper;
 import com.techlords.crown.persistence.CrownUser;
-import com.techlords.crown.persistence.Department;
 import com.techlords.crown.persistence.Designation;
-import com.techlords.crown.persistence.Location;
 import com.techlords.crown.persistence.Role;
 import com.techlords.crown.persistence.Status;
 import com.techlords.crown.service.CrownUserService;
@@ -36,10 +34,7 @@ import com.techlords.crown.service.GeneralService;
 final class CrownUserServiceImpl extends AbstractCrownService implements CrownUserService {
 
 	private void setUserAttributes(CrownUser user, CrownUserBO bo) {
-		user.setDesignationBean(manager.find(Designation.class, bo.getDesignationBO().getId()));
-		user.setDepartmentBean(manager.find(Department.class, bo.getDepartmentBO().getId()));
 		user.setRoleBean(manager.find(Role.class, bo.getRoleBO().getId()));
-		user.setLocationBean(manager.find(Location.class, bo.getLocationBO().getId()));
 		user.setStatusBean(manager.find(Status.class, StatusBO.ACTIVE.getStatusID()));
 		user.setVersion(bo.getVersion());
 

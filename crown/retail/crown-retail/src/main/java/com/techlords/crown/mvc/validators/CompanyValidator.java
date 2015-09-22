@@ -18,16 +18,6 @@ public final class CompanyValidator {
 			messages.add("Company Name not available");
 			errorOccured = true;
 		}
-		if (!CrownMVCHelper.checkUniqueness("company@sbn",
-				currentCompany.getSbn())) {
-			messages.add("SBN not available");
-			errorOccured = true;
-		}
-		if (!CrownMVCHelper.checkUniqueness("incorporation",
-				currentCompany.getIncorporation())) {
-			messages.add("Incorporation not available");
-			errorOccured = true;
-		}
 		if (errorOccured) {
 			throw new CrownException("Company cannot be created", messages);
 		}

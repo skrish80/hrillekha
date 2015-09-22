@@ -65,16 +65,10 @@ public class CustomerController extends CrownModelController {
 				currentCustomer.getCustomerName()) ? AVAILABLE : UNAVAILABLE);
 	}
 
-	public void checkUniqueSbn() {
-		setFieldAvailability(CrownMVCHelper.checkUniqueness("customer@sbn",
-				currentCustomer.getSbn()) ? AVAILABLE : UNAVAILABLE);
-	}
 
 	public String save() {
 		currentCustomer.setCustomerTypeBO(getAppModel(
 				currentCustomer.getCustomerType(), customerTypeBOs));
-		currentCustomer.setLocationBO(getAppModel(
-				currentCustomer.getLocation(), locationBOs));
 		return currentCustomer.isNew() ? create() : update();
 	}
 
