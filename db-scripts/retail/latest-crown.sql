@@ -1,4 +1,4 @@
-/*
+﻿/*
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////DROP DEPENDENT TABLES//////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -11,6 +11,7 @@ DROP TABLE if exists invoice_return;
 DROP TABLE if exists invoice_items;
 DROP TABLE if exists purchase_invoice_items;
 DROP TABLE if exists invoice_payment;
+DROP TABLE if exists purchase_invoice_payment;
 DROP TABLE if exists agent_commission;
 DROP TABLE if exists warehouse_stock;
 DROP TABLE if exists credit_note;
@@ -20,6 +21,7 @@ DROP TABLE if exists agent;
 DROP TABLE if exists receipt_payment;
 DROP TABLE if exists receipt;
 DROP TABLE if exists customer;
+DROP TABLE if exists ws_customer;
 DROP TABLE if exists supplier;
 DROP TABLE if exists company;
 DROP TABLE if exists rights;
@@ -29,6 +31,7 @@ DROP TABLE if exists stock_movement_items;
 DROP TABLE if exists stock_movement;
 DROP TABLE if exists item;
 DROP TABLE if exists warehouse;
+DROP TABLE if exists expense;
 
 /*
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +49,7 @@ DROP TABLE if exists department;
 DROP TABLE if exists location;
 DROP TABLE if exists currency;
 DROP TABLE if exists bank;
+DROP TABLE if exists expense_allocation;
 
 /*
 //////////////////////////////////////////// ENUM TABLES /////////////////////////////////////////////////////////////

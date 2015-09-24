@@ -72,12 +72,12 @@
 					navigator="true" yearRange="c-100:c+100" readonlyInput="true" />
 				<p:message for="dateOfBirth" />
 
-				<p:outputLabel for="dateOfBirth" value="Date of Birth: " />
-				<p:calendar id="dateOfBirth"
+				<p:outputLabel for="anniversary" value="Anniversary: " />
+				<p:calendar id="anniversary"
 					value="#{customerController.currentCustomer.anniversary}"
-					label="dateOfBirth" showOn="button" pattern="dd-MMM-yyyy"
+					label="anniversary" showOn="button" pattern="dd-MMM-yyyy"
 					navigator="true" yearRange="c-100:c+100" readonlyInput="true" />
-				<p:message for="dateOfBirth" />
+				<p:message for="anniversary" />
 
 				<p:outputLabel for="remarks" value="Remarks: " />
 				<p:inputText id="remarks"

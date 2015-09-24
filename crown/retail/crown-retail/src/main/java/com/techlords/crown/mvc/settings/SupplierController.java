@@ -63,7 +63,7 @@ public class SupplierController extends CrownModelController {
 	}
 
 	public void checkUniqueSbn() {
-		setFieldAvailability(CrownMVCHelper.checkUniqueness("supplier@sbn",
+		setFieldAvailability(CrownMVCHelper.checkUniqueness("supplier@tin",
 				currentSupplier.getTin()) ? AVAILABLE : UNAVAILABLE);
 	}
 

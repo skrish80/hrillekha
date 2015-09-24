@@ -110,10 +110,10 @@ insert into audit_action(action_code, description, version) values ('LOGIN', 'Lo
 
 /*ADMIN USER username=sysadmin; password=crownadmin*/
 INSERT INTO crown_user(
-            employee_no, username, password, first_name, last_name, email, designation, department, "role", 
-            "location", address, phone, mobile, date_of_birth, joining_date, status, version)
-    VALUES ('EMP000', 'sysadmin', '7605e61df214c04eb1a9155ce8c8c319', 'System', 'Administrator', 'sysadmin@crown.com', 1, 1, 1, 1, 
-            'KK Nagar', '044-23711304', '9444322723', '05-SEP-1978', '20-AUG-2011', 1, 1);
+            employee_no, username, password, first_name, last_name, email, "role", 
+            address, mobile, date_of_birth, joining_date, status, version)
+    VALUES ('EMP000', 'sysadmin', '7605e61df214c04eb1a9155ce8c8c319', 'System', 'Administrator', 'sysadmin@crown.com', 1,  
+            'KK Nagar', '9444322723', '05-SEP-1978', '20-AUG-2011', 1, 1);
 
 /*
 GRANT INSERT, UPDATE, SELECT, DELETE ON ALL TABLES IN SCHEMA public TO gvgreat;

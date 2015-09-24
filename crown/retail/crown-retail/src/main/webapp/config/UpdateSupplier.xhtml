@@ -61,12 +61,12 @@
 				<p:message for="poc" />
 
 				<p:outputLabel for="tin" value="TIN: " />
-				<p:inputText id="sbn"
+				<p:inputText id="tin"
 					value="#{supplierController.currentSupplier.tin}" label="TIN">
 					<p:ajax event="blur" update="validateTIN"
 						listener="#{supplierController.checkUniqueSbn}" />
 				</p:inputText>
-				<p:message for="sbn" />
+				<p:message for="tin" />
 
 				<p:spacer />
 				<h:outputText id="validateTIN"
