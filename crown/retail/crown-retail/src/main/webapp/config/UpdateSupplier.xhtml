@@ -45,19 +45,28 @@
 				<p:outputLabel for="address" value="Address: " />
 				<p:inputTextarea id="address"
 					value="#{supplierController.currentSupplier.address}"
-					label="Address" />
+					label="Address">
+					<p:ajax event="blur" listener="#{supplierController.doNothing}"
+						process="address" update="address" async="true" />
+				</p:inputTextarea>
 				<p:message for="address" />
 
 				<p:outputLabel for="phone" value="Phone: " />
 				<p:inputText id="phone"
 					value="#{supplierController.currentSupplier.phone}" label="Phone"
-					mask="999999999999" />
+					mask="999999999999">
+					<p:ajax event="blur" listener="#{supplierController.doNothing}"
+						process="phone" update="phone" async="true" />
+				</p:inputText>
 				<p:message for="phone" />
 
 				<p:outputLabel for="poc" value="Point of Contact: " />
 				<p:inputText id="poc"
 					value="#{supplierController.currentSupplier.poc}"
-					label="PointofContact" />
+					label="PointofContact">
+					<p:ajax event="blur" listener="#{supplierController.doNothing}"
+						process="poc" update="poc" async="true" />
+				</p:inputText>
 				<p:message for="poc" />
 
 				<p:outputLabel for="tin" value="TIN: " />
@@ -77,7 +86,10 @@
 				<p:outputLabel for="remarks" value="Remarks: " />
 				<p:inputText id="remarks"
 					value="#{supplierController.currentSupplier.remarks}"
-					label="Remarks" />
+					label="Remarks">
+					<p:ajax event="blur" listener="#{supplierController.doNothing}"
+						process="remarks" update="remarks" async="true" />
+				</p:inputText>
 				<p:message for="remarks" />
 
 			</h:panelGrid>
@@ -85,7 +97,7 @@
 
 		<p:commandButton value="Submit"
 			update="#{navigationBean.UPDATE_FORM_ID}"
-			action="#{supplierController.save}" />
+			action="#{supplierController.save}" resetValues="true" />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('config/Supplier.xhtml')}"
 			value="Cancel" process="@this"

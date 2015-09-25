@@ -3,6 +3,8 @@ package com.techlords.crown.mvc;
 import java.util.Arrays;
 import java.util.List;
 
+import org.primefaces.context.RequestContext;
+
 import com.techlords.crown.business.model.enums.StatusBO;
 import com.techlords.crown.mvc.util.FacesUtil;
 import com.techlords.infra.AppModel;
@@ -47,6 +49,10 @@ public abstract class CrownModelController implements IHomePageListener {
 	public String getFieldAvailability() {
 		return fieldAvailability;
 	}
+	
+	public void reset() {
+        RequestContext.getCurrentInstance().reset("includeForm:mainPanel");
+    }
 
 	public void setFieldAvailability(String fieldAvailability) {
 		this.fieldAvailability = fieldAvailability;
