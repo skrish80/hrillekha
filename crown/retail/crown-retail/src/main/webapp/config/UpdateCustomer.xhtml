@@ -56,13 +56,19 @@
 				<p:outputLabel for="address" value="Address: " />
 				<p:inputTextarea id="address"
 					value="#{customerController.currentCustomer.address}"
-					label="Address" />
+					label="Address" >
+					<p:ajax event="blur" listener="#{customerController.doNothing}"
+						process="address" update="address" async="true" />
+				</p:inputTextarea>
 				<p:message for="address" />
 
 				<p:outputLabel for="phone" value="Phone: " />
 				<p:inputText id="phone"
 					value="#{customerController.currentCustomer.phone}" label="Phone"
-					mask="999999999999" />
+					mask="999999999999" >
+					<p:ajax event="blur" listener="#{customerController.doNothing}"
+						process="phone" update="phone" async="true" />
+				</p:inputTextarea>
 				<p:message for="phone" />
 				
 				<p:outputLabel for="dateOfBirth" value="Date of Birth: " />
@@ -82,7 +88,10 @@
 				<p:outputLabel for="remarks" value="Remarks: " />
 				<p:inputText id="remarks"
 					value="#{customerController.currentCustomer.remarks}"
-					label="Remarks" />
+					label="Remarks" >
+					<p:ajax event="blur" listener="#{customerController.doNothing}"
+						process="remarks" update="remarks" async="true" />
+				</p:inputText>
 				<p:message for="remarks" />
 
 			</h:panelGrid>
@@ -90,7 +99,7 @@
 
 		<p:commandButton value="Submit"
 			update="#{navigationBean.UPDATE_FORM_ID}"
-			action="#{customerController.save}" />
+			action="#{customerController.save}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('config/Customer.xhtml')}"
 			value="Cancel" process="@this"

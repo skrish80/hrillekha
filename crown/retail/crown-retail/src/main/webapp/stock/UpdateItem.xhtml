@@ -45,6 +45,8 @@
 				<p:inputText id="modelNum"
 					value="#{itemController.currentItem.modelNumber}" required="true"
 					label="Item Name" readonly="${!itemController.currentItem.isNew()}">
+					<p:ajax event="blur" listener="#{itemController.doNothing}"
+						process="modelNum" update="modelNum" async="true" />
 				</p:inputText>
 				<p:message for="modelNum" />
 
@@ -107,6 +109,8 @@
 					label="Cost Price" onkeypress="validateDecimal(this, event)"
 					maxlength="13">
 					<f:convertNumber pattern="#0.00" />
+					<p:ajax event="blur" listener="#{itemController.doNothing}"
+						process="costPrice" update="costPrice" async="true" />
 				</p:inputText>
 				<p:message for="costPrice" />
 
@@ -114,7 +118,10 @@
 				<p:inputText id="reorder"
 					value="#{itemController.currentItem.reorderLevel}"
 					label="Reorder Level" onkeypress="validateInteger(event)"
-					maxlength="13" />
+					maxlength="13" >
+					<p:ajax event="blur" listener="#{itemController.doNothing}"
+						process="reorder" update="reorder" async="true" />
+				</p:inputText>
 				<p:message for="reorder" />
 
 				<p:outputLabel for="uomPrice" value="UOM Price: " />
@@ -149,7 +156,7 @@
 		</p:panel>
 
 		<p:commandButton value="Submit" action="#{itemController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('stock/Item.xhtml')}"
 			value="Cancel" process="@this"

@@ -194,7 +194,7 @@
 
 		<p:commandButton value="Submit"
 			action="#{stockMovementController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('stock/StockMovement.xhtml')}"
 			value="Cancel" process="@this"

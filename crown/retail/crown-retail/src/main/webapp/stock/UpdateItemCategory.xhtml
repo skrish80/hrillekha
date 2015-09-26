@@ -51,7 +51,10 @@
 				<p:outputLabel for="desc" value="Description: " />
 				<p:inputTextarea id="desc"
 					value="#{itemCategoryController.currentCategory.description}"
-					required="true" label="Description" maxlength="50" />
+					required="true" label="Description" maxlength="50" >
+					<p:ajax event="blur" listener="#{itemCategoryController.doNothing}"
+						process="desc" update="desc" async="true" />
+				</p:inputTextarea>
 				<p:message for="desc" />
 
 			</h:panelGrid>
@@ -59,7 +62,7 @@
 
 		<p:commandButton value="Submit"
 			action="#{itemCategoryController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('stock/ItemCategory.xhtml')}"
 			value="Cancel" process="@this"

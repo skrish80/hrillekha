@@ -47,7 +47,10 @@
 
 				<p:outputLabel for="address" value="Address: " />
 				<p:inputTextarea id="address"
-					value="#{agentController.currentAgent.address}" label="Address" />
+					value="#{agentController.currentAgent.address}" label="Address" >
+					<p:ajax event="blur" listener="#{agentController.doNothing}"
+						process="address" update="address" async="true" />
+				</p:inputTextarea>
 				<p:message for="address" />
 
 				<p:outputLabel for="loc" value="Location: " />
@@ -64,14 +67,17 @@
 
 				<p:outputLabel for="phone" value="Phone: " />
 				<p:inputText id="phone"
-					value="#{agentController.currentAgent.phone}" label="Phone" />
+					value="#{agentController.currentAgent.phone}" label="Phone" >
+					<p:ajax event="blur" listener="#{agentController.doNothing}"
+						process="phone" update="phone" async="true" />
+				</p:inputText>
 				<p:message for="phone" />
 
 			</h:panelGrid>
 		</p:panel>
 
 		<p:commandButton value="Submit" action="#{agentController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('config/Agent.xhtml')}"
 			value="Cancel" process="@this"

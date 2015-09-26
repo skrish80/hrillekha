@@ -89,7 +89,10 @@
 				<p:outputLabel value="Remarks: " for="remarks" />
 				<p:inputTextarea escape="false" id="remarks"
 					value="#{creditNoteController.currentCreditNote.remarks}"
-					style="font-weight:bold" required="true" />
+					style="font-weight:bold" required="true" >
+					<p:ajax event="blur" listener="#{creditNoteController.doNothing}"
+						process="remarks" update="remarks" async="true" />
+				</p:inputTextarea>
 				<p:message for="remarks" />
 			</h:panelGrid>
 		</p:panel>
@@ -99,7 +102,7 @@
 	<p:panel id="actionPanel">
 		<p:commandButton value="Done"
 			actionListener="#{creditNoteController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton id="cancelInv"
 			actionListener="#{invoiceControllerFactory.showView('CREDIT_NOTE', invoiceControllerFactory.invoiceType)}"
 			value="Back" process="@this"

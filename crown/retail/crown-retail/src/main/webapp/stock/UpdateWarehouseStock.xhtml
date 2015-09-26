@@ -84,7 +84,7 @@
 		</p:panel>
 		<p:commandButton value="Submit"
 			action="#{warehouseStockController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('stock/WarehouseStock.xhtml')}"
 			value="Cancel" process="@this"

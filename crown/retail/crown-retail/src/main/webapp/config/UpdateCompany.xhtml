@@ -48,12 +48,18 @@
 				<p:outputLabel for="desc" value="Description: " />
 				<p:inputText id="desc"
 					value="#{companyController.currentCompany.description}"
-					label="Description" />
+					label="Description" >
+					<p:ajax event="blur" listener="#{companyController.doNothing}"
+						process="desc" update="desc" async="true" />
+				</p:inputText>
 				<p:message for="desc" />
 
 				<p:outputLabel for="address" value="Address: " />
 				<p:inputTextarea id="address"
-					value="#{companyController.currentCompany.address}" label="Address" />
+					value="#{companyController.currentCompany.address}" label="Address" >
+					<p:ajax event="blur" listener="#{companyController.doNothing}"
+						process="address" update="address" async="true" />
+				</p:inputTextarea>
 				<p:message for="address" />
 
 				<p:outputLabel for="loc" value="Location: " />
@@ -92,7 +98,7 @@
 		</p:panel>
 
 		<p:commandButton value="Submit" action="#{companyController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('config/Company.xhtml')}"
 			value="Cancel" process="@this"

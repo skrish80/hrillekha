@@ -108,7 +108,7 @@
 
 		<p:commandButton value="Submit"
 			action="#{stockAllocationController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('stock/StockAllocation.xhtml')}"
 			value="Cancel" process="@this"

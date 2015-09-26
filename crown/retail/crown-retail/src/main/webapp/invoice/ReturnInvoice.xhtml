@@ -231,7 +231,7 @@
 			</p:dataTable>
 		</p:panel>
 		<p:outputPanel style="border:1;">
-			<h:outputText value="1. All Prices are in 'SCR'. "
+			<h:outputText value="1. All Prices are in 'INR'. "
 				style="font-style:italic; font-size: .8em;" />
 			<h:outputText
 				value="2. Allocation type UOM -> Package (Carton, Box, etc.). "
@@ -245,7 +245,7 @@
 	<p:panel>
 		<p:commandButton value="Return"
 			action="#{returnInvoiceController.save}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton id="cancelInv"
 			actionListener="#{invoiceControllerFactory.showView('RETURN', invoiceControllerFactory.invoiceType)}"
 			value="Cancel" process="@this"

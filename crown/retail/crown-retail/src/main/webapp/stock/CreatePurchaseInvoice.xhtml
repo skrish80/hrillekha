@@ -175,7 +175,7 @@
 		<p:separator />
 		<p:commandButton value="Submit"
 			action="#{purchaseInvoiceController.createInvoice}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('stock/AllPurchaseInvoices.xhtml')}"
 			value="Cancel" process="@this"
@@ -251,7 +251,7 @@
 				</p:dataTable>
 			</p:outputPanel>
 			<p:separator />
-			<h:outputText value="All Prices are in 'SCR'"
+			<h:outputText value="All Prices are in 'INR'"
 				style="font-style:italic; font-size: .8em;" />
 
 			<p:commandButton value="Add to Invoice"

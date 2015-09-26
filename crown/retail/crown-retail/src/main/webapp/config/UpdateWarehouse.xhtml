@@ -50,15 +50,21 @@
 					rendered="${!warehouseController.isRetailShop()}" />
 
 				<p:outputLabel for="desc" value="Description: " />
-				<p:inputTextarea id="desc"
+				<p:inputText id="desc"
 					value="#{warehouseController.currentWarehouse.description}"
-					label="Description" maxlength="50" />
+					label="Description" maxlength="50" >
+					<p:ajax event="blur" listener="#{warehouseController.doNothing}"
+						process="desc" update="desc" async="true" />
+				</p:inputText>
 				<p:message for="desc" />
 
 				<p:outputLabel for="address" value="Address: " />
 				<p:inputTextarea id="address"
 					value="#{warehouseController.currentWarehouse.address}"
-					label="Address" />
+					label="Address">
+					<p:ajax event="blur" listener="#{warehouseController.doNothing}"
+						process="address" update="address" async="true" />
+				</p:inputTextarea>
 				<p:message for="address" />
 
 				<p:outputLabel for="loc" value="Location: " />
@@ -89,7 +95,7 @@
 
 		<p:commandButton value="Submit"
 			update="#{navigationBean.UPDATE_FORM_ID}"
-			action="#{warehouseController.save}" />
+			action="#{warehouseController.save}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView(warehouseController.isRetailShop()?'config/RetailShop.xhtml':'config/Warehouse.xhtml')}"
 			value="Cancel" process="@this"

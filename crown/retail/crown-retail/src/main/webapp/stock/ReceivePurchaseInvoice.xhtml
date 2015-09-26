@@ -148,7 +148,7 @@
 		<p:separator />
 		<p:commandButton value="Submit"
 			action="#{purchaseInvoiceController.receiveInvoice}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton id="cancelInv"
 			actionListener="#{hotKeyController.showView('stock/AllPurchaseInvoices.xhtml')}"
 			value="Cancel" process="@this"

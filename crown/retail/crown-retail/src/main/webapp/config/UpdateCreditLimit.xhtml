@@ -50,7 +50,7 @@
 
 		<p:commandButton value="Submit"
 			action="#{receiptController.updateCreditLimit}"
-			update="#{navigationBean.UPDATE_FORM_ID}" />
+			update="#{navigationBean.UPDATE_FORM_ID}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('config/CreditReceipt.xhtml')}"
 			value="Cancel" process="@this"

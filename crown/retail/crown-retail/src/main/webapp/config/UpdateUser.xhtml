@@ -55,20 +55,29 @@
 				<p:inputText id="empNo"
 					value="#{crownUserController.currentUser.employeeNo}"
 					required="true" label="Employee Number"
-					rendered="${!crownUserController.currentUser.isNew()}" />
+					rendered="${!crownUserController.currentUser.isNew()}" >
+					<p:ajax event="blur" listener="#{crownUserController.doNothing}"
+						process="empNo" update="empNo" async="true" />
+				</p:inputText>
 				<p:message for="empNo"
 					rendered="${!crownUserController.currentUser.isNew()}" />
 
 				<p:outputLabel for="firstName" value="First Name: " />
 				<p:inputText id="firstName"
 					value="#{crownUserController.currentUser.firstName}"
-					required="true" label="First Name" />
+					required="true" label="First Name" >
+					<p:ajax event="blur" listener="#{crownUserController.doNothing}"
+						process="firstName" update="firstName" async="true" />
+				</p:inputText>
 				<p:message for="firstName" />
 
 				<p:outputLabel for="lastName" value="Last Name: " />
 				<p:inputText id="lastName"
 					value="#{crownUserController.currentUser.lastName}" required="true"
-					label="Last Name" />
+					label="Last Name" >
+					<p:ajax event="blur" listener="#{crownUserController.doNothing}"
+						process="lastName" update="lastName" async="true" />
+				</p:inputText>
 				<p:message for="lastName" />
 
 				<p:outputLabel for="email" value="Email: " />
@@ -88,13 +97,19 @@
 
 				<p:outputLabel for="address" value="Address: " />
 				<p:inputTextarea id="address"
-					value="#{crownUserController.currentUser.address}" label="Address" />
+					value="#{crownUserController.currentUser.address}" label="Address" >
+					<p:ajax event="blur" listener="#{crownUserController.doNothing}"
+						process="address" update="address" async="true" />
+				</p:inputTextarea>
 				<p:message for="address" />
 
 				<p:outputLabel for="mobile" value="Mobile: " />
 				<p:inputText id="mobile"
 					value="#{crownUserController.currentUser.mobileNumber}"
-					required="true" label="Mobile" maxlength="25" />
+					required="true" label="Mobile" maxlength="25" >
+					<p:ajax event="blur" listener="#{crownUserController.doNothing}"
+						process="mobile" update="mobile" async="true" />
+				</p:inputText>
 				<p:message for="mobile" />
 
 				<p:outputLabel for="joinDate" value="Join Date: " />
@@ -126,7 +141,7 @@
 
 		<p:commandButton value="Submit"
 			update="#{navigationBean.UPDATE_FORM_ID}"
-			action="#{crownUserController.save}" />
+			action="#{crownUserController.save}" resetValues="true"  />
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('config/CrownUser.xhtml')}"
 			value="Cancel" process="@this"
