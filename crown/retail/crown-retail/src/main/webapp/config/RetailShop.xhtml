@@ -70,6 +70,7 @@
 			</p:column>
 
 			<p:column id="action" headerText="Action" style="font-weight:bold;">
+			<center>
 				<p:splitButton value="Edit"
 					action="#{warehouseController.setupForm(warehouseBO)}"
 					icon="ui-icon-arrowrefresh-1-w"
@@ -84,6 +85,7 @@
 						onstart="return confirm('Are you sure you want to delete #{warehouseBO.warehouseName}?')"
 						update="#{navigationBean.UPDATE_FORM_ID}" process="@this" />
 				</p:splitButton>
+				</center>
 			</p:column>
 
 		</p:dataTable>

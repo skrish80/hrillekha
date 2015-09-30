@@ -39,6 +39,12 @@
 				<h:outputText style="font-weight:normal;"
 					value="#{brandBO.itemBrand}" />
 			</p:column>
+			<p:column id="brandCode" filterBy="#{brandBO.brandCode}"
+				headerText="Brand Code" filterMatchMode="contains"
+				style="font-weight:bold;">
+				<h:outputText style="font-weight:normal;"
+					value="#{brandBO.brandCode}" />
+			</p:column>
 
 			<p:column id="desc" filterBy="#{brandBO.description}"
 				headerText="Description" filterMatchMode="contains"

@@ -89,6 +89,13 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>${el.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.techlords.crown</groupId>
 			<artifactId>crown-model</artifactId>

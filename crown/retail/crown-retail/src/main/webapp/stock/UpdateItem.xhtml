@@ -53,7 +53,7 @@
 				<p:outputLabel for="category" value="Category: " />
 				<p:selectOneMenu id="category"
 					value="#{itemController.currentItem.category}" required="true"
-					label="Category">
+					label="Category" disabled="${!itemController.currentItem.isNew()}">
 					<f:selectItem itemLabel="Select One" itemValue="" />
 					<f:selectItems var="cat" value="#{itemController.categoryBOs}"
 						itemValue="#{cat.id}" itemLabel="#{cat.itemCategory}" />
@@ -64,13 +64,35 @@
 				<p:outputLabel for="brand" value="Brand: " />
 				<p:selectOneMenu id="brand"
 					value="#{itemController.currentItem.brand}" required="true"
-					label="Brand">
+					label="Brand" disabled="${!itemController.currentItem.isNew()}">
 					<f:selectItem itemLabel="Select One" itemValue="" />
 					<f:selectItems var="brd" value="#{itemController.brandBOs}"
 						itemValue="#{brd.id}" itemLabel="#{brd.itemBrand}" />
 
 				</p:selectOneMenu>
 				<p:message for="brand" />
+
+				<p:outputLabel for="style" value="Style: " rendered="${itemController.currentItem.isNew()}"/>
+				<p:selectOneMenu id="style"
+					value="#{itemController.currentItem.style}" required="true"
+					label="Style" rendered="${itemController.currentItem.isNew()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="stt" value="#{itemController.styles}"
+						itemValue="#{stt}" itemLabel="#{stt}" />
+
+				</p:selectOneMenu>
+				<p:message for="style" rendered="${itemController.currentItem.isNew()}"/>
+
+				<p:outputLabel for="size" value="Size: " rendered="${itemController.currentItem.isNew()}"/>
+				<p:selectOneMenu id="size"
+					value="#{itemController.currentItem.size}" required="true"
+					label="Size" rendered="${itemController.currentItem.isNew()}">
+					<f:selectItem itemLabel="Select One" itemValue="" />
+					<f:selectItems var="sz" value="#{itemController.sizes}"
+						itemValue="#{sz}" itemLabel="#{sz}" />
+
+				</p:selectOneMenu>
+				<p:message for="size" rendered="${itemController.currentItem.isNew()}"/>
 
 				<p:outputLabel for="currency" value="Currency: " />
 				<p:selectOneMenu id="currency"
@@ -103,7 +125,7 @@
 				</p:inputText>
 				<p:message for="pcsPerUOM" />
 
-				<p:outputLabel for="costPrice" value="Cost Price: " />
+				<p:outputLabel for="costPrice" value="Cost(Base) Price: " />
 				<p:inputText id="costPrice"
 					value="#{itemController.currentItem.costPrice}" required="true"
 					label="Cost Price" onkeypress="validateDecimal(this, event)"
@@ -124,7 +146,7 @@
 				</p:inputText>
 				<p:message for="reorder" />
 
-				<p:outputLabel for="uomPrice" value="UOM Price: " />
+				<p:outputLabel for="uomPrice" value="UOM Price(MRP): " />
 				<p:inputText id="uomPrice"
 					value="#{itemController.currentItem.uomPrice}" required="true"
 					label="UOM Price" onkeypress="validateDecimal(this, event)"

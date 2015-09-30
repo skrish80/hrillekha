@@ -36,10 +36,8 @@ import com.techlords.crown.service.LocationService;
  */
 public final class CrownMVCHelper {
 
-	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat(
-			"#######.####");
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat(
-			"dd-MMM-yyyy");
+	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#######.####");
+	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MMM-yyyy");
 
 	private static final List<AgentTypeBO> AGENT_TYPE_BOS = new ArrayList<AgentTypeBO>();
 	private static final List<CompanyTypeBO> COMPANY_TYPE_BOS = new ArrayList<CompanyTypeBO>();
@@ -52,8 +50,7 @@ public final class CrownMVCHelper {
 	private static final List<CurrencyBO> CURRENCY_BOS = new ArrayList<CurrencyBO>();
 	private static final List<UomBO> UOM_BOS = new ArrayList<UomBO>();
 
-	public static boolean containsWarehouseItem(List<WarehouseStockBO> bos,
-			WarehouseStockBO item) {
+	public static boolean containsWarehouseItem(List<WarehouseStockBO> bos, WarehouseStockBO item) {
 		for (final WarehouseStockBO bo : bos) {
 			if (bo.getItemID().equals(item.getItemID())
 					&& bo.getWarehouseID().equals(item.getWarehouseID())) {
@@ -65,11 +62,9 @@ public final class CrownMVCHelper {
 		return false;
 	}
 
-	public static boolean containsStolenStock(List<StolenStockBO> bos,
-			StolenStockBO item) {
+	public static boolean containsStolenStock(List<StolenStockBO> bos, StolenStockBO item) {
 		for (final StolenStockBO bo : bos) {
-			if (bo.getItem() == item.getItem()
-					&& bo.getWarehouse() == item.getWarehouse()) {
+			if (bo.getItem() == item.getItem() && bo.getWarehouse() == item.getWarehouse()) {
 				if (bo.getStolenDate().equals(item.getStolenDate())) {
 					return true;
 				}
@@ -95,8 +90,7 @@ public final class CrownMVCHelper {
 	public static boolean checkUniqueness(String fieldName, String fieldValue) {
 		final GeneralService service = CrownServiceLocator.INSTANCE
 				.getCrownService(GeneralService.class);
-		final String tableName = CrownFlowService.INSTANCE
-				.getTableName(fieldName);
+		final String tableName = CrownFlowService.INSTANCE.getTableName(fieldName);
 		int index = fieldName.indexOf("@");
 		if (index > -1) {
 			fieldName = fieldName.substring(index + 1);
@@ -106,8 +100,7 @@ public final class CrownMVCHelper {
 
 	public static final List<AgentTypeBO> getAgentTypeBos() {
 		if (AGENT_TYPE_BOS.isEmpty()) {
-			AgentService service = CrownServiceLocator.INSTANCE
-					.getCrownService(AgentService.class);
+			AgentService service = CrownServiceLocator.INSTANCE.getCrownService(AgentService.class);
 			AGENT_TYPE_BOS.clear();
 			AGENT_TYPE_BOS.addAll(service.findAllAgentTypes());
 		}
@@ -218,15 +211,15 @@ public final class CrownMVCHelper {
 		}
 		return UOM_BOS;
 	}
-	
+
 	public static final CurrencyBO getSCR() {
-		for(CurrencyBO bo : CURRENCY_BOS) {
-			if(bo.getCurrencyCode().equals("SCR")) {
+		for (CurrencyBO bo : CURRENCY_BOS) {
+			if (bo.getCurrencyCode().equals("INR")) {
 				return bo;
 			}
 		}
 		GeneralService generalService = CrownServiceLocator.INSTANCE
 				.getCrownService(GeneralService.class);
-		return generalService.findCurrencyBO("SCR");
+		return generalService.findCurrencyBO("INR");
 	}
 }

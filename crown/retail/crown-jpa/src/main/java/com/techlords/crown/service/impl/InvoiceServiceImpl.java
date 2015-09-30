@@ -86,7 +86,7 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 		invoice.setCustomer(manager.find(Customer.class, bo.getCustomer()));
 		// CURRENTLY DOING WITH SEYCHELLES RUPEES ONLY
 		/* bo.getCurrencyBO().getCurrencyCode() */
-		invoice.setCurrencyBean(manager.find(Currency.class, "SCR"));
+		invoice.setCurrencyBean(manager.find(Currency.class, "INR"));
 		invoice.setDiscountTypeBean(manager.find(DiscountType.class, bo.getDiscountType()));
 		invoice.setDeliveryWarehouse(manager.find(Warehouse.class, bo.getDeliveryWarehouse()));
 		invoice.setPaymentStatusBean(manager.find(PaymentStatus.class, bo.getPaymentStatus()));
@@ -612,16 +612,16 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 			Object... invoiceStates) {
 
 		final List<InvoiceBO> bos = new ArrayList<InvoiceBO>();
-		final Query filterQuery = createFilterQuery(invoiceType, isAmendPayment, filters, entity,
+		final CriteriaQuery<Invoice> criteriaQuery = createFilterQuery(invoiceType, isAmendPayment, filters, entity,
 				invoiceStates);
+		final Query filterQuery = manager.createQuery(criteriaQuery);
 		if (filterQuery == null) {
 			setFilteredInvoiceCount(findInvoiceCount(invoiceType));
 			return bos;
 		}
-
 		setFilteredInvoiceCount(filterQuery.getResultList().size());
 
-		Query query = filterQuery.setFirstResult(first).setMaxResults(pageSize);
+		Query query = manager.createQuery(criteriaQuery).setFirstResult(first).setMaxResults(pageSize);
 		final List<Invoice> invoices = query.getResultList();
 		for (final Invoice invoice : invoices) {
 			bos.add(helper.createInvoiceBO(invoice));
@@ -629,7 +629,7 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 		return bos;
 	}
 
-	private Query createFilterQuery(String invoiceType, boolean isAmendPayment,
+	private CriteriaQuery<Invoice> createFilterQuery(String invoiceType, boolean isAmendPayment,
 			Map<String, String> filters, int entity, Object... invoiceStates) {
 
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
@@ -715,7 +715,7 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 		query.where(predicateList.toArray(new Predicate[0])).distinct(true)
 				.orderBy(builder.desc(invoice.get("invoiceDate")));
 
-		return manager.createQuery(query);
+		return query;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -723,8 +723,9 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 	public List<InvoiceBO> findAllInvoices(String invoiceType, int first, int pageSize,
 			boolean isAmendPayment, int entity, Object... invoiceStates) {
 		final List<InvoiceBO> bos = new ArrayList<InvoiceBO>();
-		final Query filterQuery = createFilterQuery(invoiceType, isAmendPayment,
+		final CriteriaQuery<Invoice> criteriaQuery = createFilterQuery(invoiceType, isAmendPayment,
 				Collections.EMPTY_MAP, entity, invoiceStates);
+		final Query filterQuery = manager.createQuery(criteriaQuery);
 		if (filterQuery == null) {
 			setFilteredInvoiceCount(findInvoiceCount(invoiceType));
 			return bos;
@@ -732,7 +733,7 @@ final class InvoiceServiceImpl extends AbstractCrownService implements InvoiceSe
 
 		setFilteredInvoiceCount(filterQuery.getResultList().size());
 
-		Query query = filterQuery.setFirstResult(first).setMaxResults(pageSize);
+		Query query = manager.createQuery(criteriaQuery).setFirstResult(first).setMaxResults(pageSize);
 		final List<Invoice> invoices = query.getResultList();
 		for (final Invoice inv : invoices) {
 			bos.add(helper.createInvoiceBO(inv));

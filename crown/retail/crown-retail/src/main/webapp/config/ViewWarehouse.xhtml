@@ -10,7 +10,9 @@
 	<p:panel>
 		<div class="visual-block">
 			<h2>
-				View Warehouse "<u>#{warehouseController.currentWarehouse.warehouseName}</u>"
+				<h:outputLabel
+					value="${warehouseController.isRetailShop() ? 'View Retail Shop' : 'View Warehouse'}" />
+				"<u>#{warehouseController.currentWarehouse.warehouseName}</u>"
 			</h2>
 		</div>
 		<p:separator />
@@ -51,6 +53,12 @@
 		<p:commandButton
 			actionListener="#{hotKeyController.showView('config/Warehouse.xhtml')}"
 			value="Back" process="@this"
-			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true" />
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true"
+			rendered="${!warehouseController.isRetailShop()}" />
+		<p:commandButton
+			actionListener="#{hotKeyController.showView('config/Retailshop.xhtml')}"
+			value="Back" process="@this"
+			update="#{navigationBean.UPDATE_FORM_ID}" immediate="true"
+			rendered="${warehouseController.isRetailShop()}" />
 	</p:panel>
 </ui:composition>

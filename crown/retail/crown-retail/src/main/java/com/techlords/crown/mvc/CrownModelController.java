@@ -1,5 +1,7 @@
 package com.techlords.crown.mvc;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public abstract class CrownModelController implements IHomePageListener {
 	public static final String UNAVAILABLE = "Not Available";
 	public static final String EMPTY_STRING = "";
 	private final List<StatusBO> statuses = Arrays.asList(StatusBO.values());
+	protected static final NumberFormat INTEGER_FORMAT = DecimalFormat.getIntegerInstance(); 
 
 	private String fieldAvailability;
 
@@ -29,6 +32,7 @@ public abstract class CrownModelController implements IHomePageListener {
 
 	protected CrownModelController() {
 		navigationBean.addHomePageListener(this);
+		INTEGER_FORMAT.setGroupingUsed(false);
 	}
 
 	public final void doNothing() {

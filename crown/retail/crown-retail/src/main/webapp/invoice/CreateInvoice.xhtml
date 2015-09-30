@@ -57,17 +57,9 @@
 					converter="#{crownModelConverter.getCrownModelConverter(invoiceCreateController.customerBOs)}">
 					<p:ajax event="itemSelect"
 						listener="#{invoiceCreateController.doNothing}" process="customer"
-						update="creditLim, currCredit" async="true" />
+						async="true" />
 				</p:autoComplete>
 				<p:message for="customer" />
-
-				<h:outputText value="Credit Limit:" />
-				<h:outputText id="creditLim"
-					value="#{invoiceCreateController.currentInvoice.customerBO.creditLimit}"
-					style="color:#9900FF; font-weight:bolder;" />
-				<h:outputText id="currCredit"
-					value="Current Credit: #{invoiceCreateController.currentInvoice.customerBO.currentCredit}"
-					style="color:#CC0000; font-weight:bolder;" />
 
 				<p:outputLabel for="remarks" value="Remarks:" />
 				<p:inputTextarea id="remarks"

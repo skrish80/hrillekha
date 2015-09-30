@@ -53,7 +53,6 @@ final class ItemServiceImpl extends AbstractCrownService implements ItemService 
 		item.setItemBrandBean(manager.find(ItemBrand.class, bo.getBrand()));
 		item.setUnitOfMeasure(manager.find(UnitOfMeasure.class, bo.getUom()));
 		item.setStatusBean(manager.find(Status.class, StatusBO.ACTIVE.getStatusID()));
-		item.setVersion(bo.getVersion());
 	}
 
 	public ItemBO getItemBO(int id) {
@@ -200,10 +199,10 @@ final class ItemServiceImpl extends AbstractCrownService implements ItemService 
 		try {
 			final Item item = helper.createItem(bo);
 			setItemAttributes(item, bo);
-			final GeneralService generalService = CrownServiceLocator.INSTANCE
-					.getCrownService(GeneralService.class);
-			item.setItemCode(ITEM_PREFIX + GeneralHelper.getFormattedRunningDate()
-					+ generalService.getRunningSequenceNumber("ITEM", null));
+//			final GeneralService generalService = CrownServiceLocator.INSTANCE
+//					.getCrownService(GeneralService.class);
+//			item.setItemCode(ITEM_PREFIX + GeneralHelper.getFormattedRunningDate()
+//					+ generalService.getRunningSequenceNumber("ITEM", null));
 			manager.persist(item);
 
 			auditLog(AuditActionEnum.CREATE, userID, "item", item.getItemCode());
@@ -223,8 +222,10 @@ final class ItemServiceImpl extends AbstractCrownService implements ItemService 
 
 			auditLog(AuditActionEnum.UPDATE, userID, "item", bo.getItemCode());
 		} catch (OptimisticLockException e) {
+			e.printStackTrace();
 			throw new CrownException("Item has changed or been deleted since it was last read", e);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CrownException("Exception " + e.getMessage(), e);
 		}
 		return true;
@@ -296,9 +297,9 @@ final class ItemServiceImpl extends AbstractCrownService implements ItemService 
 	public List<ItemBO> findAllItems(int first, int pageSize) {
 		Query query = manager
 				.createQuery("select I from Item I where I.statusBean.statusId=1 order by I.itemName");
-		// final String countQuery =
-		// "SELECT COUNT(*) FROM ITEM WHERE STATUS = 1";
-		setFilteredItemCount(query.getResultList().size());
+		final String countQuery = "SELECT COUNT(*) FROM ITEM WHERE STATUS = 1";
+
+		setFilteredItemCount(((Long) manager.createNativeQuery(countQuery).getSingleResult()).intValue());
 		final List<Item> items = query.setFirstResult(first).setMaxResults(pageSize)
 				.getResultList();
 		return buildItemBOs(items);

@@ -20,7 +20,6 @@ public class ItemCategoryBO extends AppModel {
 	private String categoryCode;
 	@Size(min=5, max=50, message="Description shall be from 5 to 50 chars")
 	private String description;
-	@NotNull(message = "Select a Status")
 	private StatusBO status;
 
 	public String getItemCategory() {

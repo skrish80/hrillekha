@@ -26,6 +26,7 @@ public abstract class AbstractCrownService implements CrownService {
 	private static final String DOT = ".";
 	private static final String MSG = "msg";
 
+	@PersistenceContext
 	protected EntityManager manager;
 
 	/**
@@ -39,7 +40,6 @@ public abstract class AbstractCrownService implements CrownService {
 	 * @param manager
 	 *            the manager to set
 	 */
-	@PersistenceContext
 	public void setManager(EntityManager manager) {
 		this.manager = manager;
 	}

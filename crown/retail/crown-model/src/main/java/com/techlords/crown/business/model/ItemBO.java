@@ -46,6 +46,8 @@ public class ItemBO extends AppModel {
 	private UomBO uomBO;
 
 	private StatusBO status;
+	private String size;
+	private String style;
 	
 	private int reorderLevel;
 
@@ -269,5 +271,33 @@ public class ItemBO extends AppModel {
 
 	public final void setReorderLevel(int reorderLevel) {
 		this.reorderLevel = reorderLevel;
+	}
+
+	/**
+	 * @return the size
+	 */
+	public String getSize() {
+		return size;
+	}
+
+	/**
+	 * @param size the size to set
+	 */
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	/**
+	 * @return the style
+	 */
+	public String getStyle() {
+		return style;
+	}
+
+	/**
+	 * @param style the style to set
+	 */
+	public void setStyle(String style) {
+		this.style = style;
 	}
 }

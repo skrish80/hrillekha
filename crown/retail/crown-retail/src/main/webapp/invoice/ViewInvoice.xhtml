@@ -114,19 +114,19 @@
 						<f:convertNumber type="percent" pattern="#0.00%" />
 					</h:outputText>
 				</p:column>
-				
+
 				<p:column headerText="Item / UOM VAT">
-					<h:outputText 
+					<h:outputText
 						value="#{(invItem.itemBO.itemPrice * invItem.itemBO.vat/100)}">
 						<f:convertNumber pattern="#0.00" />
 					</h:outputText>
-					<h:outputText value=" / "/>
-					<h:outputText 
+					<h:outputText value=" / " />
+					<h:outputText
 						value="#{invItem.itemBO.uomPrice * invItem.itemBO.vat/100}">
 						<f:convertNumber pattern="#0.00" />
 					</h:outputText>
 				</p:column>
-				
+
 				<p:column headerText="Item (Pieces) Qty">
 					<h:outputText value="#{invItem.itemQty}" />
 				</p:column>
@@ -162,7 +162,8 @@
 		</p:panel>
 		<p:separator />
 
-		<p:panel header="Invoice Returns" rendered="#{not empty invoiceCommonController.currentInvoice.invoiceReturns}">
+		<p:panel header="Invoice Returns"
+			rendered="#{not empty invoiceCommonController.currentInvoice.invoiceReturns}">
 			<p:dataTable id="invoiceReturns" var="invRet"
 				emptyMessage="No Invoice Returns found..."
 				value="#{invoiceCommonController.currentInvoice.invoiceReturns}"
@@ -194,7 +195,8 @@
 				</p:column>
 			</p:dataTable>
 		</p:panel>
-		<p:separator rendered="#{not empty invoiceCommonController.currentInvoice.invoiceReturns}" />
+		<p:separator
+			rendered="#{not empty invoiceCommonController.currentInvoice.invoiceReturns}" />
 
 		<p:panel header="Invoice Payments">
 			<p:dataTable id="invoicePayments" var="invPmt"
@@ -311,7 +313,7 @@
 					style="font-weight:bold" />
 				<br />
 				<h:outputText
-					value="#{invoiceCommonController.currentInvoice.companyBO.address}, #{invoiceCommonController.currentInvoice.companyBO.locationBO.location}, Phone: #{invoiceCommonController.currentInvoice.companyBO.phone}, FAX: #{invoiceCommonController.currentInvoice.companyBO.fax}"
+					value="#{invoiceCommonController.currentInvoice.companyBO.address}, #{invoiceCommonController.currentInvoice.companyBO.locationBO.location}, Phone: #{invoiceCommonController.currentInvoice.companyBO.phone}"
 					style="font-weight:bold" />
 				<br />
 				<h:outputText

@@ -1,8 +1,12 @@
 package com.techlords.crown.mvc.stock;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -31,6 +35,8 @@ import com.techlords.crown.service.ItemService;
 public class ItemController extends CrownModelController {
 
 	private static final Logger LOGGER = Logger.getLogger(ItemController.class);
+	private static final Properties ITEM_SIZE_MAP = new Properties();
+	private static final Properties ITEM_STYLE_MAP = new Properties();
 
 	private final List<ItemBO> itemBOs = new ArrayList<ItemBO>();
 	private ItemBO currentItem;
@@ -41,14 +47,33 @@ public class ItemController extends CrownModelController {
 
 	private final LazyDataModel<ItemBO> itemModel = new LazyItemDataModel();
 
+	@PostConstruct
+	public void loadSizeNStyle() {
+		try {
+			ITEM_SIZE_MAP.load(ItemController.class.getResourceAsStream("item-size.properties"));
+			ITEM_STYLE_MAP.load(ItemController.class.getResourceAsStream("item-style.properties"));
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getSizes() {
+		return (List<String>) Collections.list(ITEM_SIZE_MAP.propertyNames());
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getStyles() {
+		return (List<String>) Collections.list(ITEM_STYLE_MAP.propertyNames());
+	}
+
 	public List<ItemBO> getItemBOs() {
 		System.out.println("Getting all ITEMS...");
 		long time1 = System.currentTimeMillis();
 		if (FacesUtil.isRenderPhase() && !isListLoaded) {
 			itemBOs.clear();
 			setCurrentItem(null);
-			ItemService service = CrownServiceLocator.INSTANCE
-					.getCrownService(ItemService.class);
+			ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 			itemBOs.addAll(service.findAllItems());
 			isListLoaded = true;
 		}
@@ -65,7 +90,7 @@ public class ItemController extends CrownModelController {
 		setCurrentItem(bo);
 		loadAssociations();
 		setFieldAvailability(EMPTY_STRING);
-		currentItem.setCurrency("SCR");
+		currentItem.setCurrency("INR");
 		isListLoaded = false;
 		navigationBean.setNavigationUrl("stock/UpdateItem.xhtml");
 		return null;
@@ -73,13 +98,13 @@ public class ItemController extends CrownModelController {
 
 	public String save() {
 		currentItem.setBrandBO(getAppModel(currentItem.getBrand(), brandBOs));
-		currentItem.setCategoryBO(getAppModel(currentItem.getCategory(),
-				categoryBOs));
+		currentItem.setCategoryBO(getAppModel(currentItem.getCategory(), categoryBOs));
 		currentItem.setUomBO(getAppModel(currentItem.getUom(), uomBOs));
+		
 		final StockValidator validator = new StockValidator();
 		try {
 			validator.validateItemCreation(currentItem);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			FacesUtil.addExceptionMessages(e);
 			return null;
 		}
@@ -91,23 +116,24 @@ public class ItemController extends CrownModelController {
 			FacesUtil.addErrorFlashMessage("Enter Pieces Per UOM");
 			return;
 		}
-		currentItem.setItemPrice(currentItem.getUomPrice()
-				/ currentItem.getPiecesPerUOM());
+		currentItem.setItemPrice(currentItem.getUomPrice() / currentItem.getPiecesPerUOM());
 	}
 
 	public void checkUniqueItemName() {
-		setFieldAvailability(CrownMVCHelper.checkUniqueness("item_name",
-				currentItem.getItemName()) ? AVAILABLE : UNAVAILABLE);
+		setFieldAvailability(CrownMVCHelper.checkUniqueness("item_name", currentItem.getItemName()) ? AVAILABLE
+				: UNAVAILABLE);
 	}
 
 	public String create() {
-
-		ItemService service = CrownServiceLocator.INSTANCE
-				.getCrownService(ItemService.class);
+		currentItem.setItemCode(currentItem.getCategoryBO().getCategoryCode()
+				+ currentItem.getBrandBO().getBrandCode()
+				+ ITEM_STYLE_MAP.getProperty(currentItem.getStyle())
+				+ ITEM_SIZE_MAP.getProperty(currentItem.getSize()) + "_"
+				+ INTEGER_FORMAT.format(currentItem.getUomPrice()));
+		ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 		try {
-			service.createItem(currentItem, CrownUserDetailsService
-					.getCurrentUser().getId());
-		} catch(Exception e) {
+			service.createItem(currentItem, CrownUserDetailsService.getCurrentUser().getId());
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
 			return null;
@@ -118,12 +144,10 @@ public class ItemController extends CrownModelController {
 
 	public String update() {
 
-		ItemService service = CrownServiceLocator.INSTANCE
-				.getCrownService(ItemService.class);
+		ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 		try {
-			service.updateItem(currentItem, CrownUserDetailsService
-					.getCurrentUser().getId());
-		} catch(Exception e) {
+			service.updateItem(currentItem, CrownUserDetailsService.getCurrentUser().getId());
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
 			return null;
@@ -133,12 +157,10 @@ public class ItemController extends CrownModelController {
 	}
 
 	public String delete(ItemBO bo) {
-		ItemService service = CrownServiceLocator.INSTANCE
-				.getCrownService(ItemService.class);
+		ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 		try {
-			service.deleteItem(bo, CrownUserDetailsService.getCurrentUser()
-					.getId());
-		} catch(Exception e) {
+			service.deleteItem(bo, CrownUserDetailsService.getCurrentUser().getId());
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			FacesUtil.addExceptionMessages(e);
 			return null;
@@ -156,8 +178,7 @@ public class ItemController extends CrownModelController {
 	}
 
 	public void loadAssociations() {
-		ItemService service = CrownServiceLocator.INSTANCE
-				.getCrownService(ItemService.class);
+		ItemService service = CrownServiceLocator.INSTANCE.getCrownService(ItemService.class);
 
 		brandBOs.clear();
 		categoryBOs.clear();

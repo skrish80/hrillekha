@@ -26,6 +26,7 @@ public final class ItemHelper {
 		bo.setItemCategory(category.getCategoryName());
 		bo.setCategoryCode(category.getCategoryCode());
 		bo.setDescription(category.getDescription());
+		bo.setStatus(StatusBO.valueOf(category.getStatusBean().getStatusId()));
 		return bo;
 	}
 
@@ -51,6 +52,7 @@ public final class ItemHelper {
 		bo.setBrandCode(brand.getBrandCode());
 		bo.setDescription(brand.getDescription());
 		bo.setVersion(brand.getVersion());
+		bo.setStatus(StatusBO.valueOf(brand.getStatusBean().getStatusId()));
 		return bo;
 	}
 
@@ -120,6 +122,7 @@ public final class ItemHelper {
 
 		item.setVersion(bo.getVersion());
 		item.setItemName(bo.getItemName());
+		item.setItemCode(bo.getItemCode());
 		item.setItemPrice(bo.getItemPrice());
 		item.setUomPrice(bo.getUomPrice());
 		item.setPiecesPerUOM(bo.getPiecesPerUOM());

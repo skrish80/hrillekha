@@ -16,7 +16,6 @@ public class ItemBrandBO extends AppModel {
 	private String itemBrand;
 	private String brandCode;
 	private String description;
-	@NotNull(message = "Select a Status")
 	private StatusBO status;
 
 	public String getItemBrand() {

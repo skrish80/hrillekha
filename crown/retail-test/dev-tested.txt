@@ -1,0 +1,15 @@
+Tested:
+	- User (all CRUD)
+	- Company (all CRUD)
+	- Customer (all CRUD)
+	- Supplier (all CRUD)
+	- Warehouse (all CRUD)
+	- Retail Shop (all CRUD)
+	- Item Category (all CRUD)
+	- Item Brand (all CRUD)
+	- Item (all CRUD)
+	- Invoice Create
+	- Invoice Deliver
+	- Invoice Return
+	- Invoice Print
+	- Credit Note Create

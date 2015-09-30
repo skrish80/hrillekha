@@ -37,7 +37,6 @@ public final class CrownFlowService {
 					.getResourceAsStream("unique-fields.properties"));
 		} catch (IOException e) {
 			LOGGER.error(e.getMessage(), e);
-			e.printStackTrace();
 		}
 	}
 
