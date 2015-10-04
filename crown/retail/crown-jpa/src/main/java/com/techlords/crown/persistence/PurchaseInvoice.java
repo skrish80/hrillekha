@@ -93,6 +93,15 @@ public class PurchaseInvoice implements Serializable {
 	@OneToMany(mappedBy = "purchaseInvoice")
 	private Set<PurchaseInvoiceItem> purchaseInvoiceItems;
 
+	// bi-directional many-to-one association to InvoicePayment
+	@OneToMany(mappedBy = "invoice")
+	private Set<PurchaseInvoicePayment> invoicePayments;
+
+	// bi-directional many-to-one association to PaymentStatus
+	@ManyToOne
+	@JoinColumn(name = "payment_status", nullable = false)
+	private PaymentStatus paymentStatusBean;
+
 	public PurchaseInvoice() {
 	}
 
@@ -172,8 +181,7 @@ public class PurchaseInvoice implements Serializable {
 		return this.purchaseInvoiceItems;
 	}
 
-	public void setPurchaseInvoiceItems(
-			Set<PurchaseInvoiceItem> purchaseInvoiceItems) {
+	public void setPurchaseInvoiceItems(Set<PurchaseInvoiceItem> purchaseInvoiceItems) {
 		this.purchaseInvoiceItems = purchaseInvoiceItems;
 	}
 
@@ -216,7 +224,7 @@ public class PurchaseInvoice implements Serializable {
 	public final void setGoodsReceiptNumber(String goodsReceiptNumber) {
 		this.goodsReceiptNumber = goodsReceiptNumber;
 	}
-	
+
 	@Version
 	@Column(name = "version", unique = true, nullable = false)
 	private long version;
@@ -227,6 +235,35 @@ public class PurchaseInvoice implements Serializable {
 
 	public final void setVersion(long version) {
 		this.version = version;
+	}
+
+	/**
+	 * @return the invoicePayments
+	 */
+	public Set<PurchaseInvoicePayment> getInvoicePayments() {
+		return invoicePayments;
+	}
+
+	/**
+	 * @param invoicePayments
+	 *            the invoicePayments to set
+	 */
+	public void setInvoicePayments(Set<PurchaseInvoicePayment> invoicePayments) {
+		this.invoicePayments = invoicePayments;
+	}
+
+	/**
+	 * @return the paymentStatusBean
+	 */
+	public PaymentStatus getPaymentStatusBean() {
+		return paymentStatusBean;
+	}
+
+	/**
+	 * @param paymentStatusBean the paymentStatusBean to set
+	 */
+	public void setPaymentStatusBean(PaymentStatus paymentStatusBean) {
+		this.paymentStatusBean = paymentStatusBean;
 	}
 
 }

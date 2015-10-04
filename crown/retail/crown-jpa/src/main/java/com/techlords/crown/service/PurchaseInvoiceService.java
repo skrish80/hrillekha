@@ -9,6 +9,7 @@ import java.util.Map;
 import com.techlords.crown.business.exception.CrownException;
 import com.techlords.crown.business.model.PurchaseInvoiceBO;
 import com.techlords.crown.business.model.PurchaseInvoiceItemBO;
+import com.techlords.crown.business.model.PurchaseInvoicePaymentBO;
 import com.techlords.crown.business.model.SupplierBO;
 
 /**
@@ -27,6 +28,10 @@ public interface PurchaseInvoiceService extends CrownService {
 			throws CrownException;
 
 	public boolean printInvoice(PurchaseInvoiceBO invoiceBO, int userID)
+			throws CrownException;
+	
+	boolean updateInvoicePayments(PurchaseInvoiceBO bo,
+			List<PurchaseInvoicePaymentBO> removedCheques, int userID)
 			throws CrownException;
 
 	public List<PurchaseInvoiceBO> findAllInvoices();

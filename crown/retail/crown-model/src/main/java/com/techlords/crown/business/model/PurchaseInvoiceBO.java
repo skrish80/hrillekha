@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.techlords.crown.business.model.enums.AllocationTypeBO;
+import com.techlords.crown.business.model.enums.PaymentStatusBO;
 import com.techlords.crown.business.model.enums.PurchaseInvoiceStateBO;
 import com.techlords.infra.AppModel;
 
@@ -47,6 +48,18 @@ public class PurchaseInvoiceBO extends AppModel {
 	@Size(min = 1, message = "Please add at least one item to order")
 	private List<PurchaseInvoiceItemBO> invoiceItems = new ArrayList<PurchaseInvoiceItemBO>();
 
+	@Min(value = 1, message = "Please select \"Payment Status\"")
+	private int paymentStatus;
+	private PaymentStatusBO paymentStatusBO;
+
+	// CAN BE EMPTY IF IT IS CREDIT SALES
+	// @Size(min = 1, message = "Please add at least payment to order")
+	private List<PurchaseInvoicePaymentBO> invoicePayments = new ArrayList<PurchaseInvoicePaymentBO>();
+
+	// @Min(value = 1, message = "\"Total Paid Amount\" cannot be zero")
+	// CAN BE CREDIT SALES
+	private double totalPaidAmount;
+
 	public final void addInvoiceItem(PurchaseInvoiceItemBO itemBO) {
 		invoiceItems.add(itemBO);
 	}
@@ -72,9 +85,8 @@ public class PurchaseInvoiceBO extends AppModel {
 			final ItemBO bo = item.getItemBO();
 			final int allocationType = item.getAllocationType();
 			final int itemQty = item.getItemQty();
-			amount += (allocationType == AllocationTypeBO.UOM
-					.getAllocationTypeID()) ? (itemQty * bo.getUomPrice())
-					: (itemQty * bo.getItemPrice());
+			amount += (allocationType == AllocationTypeBO.UOM.getAllocationTypeID()) ? (itemQty * bo
+					.getUomPrice()) : (itemQty * bo.getItemPrice());
 		}
 		return amount;
 	}
@@ -86,9 +98,8 @@ public class PurchaseInvoiceBO extends AppModel {
 			final double vat = bo.getVat();
 			final int allocationType = item.getAllocationType();
 			final int itemQty = item.getItemQty();
-			tax += (allocationType == AllocationTypeBO.UOM
-					.getAllocationTypeID()) ? (itemQty * (bo.getUomPrice() * (vat / 100)))
-					: (itemQty * (bo.getItemPrice() * (vat / 100)));
+			tax += (allocationType == AllocationTypeBO.UOM.getAllocationTypeID()) ? (itemQty * (bo
+					.getUomPrice() * (vat / 100))) : (itemQty * (bo.getItemPrice() * (vat / 100)));
 		}
 		return tax;
 	}
@@ -222,6 +233,67 @@ public class PurchaseInvoiceBO extends AppModel {
 
 	public final void setGoodsReceiptNumber(String goodsReceiptNumber) {
 		this.goodsReceiptNumber = goodsReceiptNumber;
+	}
+
+	/**
+	 * @return the paymentStatus
+	 */
+	public int getPaymentStatus() {
+		return paymentStatus;
+	}
+
+	/**
+	 * @param paymentStatus
+	 *            the paymentStatus to set
+	 */
+	public void setPaymentStatus(int paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
+
+	/**
+	 * @return the paymentStatusBO
+	 */
+	public PaymentStatusBO getPaymentStatusBO() {
+		return paymentStatusBO;
+	}
+
+	/**
+	 * @param paymentStatusBO
+	 *            the paymentStatusBO to set
+	 */
+	public void setPaymentStatusBO(PaymentStatusBO paymentStatusBO) {
+		this.paymentStatusBO = paymentStatusBO;
+	}
+
+	/**
+	 * @return the invoicePayments
+	 */
+	public List<PurchaseInvoicePaymentBO> getInvoicePayments() {
+		return invoicePayments;
+	}
+
+	/**
+	 * @param invoicePayments
+	 *            the invoicePayments to set
+	 */
+	public void setInvoicePayments(List<PurchaseInvoicePaymentBO> invoicePayments) {
+		this.invoicePayments = invoicePayments;
+	}
+
+	public final void addInvoicePayment(PurchaseInvoicePaymentBO itemBO) {
+		invoicePayments.add(itemBO);
+	}
+
+	public final void removeInvoicePayment(PurchaseInvoicePaymentBO itemBO) {
+		invoicePayments.remove(itemBO);
+	}
+
+	public final double getTotalPaidAmount() {
+		totalPaidAmount = 0;
+		for (PurchaseInvoicePaymentBO bo : invoicePayments) {
+			totalPaidAmount += bo.getAmount();
+		}
+		return totalPaidAmount;
 	}
 
 }

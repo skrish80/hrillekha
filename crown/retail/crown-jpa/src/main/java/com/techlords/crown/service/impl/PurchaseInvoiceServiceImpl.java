@@ -21,7 +21,9 @@ import com.techlords.crown.CrownServiceLocator;
 import com.techlords.crown.business.exception.CrownException;
 import com.techlords.crown.business.model.PurchaseInvoiceBO;
 import com.techlords.crown.business.model.PurchaseInvoiceItemBO;
+import com.techlords.crown.business.model.PurchaseInvoicePaymentBO;
 import com.techlords.crown.business.model.SupplierBO;
+import com.techlords.crown.business.model.enums.PaymentStatusBO;
 import com.techlords.crown.business.model.enums.PurchaseInvoiceStateBO;
 import com.techlords.crown.business.model.enums.StatusBO;
 import com.techlords.crown.helpers.AuditActionEnum;
@@ -29,13 +31,17 @@ import com.techlords.crown.helpers.GeneralHelper;
 import com.techlords.crown.helpers.ItemHelper;
 import com.techlords.crown.helpers.PurchaseInvoiceHelper;
 import com.techlords.crown.helpers.QueryBuilder;
+import com.techlords.crown.persistence.Bank;
 import com.techlords.crown.persistence.Company;
 import com.techlords.crown.persistence.CrownUser;
 import com.techlords.crown.persistence.Currency;
 import com.techlords.crown.persistence.Item;
+import com.techlords.crown.persistence.PaymentMode;
+import com.techlords.crown.persistence.PaymentStatus;
 import com.techlords.crown.persistence.PurchaseInvoice;
 import com.techlords.crown.persistence.PurchaseInvoiceItem;
 import com.techlords.crown.persistence.PurchaseInvoiceItemPK;
+import com.techlords.crown.persistence.PurchaseInvoicePayment;
 import com.techlords.crown.persistence.Status;
 import com.techlords.crown.persistence.Supplier;
 import com.techlords.crown.service.GeneralService;
@@ -404,4 +410,75 @@ public class PurchaseInvoiceServiceImpl extends AbstractCrownService implements
 		return bos;
 	}
 
+	@Transactional(propagation = Propagation.NESTED)
+	@Override
+	public boolean updateInvoicePayments(PurchaseInvoiceBO bo,
+			List<PurchaseInvoicePaymentBO> removedCheques, int userID) throws CrownException {
+		try {
+			final PurchaseInvoice invoice = manager.find(PurchaseInvoice.class, bo.getId());
+			invoice.setVersion(bo.getVersion());
+			createInvoicePayments(invoice, bo, true, userID);
+
+			invoice.setPaymentStatusBean(manager.find(PaymentStatus.class, bo.getPaymentStatus()));
+
+			// REMOVE CHEQUES FROM INVOICE PAYMENTS
+			final Set<PurchaseInvoicePayment> payments = invoice.getInvoicePayments();
+			for (PurchaseInvoicePaymentBO paymentBO : removedCheques) {
+				PurchaseInvoicePayment payment = manager.find(PurchaseInvoicePayment.class,
+						paymentBO.getId());
+				payment.setVersion(paymentBO.getVersion());
+				// REMOVE THE ITEM
+				manager.remove(payment);
+				payments.remove(payment);
+			}
+			invoice.setInvoicePayments(payments);
+			if (!removedCheques.isEmpty()) {
+				invoice.setPaymentStatusBean(manager.find(PaymentStatus.class,
+						PaymentStatusBO.PARTIAL_PAYMENT.getStatusID()));
+			}
+			auditLog(AuditActionEnum.UPDATE_PMT, userID, "invoice", invoice.getInvoiceNumber());
+		} catch (OptimisticLockException e) {
+			throw new CrownException("Invoice has changed or been deleted since it was last read",
+					e);
+		} catch (Exception e) {
+			throw new CrownException("Exception " + e.getMessage(), e);
+		}
+
+		return true;
+	}
+
+	@Transactional(propagation = Propagation.NESTED)
+	private void createInvoicePayments(PurchaseInvoice invoice, PurchaseInvoiceBO bo,
+			boolean isUpdate, int userID) throws CrownException {
+		final List<PurchaseInvoicePaymentBO> paymentBOs = bo.getInvoicePayments();
+		Set<PurchaseInvoicePayment> payments = invoice.getInvoicePayments();
+		if (payments == null) {
+			payments = new HashSet<PurchaseInvoicePayment>();
+		}
+		for (PurchaseInvoicePaymentBO paymentBO : paymentBOs) {
+			PurchaseInvoicePayment payment = helper.createInvoicePayment(invoice.getInvoiceId(),
+					paymentBO);
+			payment.setInvoice(invoice);
+			payment.setPaymentModeBean(manager.find(PaymentMode.class, paymentBO.getPaymentMode()));
+			// will be in if Credit Note and Receipt are given by supplier
+			// if (paymentBO.getPaymentMode() == PaymentModeBO.CREDIT_NOTE.getModeID()) {
+			// updateCreditNoteUsage(paymentBO.getDraftNumber(), userID);
+			// }
+			// if (paymentBO.getPaymentMode() == PaymentModeBO.RECEIPT.getModeID()) {
+			// updateReceiptUsage(paymentBO, userID);
+			// }
+			final Integer bankID = paymentBO.getBank();
+			if (bankID != null && bankID > 0) {
+				payment.setBank(manager.find(Bank.class, bankID));
+			}
+			// PERSIST THE ITEM
+			manager.persist(payment);
+
+			payments.add(payment);
+		}
+		// if (isUpdate) {
+		// payments.addAll(invoice.getInvoicePayments());
+		// }
+		invoice.setInvoicePayments(payments);
+	}
 }

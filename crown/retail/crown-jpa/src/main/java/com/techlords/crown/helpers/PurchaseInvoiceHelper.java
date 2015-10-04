@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.techlords.crown.business.model.PurchaseInvoiceBO;
 import com.techlords.crown.business.model.PurchaseInvoiceItemBO;
+import com.techlords.crown.business.model.PurchaseInvoicePaymentBO;
 import com.techlords.crown.business.model.SupplierBO;
 import com.techlords.crown.business.model.enums.AllocationTypeBO;
 import com.techlords.crown.business.model.enums.PurchaseInvoiceStateBO;
@@ -16,6 +17,7 @@ import com.techlords.crown.persistence.Company;
 import com.techlords.crown.persistence.PurchaseInvoice;
 import com.techlords.crown.persistence.PurchaseInvoiceItem;
 import com.techlords.crown.persistence.PurchaseInvoiceItemPK;
+import com.techlords.crown.persistence.PurchaseInvoicePayment;
 import com.techlords.crown.persistence.Supplier;
 
 /**
@@ -157,6 +159,24 @@ public final class PurchaseInvoiceHelper {
 		bo.setRemarks(item.getRemarks());
 
 		return bo;
+	}
+
+	/**
+	 * @param invoiceId
+	 * @param paymentBO
+	 * @return
+	 */
+	public PurchaseInvoicePayment createInvoicePayment(Integer invoiceId,
+			PurchaseInvoicePaymentBO bo) {
+		final PurchaseInvoicePayment payment = new PurchaseInvoicePayment();
+		payment.setVersion(bo.getVersion());
+		payment.setDraftNumber(bo.getDraftNumber());
+		payment.setChequeDate(bo.getChequeDate());
+
+		payment.setAmount(bo.getAmount());
+		payment.setRemarks(bo.getRemarks());
+
+		return payment;
 	}
 
 }
