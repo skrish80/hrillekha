@@ -38,7 +38,7 @@
 		<module>crown-model</module>
 		<module>crown-jpa</module>
 		<module>crown-retail</module>
-		<module>crown-fx</module>
+		<!-- <module>crown-fx</module> -->
 	</modules>
 	<build>
 		<resources>
