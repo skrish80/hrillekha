@@ -23,7 +23,7 @@
 		<poi.version>3.12</poi.version>
 		<itext.version>4.2.1</itext.version>
 		<el.version>2.2.1-b04</el.version>
-		<sonar.username>admin</sonar.username>
+		<sonar.login>admin</sonar.login>
 		<sonar.password>admin</sonar.password>
 	</properties>
 
