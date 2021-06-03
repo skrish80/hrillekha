@@ -45,11 +45,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.primefaces.extensions</groupId>
-			<artifactId>all-themes</artifactId>
-			<version>${primefaces-themes.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
