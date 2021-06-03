@@ -84,7 +84,7 @@
 				value="drop-and-create-tables"/> -->
 				<property name="eclipselink.logging.logger" value="JavaLogger"/>
 				<property name="eclipselink.logging.level" value="WARNING"/>
-				<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://CROWN-RETAIL.ctiyfbqhbge5.us-east-1.rds.amazonaws.com:5432/CROWN-RETAIL"/>
+				<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://crown-retail.ctiyfbqhbge5.us-east-1.rds.amazonaws.com:5432/crown-retail"/>
 				<property name="javax.persistence.jdbc.user" value="aws_postgres"/>
 				<property name="javax.persistence.jdbc.password" value="postgres2021**"/>
 				<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
