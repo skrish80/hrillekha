@@ -73,9 +73,9 @@
 		<class>com.techlords.crown.persistence.WarehouseStockPK</class>
 		<class>com.techlords.crown.persistence.Receipt</class>
 		<class>com.techlords.crown.persistence.ReceiptPayment</class>
-		<class>com.techlords.crown.persistence.PurchaseInvoice</class>
+	<!--	<class>com.techlords.crown.persistence.PurchaseInvoice</class>
 		<class>com.techlords.crown.persistence.PurchaseInvoiceItem</class>
-		<class>com.techlords.crown.persistence.PurchaseInvoiceItemPK</class>
+		<class>com.techlords.crown.persistence.PurchaseInvoiceItemPK</class> -->
 		<class>com.techlords.crown.persistence.Supplier</class>
 
 		<properties>
