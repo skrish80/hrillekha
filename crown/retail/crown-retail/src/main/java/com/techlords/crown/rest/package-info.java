@@ -1,5 +1,5 @@
 /**
- * © G. Vaidhyanathan
+ * (c) G. Vaidhyanathan
  */
 /**
  * @author G. Vaidhyanathan
